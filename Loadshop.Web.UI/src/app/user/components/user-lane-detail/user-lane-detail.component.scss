@@ -1,0 +1,20 @@
+tr > th, td {
+    text-align: center;
+}
+
+table, tr {
+    border: 1px solid black;
+}
+
+.ui-state-highlight {
+    background-color: #bababa;
+    color: #000000;
+}
+
+.ui-panel-no-pad > .ui-panel-content {
+    padding: 0;
+}
+
+.ui-button {
+    width: 100%;
+}

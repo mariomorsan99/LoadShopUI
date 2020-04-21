@@ -1,0 +1,37 @@
+<div class="page-container">
+  <div class="d-flex flex-column">
+    <div class="pt-lg-2 pl-lg-4 pr-lg-4 pb-lg-1 position-relative">
+      <kbxl-shipping-search-criteria
+        [criteria]="pagingUiHelper.filter$ | async"
+        [equipment]="equipment$ | async | toTreeNodes"
+        [states]="states$ | async"
+        [isMobile]="isMobile$ | async"
+        [serviceTypes]="serviceTypes$ | async"
+        (search)="search($event)"
+        (clear)="clear()"
+      ></kbxl-shipping-search-criteria>
+    </div>
+    <kbxl-color-bar></kbxl-color-bar>
+    <div class="grid-container pl-lg-4 pr-lg-4">
+      <kbxl-shipping-grid
+        [loading]="loading$ | async"
+        [loads]="loads$ | async"
+        [isDeliveredLoads]="true"
+        [user]="user$ | async"
+        [serviceTypes]="serviceTypes$ | async"
+        (selected)="selected($event)"
+        kbxlActionCheck="loadshop.ui.shopit.load.viewdelivereddetail"
+        (isDisabledChange)="isDisabled = $event"
+        enforcementType="disable"
+        (lazyLoad)="onLazyLoadEvent($event)"
+        [lazy]="true"
+        [totalRecords]="totalRecords$ | async"
+      ></kbxl-shipping-grid>
+    </div>
+    <!-- <div class="construction-message">
+            <fa-icon [icon]="['fas', 'tools']" size="2x"></fa-icon>
+            <span>Under Construction</span>
+        </div> -->
+  </div>
+</div>
+<router-outlet></router-outlet>

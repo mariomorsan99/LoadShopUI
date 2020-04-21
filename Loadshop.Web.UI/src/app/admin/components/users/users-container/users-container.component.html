@@ -1,0 +1,19 @@
+<kbxl-user-admin 
+    (userSearchFilterUpdated)="searchUsers($event)" 
+    (userSelected)="userSelected($event)"
+    (carrierScacChanged)="carrierScacSelected()" 
+    (userSaved)="saveUser($event)"
+    (addUser)="loadIdentityUser($event)"
+    [userResults]="userResults$ | async"
+    [updatingUser]="updatingUser$ | async" 
+    [allAuthorizedShippers]="authorizedShippers$ | async"
+    [allAuthorizedSecurityRoles]="authorizedSecurityRoles$ | async"
+    [allAuthorizedCarrierScacs]="sortedAuthorizedCarrierScacs$ | async" 
+    [processing]="processing$ | async"
+    [createMode]="createMode$ | async"
+    [loadingCarriers]="loadingCarriers$ | async"
+    [carriers]="authorizedCarriers$ | async"
+    [loadingCarrierUsers]="loadingCarrierUsers$ | async"
+    [carrierUsers]="carrierUsers$ | async"
+    (carrierSelected)="carrierSelected($event)">
+</kbxl-user-admin>

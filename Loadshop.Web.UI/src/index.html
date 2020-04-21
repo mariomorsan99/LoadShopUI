@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Loadshop&trade;</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="https://use.typekit.net/otr0opd.css">
+  <link rel="icon" href="favicon.ico?v=2">
+</head>
+<body>
+  <kbxl-root></kbxl-root>
+  <script>
+    !function(e){var t={};function n(o){if(t[o])return t[o].exports;var i=t[o]={i:o,l:!1,exports:{}};return e[o].call(i.exports,i,i.exports,n),i.l=!0,i.exports}n.m=e,n.c=t,n.d=function(e,t,o){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:o})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var o=Object.create(null);if(n.r(o),Object.defineProperty(o,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var i in e)n.d(o,i,function(t){return e[t]}.bind(null,i));return o},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="/",n(n.s=0)}([function(e,t){window.UsersnapFeedbackRouter=function(e,t){var n=t.title,o=t.buttons;null===n&&(n="Feedback");var i=e.getConfig(),r=e.evaluateTemplates(i),l=[],a={};if(0!==o.length){for(var c=0;c<o.length;c++)a={id:"button-"+Math.floor(1e3*Math.random()),icon:{"@template":{id:o[c].icon}},text:o[c].text,title:o[c].title,styles:{container:{color:o[c].textColor,background:o[c].bgColor}},component:"ButtonField",multiline:!0},"openUrl"===o[c].action.type?a.onClick=[{action:"close"},{action:"openUrl",options:{url:o[c].action.content}}]:"javascript"===o[c].action.type?a.onClick=[{action:"close"},{action:"evaluateJavascript",options:{functionBody:o[c].action.content}}]:a.onClick=[{action:"updateActivePage",options:{pageId:"feedback-page"}}],l.push(a);var u={};!1!==t.header&&(u={"@resource":"logo_header.png",component:"HeaderImageDisplay",poweredByLink:"https://usersnap.com/cx?utm_source=cxbutton&utm_medium=poweredbylink&utm_campaign=customer",title:n});var s={id:"welcome-select-page",fieldsets:[{id:"welcome-fieldset",fields:[u],footer:{buttons:[]},isFullSize:!0}]};s.fieldsets[0].fields=s.fieldsets[0].fields.concat(l),!1===t.header&&(r.widget.pages[0].fieldsets[0].fields[0]["@resource"]=""),!1===t.button&&(r.button=null),r.widget.pages.splice(0,0,s),!1===t.header&&(r.widget.styles.container.borderRadius="none"),e.init(r)}else e.init(r)}}]);
+  </script>
+</body>
+</html>

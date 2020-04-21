@@ -1,0 +1,8 @@
+<div class="grid-container">
+    <kbxl-special-instructions-grid 
+      [instructions]="instructions$ | async" 
+      [equipment]="equipment$ | async" 
+      [loading]="loading$ | async"      
+      (displayDetail)="displayDetail($event)" ></kbxl-special-instructions-grid>
+  </div>
+  <router-outlet></router-outlet>

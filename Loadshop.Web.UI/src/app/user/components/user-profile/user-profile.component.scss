@@ -1,0 +1,30 @@
+@import 'variables';
+@import 'bootstrap-overrides';
+
+.mobile-padding {
+  padding: 10px 12px 10px 13px;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.phone-extension {
+  width: 75px;
+}
+
+.contact-numbers {
+  @include media-breakpoint-down($mobile-breakpoint) {
+    & p-inputMask {
+      width: 100% !important;
+    }
+  }
+}
+
+.notification-label {
+  margin-left: 375px;
+}
+
+.notification-checkbox {
+  margin-left: 72px;
+}

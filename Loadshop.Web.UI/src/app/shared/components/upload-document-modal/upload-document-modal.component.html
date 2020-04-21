@@ -1,0 +1,38 @@
+<div class="d-flex flex-column">
+  <div class="kbxl-inputgroup-container">
+    <div class="kbxl-field-label">
+      <label class="control-label">Document Type</label>
+    </div>
+    <div class="ui-inputgroup">
+      <p-dropdown
+        [options]="documentTypes"
+        optionLabel="description"
+        placeholder="Document Type"
+        [(ngModel)]="selectedDocumentType"
+        (onChange)="documentTypeChange()"
+        [styleClass]="'ui-dropdown-primary'"
+        dropdownIcon="pi pi-caret-down"
+      >
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="kbxl-inputgroup-container" [ngClass]="{ 'd-none': !showComment }">
+    <div class="kbxl-field-label">
+      <label class="control-label">Document Description</label>
+    </div>
+    <div class="ui-inputgroup">
+      <textarea [rows]="3" [cols]="300" pInputTextarea [(ngModel)]="comment" (ngModelChange)="commentChanged($event)"></textarea>
+    </div>
+  </div>
+  <div class="text-right">
+    <button
+      pButton
+      icon="pi pi-paperclip"
+      class="ui-button-primary ui-button-teal"
+      label="Attach Document"
+      (click)="file.click()"
+      [disabled]="uploadDisabled"
+    ></button>
+    <input #file type="file" accept=".jpg,.png,.gif,.jpeg,.pdf,.doc,.docx" class="d-none" (change)="uploadDocument($event)" />
+  </div>
+</div>

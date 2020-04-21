@@ -1,0 +1,11 @@
+@import '../../../../../styles/variables.scss';
+
+:host ::ng-deep .ui-panel .ui-panel-titlebar .ui-panel-title {
+  font-weight: 800;
+  font-size: 14px;
+  padding-left: 15px;
+}
+
+:host ::ng-deep .ui-editor-toolbar .ql-picker-label {
+  color: #444;
+}

@@ -1,0 +1,25 @@
+<p-dialog *ngIf="userCommunications$ | async as userCommunications" [visible]="userCommunications.length > 0"
+    [style]="{width: '500px'}" [appendTo]="'body'" [baseZIndex]="51" [modal]="true" [showHeader]="false"
+    styleClass="ui-user-communication-dialog">
+    <p-carousel headerText="Loadshop Communications" [value]="userCommunications" [numVisible]="1" [circular]="false">
+        <ng-template let-userCommunication pTemplate="item">
+            <div class="d-flex flex-column" style="position: relative;">
+                <div class="progress-indicator" *ngIf="processing$ | async">
+                    <div class="progressspinner-container">
+                        <p-progressSpinner></p-progressSpinner>
+                    </div>
+                </div>
+                <p-panel>
+                    <p-header>
+                        {{userCommunication.title}}
+                    </p-header>
+                    <div [innerHtml]="userCommunication.message"></div>
+                    <div class="d-flex flex-row-reverse mt-2">
+                        <button pButton type="button" class="ui-button-info" label="Acknowledge"
+                            (click)="onAcknowledge(userCommunication)"></button>
+                    </div>
+                </p-panel>
+            </div>
+        </ng-template>
+    </p-carousel>
+</p-dialog>

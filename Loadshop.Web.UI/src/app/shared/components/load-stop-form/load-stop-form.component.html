@@ -1,0 +1,339 @@
+<form [formGroup]="form" class="load-stop-form">
+  <p-panel class="load-stop-container" [toggleable]="true" styleClass="dark-ui-panel">
+    <p-header class="ui-panel-title">
+      <span [ngClass]="{ error: form.invalid }">{{ stopTypeTitle }}</span>
+    </p-header>
+
+    <div class="row">
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['stopType'].invalid }">
+          <label for="stopType" class="control-label">Stop Type</label>
+        </div>
+        <div class="radio-button-group">
+          <p-radioButton name="stopType" value="Pickup" label="Pickup" formControlName="stopType" (onClick)="changeStopType()" class="mr-3">
+          </p-radioButton>
+          <p-radioButton
+            *ngIf="stopNbr !== 1"
+            name="stopType"
+            value="Delivery"
+            label="Delivery"
+            formControlName="stopType"
+            (onClick)="changeStopType()"
+          >
+          </p-radioButton>
+        </div>
+      </div>
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['isLive'].invalid }">
+          <label for="isLive" class="control-label">Load Type</label>
+        </div>
+        <div *ngIf="stopType === StopTypes[StopTypes.Pickup]" class="radio-button-group">
+          <p-radioButton name="isLive" value="false" label="Preload" formControlName="isLive" class="mr-3"> </p-radioButton>
+          <p-radioButton name="isLive" value="true" label="Live Load" formControlName="isLive"></p-radioButton>
+        </div>
+        <div *ngIf="stopType === StopTypes[StopTypes.Delivery]" class="radio-button-group">
+          <p-radioButton name="isLive" value="false" label="Drop Trailer" formControlName="isLive" class="mr-3"> </p-radioButton>
+          <p-radioButton name="isLive" value="true" label="Live Unload" formControlName="isLive"></p-radioButton>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['earlyDtTm'].invalid || form.controls['earlyTime'].invalid }">
+          <label *ngIf="stopType === StopTypes[StopTypes.Pickup]" for="pickupFrom" class="control-label">Requested Pickup From</label>
+          <label *ngIf="stopType === StopTypes[StopTypes.Delivery]" for="pickupFrom" class="control-label">Requested Delivery From</label>
+        </div>
+        <div class="row">
+          <div class="col-6 col-lg-8">
+            <p-calendar
+              formControlName="earlyDate"
+              name="pickupFrom"
+              [showIcon]="true"
+              showButtonBar="true"
+              (ngModelChange)="populateToField()"
+            ></p-calendar>
+          </div>
+          <div class="col-6 col-lg-4">
+            <p-inputMask
+              mask="99:99"
+              formControlName="earlyTime"
+              name="earlyTime"
+              placeholder="23:59"
+              (change)="populateToField()"
+            ></p-inputMask>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['lateDtTm'].invalid || form.controls['lateTime'].invalid }">
+          <label *ngIf="stopType === StopTypes[StopTypes.Pickup]" for="pickupTo" class="control-label">Requested Pickup To</label>
+          <label *ngIf="stopType === StopTypes[StopTypes.Delivery]" for="pickupTo" class="control-label">Requested Delivery To</label>
+        </div>
+        <div class="row">
+          <div class="col-6 col-lg-8">
+            <p-calendar
+              formControlName="lateDate"
+              name="pickupTo"
+              [showIcon]="true"
+              showButtonBar="true"
+              (onSelect)="updateLateDtTm()"
+            ></p-calendar>
+          </div>
+          <div class="col-6 col-lg-4">
+            <p-inputMask
+              mask="99:99"
+              formControlName="lateTime"
+              name="lateTime"
+              placeholder="23:59"
+              (onBlur)="updateLateDtTm()"
+            ></p-inputMask>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['locationName'].invalid }">
+          <label for="locationName" class="control-label">Location Name</label>
+        </div>
+        <p-autoComplete
+          id="location-autocomplete"
+          formControlName="locationName"
+          name="locationName"
+          [suggestions]="locationSuggestions"
+          (completeMethod)="locationSearch($event)"
+          (onSelect)="populateAddressFromLocation($event)"
+          [forceSelection]="false"
+          [placeholder]="'Search Locations'"
+          maxlength="50"
+        >
+          <ng-template let-item pTemplate="item">
+            {{ item.locationName }}
+          </ng-template>
+        </p-autoComplete>
+      </div>
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['address1'].invalid }">
+          <label for="address1" class="control-label">Address 1</label>
+        </div>
+        <p-autoComplete
+          id="address-autocomplete"
+          formControlName="addressAutoComplete"
+          name="addressAutoComplete"
+          [suggestions]="suggestions"
+          (completeMethod)="citySearch($event)"
+          (onSelect)="populateAddress($event)"
+          [forceSelection]="false"
+          field="address"
+          [placeholder]="'Search by Address'"
+          maxlength="50"
+        >
+          <ng-template let-item pTemplate="item">
+            {{ item.description }}
+          </ng-template>
+        </p-autoComplete>
+      </div>
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container " [ngClass]="{ invisible: !displayAddressLine2 }">
+        <div class="kbxl-field-label">
+          <label for="address2" class="control-label">Address 2</label>
+        </div>
+        <input formControlName="address2" name="address2" type="text" class="ui-inputtext" pInputText maxlength="50" />
+      </div>
+      <!-- <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label for="address3" class="control-label">Address 3</label>
+        </div>
+        <input formControlName="address3" name="address3" type="text" class="ui-inputtext" pInputText maxlength="50" />
+      </div> -->
+      <div class="col-12 col-lg-3  kbxl-inputgroup-container" [ngClass]="{ 'text-right': !displayAddressLine3 }">
+        <div *ngIf="displayAddressLine3">
+          <div class="kbxl-field-label">
+            <label for="address3" class="control-label">Address 3</label>
+          </div>
+          <input formControlName="address3" name="address3" type="text" class="ui-inputtext" pInputText maxlength="50" />
+        </div>
+        <div *ngIf="!displayAddressLine2 || !displayAddressLine3">
+          <div class="kbxl-field-label">
+            <label for="" class="control-label">&nbsp;</label>
+          </div>
+          <button
+            class="ui-button-primary ui-button-teal "
+            pButton
+            icon="pi pi-plus"
+            (click)="addAddressLine()"
+            label="Add Address Line"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['city'].invalid }">
+          <label for="city" class="control-label">City</label>
+        </div>
+        <input formControlName="city" name="city" type="text" class="ui-inputtext" pInputText maxlength="30" />
+      </div>
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['state'].invalid }">
+          <label for="state" class="control-label">State</label>
+          <div class="small-spinner-container ml-2">
+            <p-progressSpinner *ngIf="loadingStates"></p-progressSpinner>
+          </div>
+        </div>
+        <p-dropdown
+          [options]="states"
+          placeholder="Select State"
+          formControlName="state"
+          name="state"
+          dataKey="abbreviation"
+          optionLabel="name"
+          [styleClass]="'ui-dropdown-primary'"
+          dropdownIcon="pi pi-caret-down"
+          appendTo="body"
+          kbxlCloseOnScroll
+          hideTransitionOptions="0ms"
+        >
+          <ng-template let-item pTemplate="selectedItem">
+            <span class="selected-item-label">{{ form.get('state').value.name }}</span>
+          </ng-template>
+        </p-dropdown>
+      </div>
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['country'].invalid }">
+          <label for="country" class="control-label">Country</label>
+        </div>
+        <p-dropdown
+          [options]="countries"
+          placeholder="Select Country"
+          formControlName="country"
+          name="country"
+          dataKey="name"
+          optionLabel="name"
+          [styleClass]="'ui-dropdown-primary'"
+          dropdownIcon="pi pi-caret-down"
+          appendTo="body"
+          kbxlCloseOnScroll
+          hideTransitionOptions="0ms"
+        >
+          <ng-template let-item pTemplate="selectedItem">
+            <span class="selected-item-label">{{ form.get('country').value.name }}</span>
+          </ng-template>
+        </p-dropdown>
+      </div>
+      <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['postalCode'].invalid }">
+          <label for="postalCode" class="control-label">Postal Code</label>
+        </div>
+        <input formControlName="postalCode" name="postalCode" type="text" class="ui-inputtext" pInputText maxlength="10" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: form.controls['schedulerConfirmationType'].invalid }">
+          <label for="schedulerConfirmationType" class="control-label">Schedule Confirmation</label>
+          <div class="small-spinner-container ml-2">
+            <p-progressSpinner *ngIf="loadingSchedulerConfirmationTypes"></p-progressSpinner>
+          </div>
+        </div>
+        <p-dropdown
+          [options]="schedulerConfirmationTypes"
+          placeholder="Select Schedule Confirmation"
+          formControlName="schedulerConfirmationType"
+          name="schedulerConfirmationType"
+          dataKey="appointmentSchedulerConfirmationTypeId"
+          optionLabel="description"
+          [styleClass]="'ui-dropdown-primary'"
+          dropdownIcon="pi pi-caret-down"
+          appendTo="body"
+          kbxlCloseOnScroll
+          hideTransitionOptions="0ms"
+        >
+          <ng-template let-item pTemplate="selectedItem">
+            <span class="selected-item-label">{{ form.get('schedulerConfirmationType').value.description }}</span>
+          </ng-template>
+        </p-dropdown>
+      </div>
+    </div>
+
+    <ng-container *ngIf="stopType == StopTypes[StopTypes.Delivery] && lineItems && lineItems.controls">
+      <p-panel [toggleable]="true">
+        <p-header class="ui-panel-title p-0">
+          <span [ngClass]="{ error: lineItems.invalid }">Delivery Items</span>
+          <button
+            class="ui-button-primary ui-button-teal float-right"
+            pButton
+            icon="pi pi-plus"
+            (click)="addLineItem()"
+            label="Add Line Item"
+          ></button>
+        </p-header>
+
+        <div class="row" *ngFor="let item of lineItems.controls; let i = index">
+          <div class="col p-0">
+            <kbxl-load-line-item-form
+              [lineItem]="item"
+              [index]="i"
+              [unitsOfMeasure]="unitsOfMeasure"
+              [loadingUnitsOfMeasure]="loadingUnitsOfMeasure"
+              [pickupStopNumbers]="pickupStopNumbers"
+            >
+            </kbxl-load-line-item-form>
+          </div>
+          <div class="col-1">
+            <div class="kbxl-field-label">
+              <label for="" class="control-label">&nbsp;</label>
+            </div>
+            <button
+              *ngIf="i > 0"
+              class="ui-button-danger"
+              pButton
+              icon="pi pi-trash"
+              (click)="deleteLineItem(i)"
+              title="Delete Line Item"
+            ></button>
+          </div>
+        </div>
+      </p-panel>
+    </ng-container>
+
+    <p-panel [toggleable]="true" [collapsed]="contacts.length == 0">
+      <p-header class="ui-panel-title p-0">
+        <span *ngIf="stopType === StopTypes[StopTypes.Pickup]" [ngClass]="{ error: contacts.invalid }">Shipper Contacts</span>
+        <span *ngIf="stopType === StopTypes[StopTypes.Delivery]" [ngClass]="{ error: contacts.invalid }">Consignee Contacts</span>
+
+        <button
+          class="ui-button-primary ui-button-teal float-right"
+          pButton
+          icon="pi pi-plus"
+          (click)="addContact()"
+          label="Add Contact"
+        ></button>
+      </p-header>
+
+      <div class="row" *ngFor="let contact of contacts.controls; let i = index">
+        <div class="col p-0">
+          <kbxl-contact-form [contact]="contact" [index]="i"></kbxl-contact-form>
+        </div>
+        <div class="col-1">
+          <div class="kbxl-field-label">
+            <label for="" class="control-label">&nbsp;</label>
+          </div>
+          <button class="ui-button-danger" pButton icon="pi pi-trash" (click)="deleteContact(i)" title="Delete Contact"></button>
+        </div>
+      </div>
+    </p-panel>
+  </p-panel>
+  <div class="text-right">
+    <button
+      *ngIf="includeDelete"
+      class="ui-button-danger mr-3"
+      pButton
+      icon="pi pi-trash"
+      (click)="deleteStop()"
+      label="Remove Stop"
+    ></button>
+    <button class="button-outline-secondary add-stop-button" pButton icon="pi pi-plus" (click)="addStop()" label="Add Stop"></button>
+  </div>
+</form>

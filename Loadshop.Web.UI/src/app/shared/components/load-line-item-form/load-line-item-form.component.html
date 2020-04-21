@@ -1,0 +1,40 @@
+<form [formGroup]="lineItem" class="contact-form row">
+    <div class="col-12 kbxl-inputgroup-container" [ngClass]="{ 'col-lg-2': displayPickupStopSelection, 'col-lg-3': !displayPickupStopSelection }">
+        <div class="kbxl-field-label" [ngClass]="{ error: lineItem.controls['quantity'].invalid }">
+            <label for="quantity" class="control-label">Quantity</label>
+        </div>
+        <input type="number" class="ui-inputtext" formControlName="quantity" />
+    </div>
+    <div *ngIf="displayPickupStopSelection" class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: lineItem.controls['pickupStopNumber'].invalid }">
+            <label for="pickupStopNumber" class="control-label">Pickup Stop</label>
+        </div>
+        <kbxl-dropdown [options]="pickupStopNumbers" placeholder="Select" formControlName="pickupStopNumber"
+            name="pickupStopNumber" idMember="stopNbr" labelMember="stopNbr" styleClass="ui-dropdown-primary"
+            appendTo="body">
+        </kbxl-dropdown>
+    </div>
+    <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+        <div class="kbxl-field-label" [ngClass]="{ error: lineItem.controls['unitOfMeasure'].invalid }">
+            <label for="unitOfMeasure" class="control-label">Unit of Measurement</label>
+            <div class="small-spinner-container ml-2">
+                <p-progressSpinner *ngIf="loadingUnitsOfMeasure"></p-progressSpinner>
+            </div>
+        </div>
+        <kbxl-dropdown [options]="unitsOfMeasure" placeholder="Select" formControlName="unitOfMeasure" name="unitOfMeasure"
+            idMember="name" labelMember="name" styleClass="ui-dropdown-primary" appendTo="body">
+        </kbxl-dropdown>
+    </div>
+    <div class="col-12 kbxl-inputgroup-container" [ngClass]="{ 'col-lg-2': displayPickupStopSelection, 'col-lg-3': !displayPickupStopSelection }">
+        <div class="kbxl-field-label" [ngClass]="{ error: lineItem.controls['weight'].invalid }">
+            <label for="weight" class="control-label">Weight</label>
+        </div>
+        <input type="number" class="ui-inputtext" formControlName="weight" />
+    </div>
+    <div class="col-12 kbxl-inputgroup-container" [ngClass]="{ 'col-lg-2': displayPickupStopSelection, 'col-lg-3': !displayPickupStopSelection }">
+        <div class="kbxl-field-label" [ngClass]="{ error: lineItem.controls['customerPurchaseOrder'].invalid }">
+            <label for="customerPurchaseOrder" class="control-label">Customer PO</label>
+        </div>
+        <input formControlName="customerPurchaseOrder" type="text" class="ui-inputtext" pInputText maxlength="30">
+    </div>
+</form>

@@ -1,0 +1,90 @@
+<div *ngIf="lane">
+  <p-messages [enableService]="false" [(value)]="errors"></p-messages>
+  <div class="p-2">
+    <div class="kbxl-field-label">
+      <label class="control-label ">Origin</label>
+    </div>
+    <kbxl-address-autocomplete [(place)]="origin" [includeAddress]="false" [placeholder]="'Search by City/State/Province'">
+    </kbxl-address-autocomplete>
+  </div>
+  <div class="p-2">
+    <div class="kbxl-field-label">
+      <label class="control-label ">Origin Radius Miles</label>
+    </div>
+    <div class="ui-inputgroup">
+      <p-slider [(ngModel)]="lane.origDH" [min]="0" [max]="200" [step]="10"></p-slider>
+      <input type="text" [(ngModel)]="lane.origDH" class="ui-inputtext ui-inputgroup-addon" min="0" max="200" />
+    </div>
+  </div>
+  <div class="p-2">
+    <div class="kbxl-field-label">
+      <label class="control-label ">Destination</label>
+    </div>
+    <kbxl-address-autocomplete [(place)]="dest" [includeAddress]="false" [placeholder]="'Search by City/State/Province'">
+    </kbxl-address-autocomplete>
+  </div>
+  <div class="p-2">
+    <div class="kbxl-field-label">
+      <label class="control-label ">Destination Radius Miles</label>
+    </div>
+    <div class="ui-inputgroup">
+      <p-slider [(ngModel)]="lane.destDH" [min]="0" [max]="200" [step]="10"></p-slider>
+      <input type="text" [(ngModel)]="lane.destDH" class="ui-inputtext ui-inputgroup-addon" min="0" max="200" />
+    </div>
+  </div>
+  <div class="p-2">
+    <div class="kbxl-field-label">
+      <label class="control-label ">Equipment Type</label>
+    </div>
+    <div class="ui-inputgroup">
+      <kbxl-tree-drop-down
+        [treeNodes]="equipment"
+        [(selectedNodes)]="selectedEquipment"
+        placeHolder="Select Equipment Type(s)"
+      ></kbxl-tree-drop-down>
+    </div>
+  </div>
+  <div class="p-2">
+    <div class="kbxl-field-label">
+      <label class="control-label ">Ship Days</label>
+    </div>
+    <kbxl-days [(lane)]="lane"></kbxl-days>
+  </div>
+  <div class="p-2">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <div class="kbxl-field-label">
+          <label class="control-label ">Email Notifications</label>
+        </div>
+        <p-checkbox name="Email" value="Email" [(ngModel)]="lane.laneNotifications.Email" binary="true"></p-checkbox>
+      </div>
+      <div class="ui-g-12">
+        <div class="kbxl-field-label">
+          <label class="control-label ">Text Message Notifications</label>
+        </div>
+        <p-checkbox name="Cell_Phone" value="Cell_Phone" [(ngModel)]="lane.laneNotifications.Cell_Phone" binary="true"></p-checkbox>
+      </div>
+    </div>
+    <div class="row pt-2">
+      <div class="col-6 col-sm-5">
+        <button
+          *ngIf="!adding"
+          pButton
+          (click)="delete()"
+          label="Delete"
+          class="ui-button-danger"
+          kbxlActionCheck="loadshop.ui.profile.favorites.addedit"
+        ></button>
+      </div>
+      <div class="col-6 col-sm-5 offset-sm-2">
+        <button
+          pButton
+          (click)="update()"
+          label="Save"
+          class="ui-button-primary"
+          kbxlActionCheck="loadshop.ui.profile.favorites.addedit"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>

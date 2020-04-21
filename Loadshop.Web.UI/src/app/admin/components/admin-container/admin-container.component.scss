@@ -1,0 +1,24 @@
+@import 'variables';
+@import 'bootstrap-overrides';
+
+.admin-nav-panel {
+  padding-top: 2.5em;
+  max-width: 200px;
+  min-height: 250px;
+
+  @include media-breakpoint-down($mobile-breakpoint) {
+    padding-top: 0px;
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 0px;
+  }
+}
+
+.admin-content-panel {
+  background-color: $loadshopDarkBlue;
+  padding: 20px;
+}
+
+.admin-header {
+  min-height: 48px;
+}

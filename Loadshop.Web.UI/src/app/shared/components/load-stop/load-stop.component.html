@@ -1,0 +1,29 @@
+<div class="stops-container">
+  <div class="stop-header" *ngIf="stop.stopNbr === 1">Pickup</div>
+  <div class="stop-header" *ngIf="stop.stopNbr === total">Destination</div>
+
+  <div class="stop-details">
+    <div class="stop-header number-of-stops" *ngIf="stop.stopNbr !== 1 && stop.stopNbr !== total">
+      Stop {{ stop.stopNbr }} of {{ total }}
+    </div>
+    <div class="stop-city-state">{{ stop.city | titlecase }}, {{ stop.state }}</div>
+    <div *ngIf="stop.earlyDtTm && stop.earlyDtTm !== stop.lateDtTm">
+      {{ stop.earlyDtTm | date: 'short' }}&nbsp;<fa-icon
+        [icon]="'question-circle'"
+        pTooltip="All times are in the local time of the stop"
+        tooltipZIndex="10501010"
+      ></fa-icon
+      ><br />
+      {{ stop.lateDtTm | date: 'short' }}
+    </div>
+    <div *ngIf="!stop.earlyDtTm || stop.earlyDtTm === stop.lateDtTm">
+      {{ stop.lateDtTm | date: 'short' }}&nbsp;<fa-icon
+        [icon]="'question-circle'"
+        pTooltip="All times are in the local time of the stop"
+        tooltipZIndex="10501010"
+      ></fa-icon>
+    </div>
+    <div>Type: {{ stop.apptType }}</div>
+    <div *ngIf="stop.instructions">Instruction: {{ stop.instructions }}</div>
+  </div>
+</div>

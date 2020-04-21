@@ -1,0 +1,72 @@
+@import 'variables';
+
+.user-selector {
+  min-width: 300px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+.user-admin-detail-label {
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.ui-user-setup-input {
+  width: 50%;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.phone-extension {
+  width: 75px;
+}
+
+:host ::ng-deep .ui-dataview-header {
+  background-color: $loadshopDarkestBlue !important;
+}
+:host ::ng-deep .ui-dataview-content {
+  background-color: $loadshopGray1 !important;
+}
+:host ::ng-deep .carrier-card {
+  background-color: $loadshopDarkestBlue;
+  line-height: 18px;
+  font-size: 12px;
+  color: $loadshopWhite;
+  margin-bottom: 15px;
+
+  & .ui-card-header {
+    background-color: $loadshopGray1;
+    padding: 9px 12px;
+  }
+
+  &.active .ui-card-header {
+    background-color: $loadshopTeal;
+  }
+
+  & .ui-card-body {
+    padding: 9px 15px;
+  }
+}
+
+:host ::ng-deep .carrier-field {
+    position: relative;
+
+    .small-covering-spinner-container {
+      position: absolute;
+      top: 20%;
+      left: 45%;
+      z-index: 1;
+    
+      & .ui-progress-spinner {
+        width: 18px;
+        height: 18px;
+        vertical-align: text-bottom;
+      }
+    }
+}

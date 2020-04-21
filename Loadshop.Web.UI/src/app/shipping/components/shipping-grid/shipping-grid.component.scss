@@ -1,0 +1,181 @@
+@import 'variables';
+
+.load-item {
+  /* height: 260px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  margin: 10px 12px 10px 13px;
+}
+
+.load-item:first-child {
+  margin-top: 30px;
+}
+.load-item:last-child {
+  margin-bottom: 20px;
+}
+
+/* Ensure the table header shows above any cell data */
+th {
+  z-index: 2;
+}
+td {
+  z-index: 1;
+}
+
+
+/* https://stackoverflow.com/questions/3247358/css-how-do-i-wrap-text-with-no-whitespace-inside-a-td/42152263 */
+.wrapword {
+  white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+  white-space: -webkit-pre-wrap; /*Chrome & Safari */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  white-space: pre-wrap; /* css-3 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  word-break: break-word;
+  white-space: normal;
+}
+
+.wrap-overflow {
+  overflow-wrap: break-word !important;
+}
+
+.trip-ellipsis-icon {
+  color: $loadshopDarkestBlue;
+  width: 15px;
+  text-align: center;
+}
+
+.trip-marker-icon {
+  color: $loadshopGray5;
+  display: inline-block;
+  margin-right: 10px;
+  width: 15px;
+  text-align: center;
+}
+
+.trip-text {
+  color: $loadshopWhite;
+  height: 18px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.all-in-rate-value {
+  height: 34px;
+  color: $loadshopTeal;
+  font-size: 24px;
+  line-height: 34px;
+  text-align: right;
+}
+
+.all-in-rate-label {
+  height: 18px;
+  color: $loadshopTeal;
+  font-size: 12px;
+  font-weight: $bold-font-weight;
+  line-height: 18px;
+  text-align: right;
+}
+
+p-header > div {
+  padding-top: 15px;
+  padding-left: 12px;
+  padding-bottom: 13px;
+  padding-right: 17px;
+}
+
+.load-item-detail > div {
+  min-height: 34px;
+  border-top: 1px solid $loadshopDarkBlue;
+  padding-left: 11px;
+  padding-right: 15px;
+}
+
+.load-item-detail span {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 18px;
+}
+
+.edit-item {
+  & > a {
+    padding: 7px; /*extra space for tap*/
+    margin-right: -7px; /*keep aligned on right side*/
+  }
+
+  & > .edit-backdrop {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1050;
+    background-color: transparent;
+  }
+
+  & > :not(.edit-backdrop) {
+    z-index: 1051;
+    position: relative;
+  }
+
+  & input.ui-inputtext,
+  & p-inputMask ::ng-deep input.ui-inputtext {
+    padding: 5px;
+    height: auto;
+  }
+}
+
+.estimated-fsc-icon {
+  &.orange {
+    color: rgb(244, 189, 33); //can be moved to variables if needed elsewhere
+  }
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.pricing-table {
+  white-space: nowrap;
+
+  & th {
+    background-color: $loadshopGray1;
+    font-weight: 800;
+  }
+
+  & th {
+    padding: 5px;
+  }
+
+  & td {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  & tr > th:first-of-type,
+  & tr > th:last-of-type {
+    width: 20px;
+  }
+
+  & tbody > tr:first-of-type {
+    height: 44px;
+  }
+
+  & td.pricing-detail {
+    padding-left: 20px;
+  }
+
+  & td .ui-inputtext.pricing-detail {
+    color: $loadshopTeal;
+    width: 104px;
+    font-weight: 800;
+  }
+
+  & tr.seperator {
+    margin: 0;
+
+    & td {
+      padding: 0px;
+    }
+  }
+}

@@ -1,0 +1,135 @@
+<div>
+  <div class="d-none d-lg-block">
+    <p-panel styleClass="ui-panel-no-pad ui-panel-borderless">
+      <p-header>
+        <div class="d-flex justify-content-between pr-2">
+          <span>User Communications</span>
+          <button
+            pButton
+            (click)="addClick()"
+            label="Add New"
+            icon="pi pi-plus"
+            type="button"
+            class="ui-button-primary ui-button-teal"
+          ></button>
+        </div>
+      </p-header>
+      <p-table
+        [rowHover]="true"
+        [value]="allUserCommunications"
+        selectionMode="single"
+        #table
+        styleClass="ui-table-no-border"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [loading]="processing"
+        [first]="first"
+        (onPage)="onPage($event)"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th [pSortableColumn]="'title'">
+              Title
+              <p-sortIcon [field]="'title'"></p-sortIcon>
+            </th>
+            <!-- <th [pSortableColumn]="'message'">
+                            Message
+                            <p-sortIcon [field]="'message'"></p-sortIcon>
+                        </th> -->
+            <th [pSortableColumn]="'effectiveDate'">
+              Effective Date
+              <p-sortIcon [field]="'effectiveDate'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'expirationDate'">
+              Expiration Date
+              <p-sortIcon [field]="'expirationDate'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'allUsers'">
+              All Users
+              <p-sortIcon [field]="'allUsers'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'acknowledgementRequired'">
+              Acknowledgement Required
+              <p-sortIcon [field]="'acknowledgementRequired'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'acknowledgementCount'">
+              Acknowledgement Count
+              <p-sortIcon [field]="'acknowledgementCount'"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-userCommunication>
+          <tr (click)="onRowSelect(userCommunication)" [pSelectableRow]="userCommunication">
+            <td>{{ userCommunication.title }}</td>
+            <!-- <td [innerHtml]="userCommunication.message"></td> -->
+            <td>{{ userCommunication.effectiveDate | date: 'shortDate' }}</td>
+            <td>{{ userCommunication.expirationDate | date: 'shortDate' }}</td>
+            <td>{{ userCommunication.allUsers }}</td>
+            <td>{{ userCommunication.acknowledgementRequired }}</td>
+            <td>{{ userCommunication.acknowledgementCount }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="numberOfColumns text-center" style="height: 80px;">
+              <span *ngIf="processing">Loading...</span>
+              <span *ngIf="!processing">No results</span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+  </div>
+  <div class="d-lg-none pt-2">
+    <div class="title-bar">
+      <span>User Communications</span>
+    </div>
+    <div class="mobile-item" *ngFor="let uc of allUserCommunications">
+      <p-card styleClass="group-grid-card" (click)="onRowSelect(group)">
+        <p-header>
+          <div>
+            {{ uc.title }}
+          </div>
+        </p-header>
+        <div class="d-flex flex-column mobile-item-detail">
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>Effective Date</span>
+            </div>
+            <div>
+              <span>{{ uc.effectiveDate }}</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>Expiration Date</span>
+            </div>
+            <div>
+              <span>{{ uc.expirationDate }}</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>All Users</span>
+            </div>
+            <div>
+              <span>{{ uc.allUsers }}</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>Acknowledgement Required</span>
+            </div>
+            <div>
+              <span>{{ uc.acknowledgementRequired }}</span>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+    <div>
+      <button pButton (click)="addClick()" label="Add New" type="button" class="ui-button-primary mobile-add-button"></button>
+    </div>
+  </div>
+</div>

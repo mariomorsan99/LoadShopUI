@@ -1,0 +1,18 @@
+@import 'variables';
+
+.mobile-padding {
+  padding: 10px 12px 10px 13px;
+}
+
+a.delete-carriers-link,
+.group-item a.delete-carriers-link,
+.group-item a.delete-carriers-link span {
+  text-decoration: none;
+  color: $loadshopTeal;
+  margin-left: 20px;
+  cursor: pointer;
+
+  &:hover {
+    color: lighten($loadshopTeal, 20%);
+  }
+}

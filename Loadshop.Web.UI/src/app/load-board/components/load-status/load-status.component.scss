@@ -1,0 +1,43 @@
+@import 'variables';
+
+.load-status-container {
+  background-color: $loadshopDarkBlue;
+  padding: 20px;
+
+  & ::ng-deep div.load-status-panel.ui-panel {
+    border: 1px solid $loadshopGray1;
+    margin-bottom: 1;
+
+    & > div.ui-panel-titlebar {
+      background-color: $loadshopGray1;
+      font-size: 18px;
+      line-height: 24px;
+      padding: 0.5em 1em;
+    }
+
+    & .ui-fieldset {
+      background-color: transparent;
+      border-color: $loadshopGray1;
+      margin-bottom: 10px;
+
+      & .ui-fieldset-legend {
+        margin: 0;
+        line-height: 16px;
+        font-size: 16px;
+      }
+
+      & .control-label {
+        width: 200px;
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+
+.error-header {
+  font-weight: 800;
+  font-size: 14px;
+  padding-left: 15px;
+  padding: 0;
+}

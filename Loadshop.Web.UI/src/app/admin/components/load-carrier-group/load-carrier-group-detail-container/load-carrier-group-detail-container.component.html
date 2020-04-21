@@ -1,0 +1,14 @@
+<div class="pt-2 pl-4 pr-4 pb-2">
+    <kbxl-load-carrier-group-detail 
+        [group]="group$ | async" 
+        [states]="states$ | async" 
+        [processing]="processing$ | async" 
+        [error]="error$ | async" 
+        [allCarriers]="allCarriers$ | async" 
+        [groupedEquipment]="equipment$ | async | toTreeNodes"
+        [loadCarrierGroupTypes]="loadCarrierGroupTypes$ | async"
+        (updated)="updated($event)" 
+        (delete)="delete($event)">
+    </kbxl-load-carrier-group-detail>
+</div>
+<kbxl-color-bar></kbxl-color-bar>

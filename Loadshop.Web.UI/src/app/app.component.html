@@ -1,0 +1,97 @@
+<div class="page-header d-flex justify-content-center align-items-center">
+  <div class="flex-grow-1">
+    <a class="header-link pr-3 pl-4" [routerLink]="['/']">
+      <img src="../assets/loadshop-logo-period.png" />
+    </a>
+  </div>
+  <div class="dropdown-container d-none d-sm-block">
+    <kbxl-user-focus-entity-selector-container></kbxl-user-focus-entity-selector-container>
+  </div>
+  <a
+    class="user-profile-header pl-3 pr-4 d-flex justify-content-center align-items-center"
+    [routerLink]="['/user/profile']"
+    *ngIf="applicationReady$ | async"
+  >
+    <span class="user-profile-text">Profile</span>
+    <div class="position-relative">
+      <fa-icon class="user-profile-circle" [icon]="['fas', 'circle']" size="2x"></fa-icon>
+      <fa-icon class="user-profile-user" [icon]="['far', 'user']" size="md"></fa-icon>
+    </div>
+  </a>
+</div>
+<div class="page-body d-flex flex-column">
+  <div class="flex-grow-1" style="flex-basis: auto;">
+    <p-tabMenu *ngIf="user$ | async" [model]="menu$ | async" [(activeItem)]="activeItem" styleClass="topmenu">
+      <ng-template pTemplate="item" let-item let-i="index">
+        <span class="ui-menuitem-text ng-star-inserted">{{ item.label }}</span>
+        <span *ngIf="item.badge" class="ui-menuitem-text {{ item.badgeStyleClass }}">{{ item.badge }}</span>
+      </ng-template>
+    </p-tabMenu>
+    <main role="main" class="container-fluid background p-0">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  <div class="sticky-bottom p-4">
+    <div class="row">
+      <div class="col-6">
+        <div class="terms-of-use p-1">
+          <a [routerLink]="['/agreements/terms']">Terms of Use</a>
+        </div>
+        <div class="privacy-policy p-1">
+          <a [routerLink]="['/agreements/privacy']">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="support-message">
+          <div class="p-1">
+            For a load specific question, please use the contact information shown when clicking into the load.
+          </div>
+          <div class="p-1 pb-4">
+            For general questions or system support, please contact
+            <a href="mailto:loadshop@kbxlogistics.com">
+              loadshop@kbxlogistics.com
+            </a>
+            or by phone at <a href="tel:+19204382779">920-438-2779</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<tms-autologin></tms-autologin>
+<p-growl [baseZIndex]="1100" [life]="10000"></p-growl>
+<p-confirmDialog
+  #confirmationDialog
+  header="Confirmation"
+  icon="pi pi-exclamation-triangle"
+  [style]="{ width: '425px' }"
+  [baseZIndex]="1000"
+>
+  <p-footer>
+    <div class="row p-1">
+      <div class="col d-none" [ngClass]="{ 'd-inline-block': confirmationDialog?.rejectVisible }">
+        <button
+          type="button"
+          class="button-outline-secondary"
+          pButton
+          [label]="!confirmationDialog.rejectLabel ? 'NO' : confirmationDialog.rejectLabel"
+          (click)="reject(confirmationDialog)"
+        ></button>
+      </div>
+      <div class="col d-none" [ngClass]="{ 'd-inline-block': confirmationDialog?.acceptVisible }">
+        <button
+          type="button"
+          class="ui-button-primary"
+          pButton
+          [label]="!confirmationDialog.acceptLabel ? 'YES' : confirmationDialog.acceptLabel"
+          (click)="accept(confirmationDialog)"
+        ></button>
+      </div>
+    </div>
+  </p-footer>
+</p-confirmDialog>
+<kbxl-user-communication-display></kbxl-user-communication-display>
+<kbxl-mobile-browser-detection></kbxl-mobile-browser-detection>
+<kbxl-quick-quote-container></kbxl-quick-quote-container>
+<kbxl-usersnap [user]="user$ | async"></kbxl-usersnap>

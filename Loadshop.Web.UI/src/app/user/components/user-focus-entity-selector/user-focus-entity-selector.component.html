@@ -1,0 +1,16 @@
+<div *ngIf="availableEntitiesFlat?.length > 0 && availableEntitiesFlat?.length <= 100">
+    <p-dropdown [options]="availableEntities" [group]="true" [(ngModel)]="selectedEntity"
+        placeholder="Select your focus" dropdownIcon="pi pi-caret-down" filterBy="label" filter="true"
+        [virtualScroll]="false" itemSize="27.28" [styleClass]="'ui-dropdown-primary'" (onChange)="update()">
+    </p-dropdown>
+</div>
+<div *ngIf="availableEntitiesFlat?.length > 100">
+    <p-autoComplete [(ngModel)]="selectedEntity" [suggestions]="searchResults" field="name" (completeMethod)="search($event)" forceSelection="true" (onSelect)="update()">
+        <ng-template let-value pTemplate="selectedItem">
+            <span style="font-size:18px">><b>{{value.name}}</b>-{{value.group}}</span>
+        </ng-template>
+        <ng-template let-item pTemplate="item">
+            <span><b>{{item.name}}</b>-{{item.group}}</span>
+        </ng-template>
+    </p-autoComplete>
+</div>

@@ -1,0 +1,22 @@
+@import 'variables';
+
+.ui-tree-dropdown-toggle {
+  .ui-tree-button {
+    width: 100%;
+    padding: 5px;
+    color: $loadshopGray1;
+    text-align: left;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%);
+    background-color: $loadshopGray7;
+    padding-left: 10px;
+    font-size: 12px;
+  }
+
+  .ui-tree-button:focus {
+    box-shadow: none;
+  }
+
+  .ui-dropdown-trigger:focus {
+    box-shadow: none;
+  }
+}

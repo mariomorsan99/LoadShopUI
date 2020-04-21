@@ -1,0 +1,64 @@
+variables:
+  Major: "1"
+  Minor: "0"
+
+trigger: none
+
+resources:
+  repositories:
+    - repository: infrastructure
+      type: git
+      name: Infrastructure/Infrastructure
+      ref: "refs/heads/master"
+
+stages:
+  - stage: Build_Api_Internal
+    jobs:
+      - template: build\api-build.yml@infrastructure
+        parameters:
+          prerelease: true
+          projectsToBuild: Loadshop.Web.API/*.csproj
+
+      # - job: Run_Loadshop_UnitTests
+      #   steps:
+      #     - task: NuGetAuthenticate@0
+      #     - task: DotNetCoreCLI@2
+      #       inputs:
+      #         command: test
+      #         projects: "**/*Tests/*.csproj"
+      #         arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)\TestResults\Coverage\'
+      #         testRunTitle: "Test"
+      #     - task: PublishCodeCoverageResults@1
+      #       inputs:
+      #         codeCoverageTool: "cobertura"
+      #         summaryFileLocation: '$(Build.SourcesDirectory)\TestResults\Coverage\*.xml'
+
+      - job: Validate_Build_Code
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "11.x" #parameter: node version
+
+          - task: Npm@1
+            displayName: "npm ci"
+            inputs:
+              command: custom
+              workingDir: "./Loadshop.Web.UI"
+              verbose: false
+              customCommand: ci
+
+          - task: Npm@1
+            displayName: "npm run lint"
+            inputs:
+              command: custom
+              workingDir: "./Loadshop.Web.UI"
+              verbose: false
+              customCommand: run lint
+
+          - task: Npm@1
+            displayName: "npm build Dev1"
+            inputs:
+              command: custom
+              workingDir: "./Loadshop.Web.UI"
+              verbose: false
+              customCommand: "run build-dev1"

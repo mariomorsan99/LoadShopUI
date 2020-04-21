@@ -1,0 +1,6 @@
+<kbxl-user-communication-form [userCommunication]="userCommunication$ | async" [allCarriers]="allCarriers$ | async"
+    [allShippers]="allShippers$ | async" [allUsers]="allUsers$ | async" [allSecurityRoles]="allSecurityRoles$ | async"
+    [processing]="processing$ | async" [createMode]="createMode$ | async"
+    (userCommunicationUpdate)="userCommunicationUpdate($event)"
+    (userCommunicationCreate)="userCommunicationCreate($event)" (userCommunicationCancel)="userCommunicationCancel()">
+</kbxl-user-communication-form>

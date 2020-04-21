@@ -1,0 +1,39 @@
+@import 'variables';
+
+.error-header {
+  font-weight: 800;
+  font-size: 14px;
+  padding-left: 15px;
+  padding: 0;
+}
+
+.instruction {
+    padding: 10px;
+    font-size: 16px;
+    font-weight: $bold-font-weight;
+}
+
+.quote-disclaimer {
+    padding: 10px;
+    width: 600px;
+}
+
+.d-flex > div {
+    padding: 10px;
+}
+
+hr {
+    background-color: $loadshopDarkestBlue;
+}
+
+.estimated-rate-label {
+    font-weight: $bold-font-weight;
+    font-size: 20px;
+    margin: 0;
+}
+
+.estimated-rate-value {
+    font-weight: $bold-font-weight;
+    font-size: 24px;
+    margin: 0;
+}

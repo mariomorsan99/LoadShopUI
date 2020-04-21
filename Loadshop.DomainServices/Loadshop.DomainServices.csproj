@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <Configurations>Debug;Release;Web.API;Customer.API Release</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Configurations\**" />
+    <EmbeddedResource Remove="Configurations\**" />
+    <None Remove="Configurations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="AWSSDK.Pinpoint" Version="3.3.11.11" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.3.3.12" />
+    <PackageReference Include="DocumentService.SDK" Version="1.4.8511" />
+    <PackageReference Include="FeedbackService.SDK" Version="1.0.9298" />
+    <PackageReference Include="FluentValidation" Version="8.5.0" />
+    <PackageReference Include="GeoTimeZone" Version="4.0.0" />
+    <PackageReference Include="HtmlSanitizer" Version="4.0.217" />
+    <PackageReference Include="LazyCache" Version="2.0.4" />
+    <PackageReference Include="Loadshop.API.Models" Version="1.0.10251" />
+    <PackageReference Include="Loadshop.Data" Version="1.0.10620" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
+    <PackageReference Include="TimeZoneConverter" Version="3.1.0" />
+    <PackageReference Include="TMS.Infrastructure.Common" Version="3.0.10714" />
+    <PackageReference Include="TMS.Infrastructure.EntityFramework" Version="1.0.5827" />
+    <PackageReference Include="Tops.Data" Version="1.0.9373" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Loadshop\Services\Exceptions\" />
+  </ItemGroup>
+
+</Project>

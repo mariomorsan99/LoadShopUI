@@ -1,0 +1,56 @@
+@import 'variables';
+
+.seperator {
+  border-top: 1px solid $loadshopGray1;
+  margin: 10px 0 10px 0;
+}
+
+:host ::ng-deep .load-card {
+  background-color: $loadshopDarkestBlue;
+  line-height: 18px;
+  font-size: 12px;
+  color: $loadshopWhite;
+  margin-bottom: 15px;
+
+  & .ui-card-header {
+    background-color: $loadshopGray1;
+    padding: 9px 12px;
+
+    & .selected-text {
+      font-size: 10px;
+
+      & .edit-link {
+        margin-right: 10px;
+        cursor: pointer;
+      }
+    }
+
+    & .onLoadshop {
+      color: $loadshopTeal;
+    }
+  }
+
+  &.active .ui-card-header {
+    background-color: $loadshopTeal;
+    & .onLoadshop {
+      color: $loadshopWhite;
+    }
+  }
+
+  & .ui-card-body {
+    padding: 9px 15px;
+  }
+}
+
+.detail-link,
+a.detail-link:not([href]):not([tabindex]) {
+  font-size: 10px;
+  text-decoration: underline;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.total-rate {
+  color: $loadshopWhite;
+  font-weight: bold;
+}

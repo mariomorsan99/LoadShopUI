@@ -1,0 +1,111 @@
+<div class="page-container">
+  <div class="loading-indicator" *ngIf="processing">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+  <p-panel *ngIf="group" styleClass="ui-panel-no-pad ui-panel-borderless">
+    <p-header>
+      Carrier Group
+    </p-header>
+    <div class="row" *ngIf="error">
+      <div class="col-12 error-container">
+        <p>{{ decodeProblemDetails() }}</p>
+      </div>
+    </div>
+    <div>
+      <div class="kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label>Carrier Group Type</label>
+        </div>
+        <span *ngFor="let loadCarrierGroupType of loadCarrierGroupTypes" class="pr-4">
+          <p-radioButton
+            name="loadCarrierGroupType"
+            [value]="loadCarrierGroupType.loadCarrierGroupTypeId"
+            [label]="loadCarrierGroupType.name"
+            [(ngModel)]="group.loadCarrierGroupTypeId"
+            (onClick)="warnGroupTypeChange()"
+          ></p-radioButton>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label for="name" class="control-label">Name</label>
+        </div>
+        <input id="name" type="text" class="ui-inputtext" [(ngModel)]="group.groupName" pInputText maxlength="255" />
+      </div>
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div for="description" class="kbxl-field-label">
+          <label for="description" class="control-label">Description</label>
+        </div>
+        <input id="carrier" type="text" class="ui-inputtext" [(ngModel)]="group.groupDescription" pInputText maxlength="500" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label class="control-label">Origin</label>
+        </div>
+        <kbxl-address-autocomplete [(place)]="origin"></kbxl-address-autocomplete>
+      </div>
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label class="control-label">Destination</label>
+        </div>
+        <kbxl-address-autocomplete [(place)]="destination"></kbxl-address-autocomplete>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label class="control-label">Equipment</label>
+        </div>
+        <div>
+          <kbxl-tree-drop-down
+            [treeNodes]="groupedEquipment"
+            [(selectedNodes)]="selectedEquipment"
+            placeHolder="Select Equipment Type(s)"
+          ></kbxl-tree-drop-down>
+        </div>
+      </div>
+      <div class="col col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label class="control-label" *ngIf="group.loadCarrierGroupTypeId === 1">Included Carriers</label>
+          <label class="control-label" *ngIf="group.loadCarrierGroupTypeId === 2">Excluded Carriers</label>
+        </div>
+        <div>
+          <p-multiSelect
+            [options]="carriers"
+            placeholder="Select Carrier"
+            [(ngModel)]="selectedCarriers"
+            resetFilterOnHide="true"
+            [virtualScroll]="true"
+            itemSize="30"
+            [styleClass]="'ui-dropdown-primary'"
+            dropdownIcon="pi pi-caret-down"
+            [filter]="true"
+            filterBy="label"
+            defaultLabel="Select Carriers to Add"
+            filterPlaceHolder="Filter Available Carriers"
+            (onChange)="carrierChange($event)"
+          >
+            <ng-template let-item pTemplate="item">
+              <span>{{ item?.label | titlecase }}</span>
+            </ng-template>
+          </p-multiSelect>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex" [ngClass]="{ 'justify-content-between': !adding, 'justify-content-end': adding }">
+      <button *ngIf="!adding" pButton (click)="deleteClick()" label="Delete" class="ui-button-danger mr-2"></button>
+      <button pButton label="Save" (click)="updateClick()" class="ui-button-primary ml-2"></button>
+    </div>
+  </p-panel>
+</div>
+<p-dialog header="Warning!" [(visible)]="showCarrierGroupTypeWarning" [style]="{ width: '500px' }">
+  You have changed the Carrier Group Type, make sure you intended to do this. Carrier's may now be included or excluded that you did not
+  intend.
+  <p-footer>
+    <button type="button" class="ui-button-warning" pButton (click)="showCarrierGroupTypeWarning = false" label="Acknowledge"></button>
+  </p-footer>
+</p-dialog>

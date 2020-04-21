@@ -1,0 +1,29 @@
+<kbxl-color-bar></kbxl-color-bar>
+<div class="page-container">
+  <div class="grid-container p-lg-4 profile">
+    <kbxl-user-profile
+      [user]="userProfile$ | async"
+      [loading]="loadingProfile$ | async"
+      [error]="error$ | async"
+      [triggerValidation]="triggerValidation"
+      [commodities]="commodities$ | async"
+      [loadingCommodities]="loadingCommodities$ | async"
+      [loadStatusNotifications]="loadStatusNotifications$ | async"
+      [loadStatusNotificationsErrors]="loadStatusNotificationsErrors$ | async"
+      [savedLoadStatusNotifications]="savedLoadStatusNotifications$ | async"
+      (updated)="updateProfile($event)"
+      (saveLoadStatusNotifications)="onSaveLoadStatusNotifications($event)"
+    ></kbxl-user-profile>
+  </div>
+  <kbxl-color-bar></kbxl-color-bar>
+  <div class="grid-container pl-lg-4 pr-lg-4" kbxlActionCheck="loadshop.ui.profile.favorites.view" enforcementType="hide">
+    <kbxl-user-saved-lanes
+      [loading]="loadingLanes$ | async"
+      [lanes]="userLanes$ | async"
+      [states]="states$ | async"
+      [equipment]="equipment$ | async"
+      (displayDetail)="displayDetail($event)"
+    ></kbxl-user-saved-lanes>
+  </div>
+</div>
+<router-outlet></router-outlet>

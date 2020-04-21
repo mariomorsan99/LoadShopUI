@@ -1,0 +1,90 @@
+@import 'variables';
+
+
+$headerHeight: 70px;
+
+.page-header {
+    height: $headerHeight;
+    max-height: $headerHeight;
+
+    .dropdown-container {
+        min-width: 300px;
+    }
+}
+
+.page-body {
+    height: calc(100vh - #{$headerHeight});
+    overflow-y: auto;
+    width: 100%;
+}
+
+.header-link {
+    img {
+        height: 38px;
+    }
+}
+
+:host ::ng-deep a.user-profile-header {
+    text-decoration: none;
+    color: $loadshopTeal;
+    margin-right: 12px;
+    height: 100%;//take up the whole header for ease of clicking
+
+  div:hover {
+    color: lighten($loadshopTeal, 20%);
+  }
+
+    span.user-profile-text {
+        font-family: objektiv-mk1, sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 18px;
+        text-align: right;
+        margin-right: 10px;
+    }
+
+    .user-profile-circle svg {
+        width: 40px;
+        height: 40px;
+    }
+
+    .user-profile-user {
+        color: $loadshopWhite;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+    svg {
+      height: 18px;
+      width: 16px;
+    }
+  }
+}
+
+.sticky-bottom {
+  background-color: $loadshopDarkBlue;
+  color: $loadshopGray6;
+  font-family: objektiv-mk1, sans-serif;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 18px;
+
+  .terms-of-use a,
+  .privacy-policy a {
+    color: $loadshopGray6;
+  }
+
+  .support-message {
+    text-align: right;
+  }
+}
+
+.badge-danger {
+  background-color: #dc3545 !important;
+  color: white !important;
+  width: 60px !important;
+  position: relative;
+  left: 5px;
+}

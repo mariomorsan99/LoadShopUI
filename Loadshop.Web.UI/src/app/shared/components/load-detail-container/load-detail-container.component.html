@@ -1,0 +1,52 @@
+<ng-container *ngIf="displayInSidebar">
+  <p-sidebar
+    [visible]="true"
+    position="right"
+    styleClass="detail-sidebar"
+    [baseZIndex]="50"
+    [modal]="true"
+    [appendTo]="'body'"
+    [blockScroll]="true"
+    [dismissible]="true"
+    [showCloseIcon]="false"
+    (onHide)="onHide()"
+  >
+    <kbxl-sidebar-close (closed)="onHide()"></kbxl-sidebar-close>
+    <kbxl-load-detail
+      [loadingDocuments]="loadingDocuments$ | async"
+      [load]="loadDetail$ | async"
+      [ratingQuestions]="ratingQuestions$ | async"
+      (book)="book($event)"
+      (removeCarrier)="removeCarrier($event)"
+      (deleteLoad)="deleteLoad($event)"
+      (deleteDetailLoad)="deleteDetailLoad($event)"
+      [isShippingDetail]="isShippingDetail"
+      [captureReasonOnDelete]="captureReasonOnDelete"
+      [loadStatus]="loadStatus$ | async"
+      [loadingStatus]="loadingStatus$ | async"
+      [allStatuses]="allStatuses$ | async"
+      [loadingAllStatuses]="loadingAllStatuses$ | async"
+      [loadDocumentTypes]="loadDocumentTypes$ | async"
+      (loadAllStatuses)="loadAllStatuses()"
+      (loadCurrentStatus)="loadCurrentStatus()"
+      (deleteDocument)="deleteDocument($event)"
+      (downloadLoadDocument)="downloadDocument($event)"
+    >
+    </kbxl-load-detail>
+  </p-sidebar>
+</ng-container>
+<div *ngIf="!displayInSidebar" class="page-container mobile-padding p-lg-4" style="max-width: 900px;">
+  <kbxl-load-detail
+    [loadingDocuments]="loadingDocuments$ | async"
+    [load]="loadDetail$ | async"
+    (book)="book($event)"
+    [isShippingDetail]="isShippingDetail"
+    [loadStatus]="loadStatus$ | async"
+    [loadingStatus]="loadingStatus$ | async"
+    (loadAllStatuses)="loadAllStatuses()"
+    (loadCurrentStatus)="loadCurrentStatus()"
+    (deleteDocument)="deleteDocument($event)"
+    (downloadLoadDocument)="downloadDocument($event)"
+  >
+  </kbxl-load-detail>
+</div>

@@ -1,0 +1,13 @@
+<p-overlayPanel [dismissable]="true" [showCloseIcon]="true" appendTo="body" (onHide)="onHide()">
+  <kbxl-quick-quote
+    [states]="states$ | async"
+    [groupedEquipment]="equipment$ | async | toTreeNodes: true"
+    [loading]="loading$ | async"
+    [smartSpotQuote]="quoteValue$ | async"
+    [smartSpotErrors]="quoteErrors$ | async"
+    [allowManualLoadCreation]="(userProfile$ | async)?.allowManualLoadCreation"
+    (getQuote)="getQuote($event)"
+    (createOrder)="createOrder($event)"
+    (clear)="clear()"
+  ></kbxl-quick-quote>
+</p-overlayPanel>

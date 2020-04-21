@@ -1,0 +1,516 @@
+<form #form="ngForm">
+  <div class="detail-container" *ngIf="details">
+    <div class="d-flex justify-content-between detail-header px-1 px-xl-4">
+      <div class="d-flex align-items-center">
+        <label class="load-id-label">{{ details.referenceLoadDisplay }}</label>
+        <a class="detail-link" (click)="closeClicked(form)">
+          <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+          <span>Close</span>
+        </a>
+      </div>
+      <span class="line-haul" [ngClass]="{ 'd-xl-none': !details.onLoadshop }">
+        <div kbxlActionCheck action="loadshop.ui.shopit.load.viewcaprates" *ngIf="details.xCapRate && details.xCapRate > 0">
+          <div class="smart-spot-rate">
+            <label>X-Cap Rate (Line Haul)</label>
+            <div class="font-weight-bold">{{ details.xCapRate | currency }}</div>
+          </div>
+        </div>
+      </span>
+      <span class="fsc" [ngClass]="{ 'd-xl-none': !details.onLoadshop }">
+        <div kbxlActionCheck action="loadshop.ui.shopit.load.viewcaprates" *ngIf="details.hCapRate && details.hCapRate > 0">
+          <div class="smart-spot-rate">
+            <label>H-Cap Rate</label>
+            <div class="font-weight-bold">{{ details.hCapRate | currency }}</div>
+          </div>
+        </div>
+      </span>
+      <span class="total-rate" [ngClass]="{ 'd-xl-none': !details.onLoadshop }">
+        <div class="smart-spot-rate">
+          <label [innerHtml]="smartSpotLabel"></label>
+          <div class="font-weight-bold" *ngIf="!loadingSmartSpot">{{ details.smartSpotRate | currency }}</div>
+          <div *ngIf="loadingSmartSpot" class="smart-spot-price-spinner-container font-weight-bold">
+            <p-progressSpinner></p-progressSpinner>
+            <div class="ml-2">Loading...</div>
+          </div>
+        </div>
+      </span>
+      <div>
+        <div class="on-loadshkop-check" *ngIf="details.onLoadshop">
+          <span>On Marketplace</span>
+          <fa-icon [icon]="['fas', 'check-square']"></fa-icon>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showErrorSummary()" class="d-flex flex-wrap error-container px-1 px-xl-4">
+      <div>
+        <div *ngIf="detailErrors.root">
+          <span class="load-detail-error" *ngFor="let error of detailErrors.root">{{ error }}</span>
+        </div>
+        <div *ngIf="detailErrors.load">
+          <span class="load-detail-error" *ngFor="let error of detailErrors.load">{{ error }}</span>
+        </div>
+        <div *ngIf="detailErrors.shippersFSC">
+          <span class="load-detail-error" *ngFor="let error of detailErrors.shippersFSC">{{ error }}</span>
+        </div>
+        <div *ngIf="detailErrors.lineHaulRate">
+          <span class="load-detail-error" *ngFor="let error of detailErrors.lineHaulRate">{{ error }}</span>
+        </div>
+        <div *ngIf="detailErrors.commodity">
+          <span class="load-detail-error" *ngFor="let error of detailErrors.commodity">{{ error }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-wrap px-1 px-xl-4">
+      <div class="trip-display w-lg-100 mr-3 mb-3 mb-xl-0">
+        <kbxl-trip-display [loadStops]="details.loadStops"></kbxl-trip-display>
+      </div>
+
+      <div class="flex-grow-1 pricing-table-container mr-1 mr-lg-3 mb-3 mt-xl-0">
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th [ngClass]="{ 'field-error': detailErrors && detailErrors.lineHaulRate }">
+                <div
+                  kbxlActionCheck
+                  action="loadshop.ui.shopit.load.viewcaprates"
+                  *ngIf="details.xCapRate && details.xCapRate > 0"
+                  class="d-none d-xl-block"
+                  [ngClass]="{ 'd-xl-block': !details.onLoadshop }"
+                  style="position: absolute; top: 0;"
+                >
+                  <div class="smart-spot-rate">
+                    <label>X-Cap Rate (Line Haul)</label>
+                    <div>{{ details.xCapRate | currency }}</div>
+                  </div>
+                </div>
+                <span class="ml-1">Line Haul</span> {{ detailErrors && detailErrors.lineHaulRate ? '*' : '' }}
+              </th>
+              <th class="price-operator">
+                <fa-icon [icon]="['fas', 'plus']" size="md"></fa-icon>
+              </th>
+              <th class="pl-4" [ngClass]="{ 'field-error': detailErrors && detailErrors.shippersFSC }">
+                <div
+                  kbxlActionCheck
+                  action="loadshop.ui.shopit.load.viewcaprates"
+                  *ngIf="details.hCapRate && details.hCapRate > 0"
+                  class="d-none d-xl-block"
+                  [ngClass]="{ 'd-xl-block': !details.onLoadshop }"
+                  style="position: absolute; top: 0;"
+                >
+                  <div class="smart-spot-rate">
+                    <label>H-Cap Rate</label>
+                    <div>{{ details.hCapRate | currency }}</div>
+                  </div>
+                </div>
+                <span *ngIf="!details.isEstimatedFSC">FSC</span>
+                <span *ngIf="details.isEstimatedFSC"><i>* Est FSC </i></span>
+                {{ detailErrors && detailErrors.shippersFSC ? ' *' : '' }}
+              </th>
+              <th class="price-operator">
+                <fa-icon [icon]="['fas', 'equals']" size="md"></fa-icon>
+              </th>
+              <th>
+                <div class="d-none d-xl-block" [ngClass]="{ 'd-xl-block': !details.onLoadshop }" style="position: absolute; top: 0;">
+                  <div class="smart-spot-rate">
+                    <label [innerHtml]="smartSpotLabel"></label>
+                    <div *ngIf="!loadingSmartSpot">{{ details.smartSpotRate | currency }}</div>
+                    <div *ngIf="loadingSmartSpot" class="smart-spot-price-spinner-container">
+                      <p-progressSpinner></p-progressSpinner>
+                      <div class="ml-2">Loading...</div>
+                    </div>
+                  </div>
+                </div>
+                Total Rate
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input
+                  pInput
+                  type="text"
+                  class="pricing-detail ui-inputtext"
+                  name="lineHaulRate"
+                  [(ngModel)]="details.lineHaulRate"
+                  kbxlCurrencyInput
+                  (change)="updateScacVisibility()"
+                  (blur)="onRateChange()"
+                />
+              </td>
+              <td class="price-operator">
+                <fa-icon [icon]="['fas', 'plus']" size="md"></fa-icon>
+              </td>
+              <td *ngIf="!details.allowEditingFuel" class="pricing-detail pl-4">
+                {{ details.shippersFSC | currency }}
+              </td>
+              <td *ngIf="details.allowEditingFuel" class="pl-4">
+                <input
+                  pInput
+                  type="text"
+                  class="pricing-detail ui-inputtext"
+                  name="shippersFSC"
+                  [(ngModel)]="details.shippersFSC"
+                  kbxlCurrencyInput
+                  (blur)="onRateChange()"
+                />
+              </td>
+              <td class="price-operator">
+                <fa-icon [icon]="['fas', 'equals']" size="md"></fa-icon>
+              </td>
+              <td class="pricing-detail">
+                {{ details.lineHaulRate + details.shippersFSC | currency }}
+              </td>
+            </tr>
+
+            <!-- <tr class="seperator">
+              <td colspan="7"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="5" class="pricing-detail">
+                x{{details.feePercentage | percent}} = {{(details.feePercentage * details.smartSpotRate) | currency}}
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="5" class="pricing-detail">
+                {{'TODO'}} - {{'TODO'}} = {{'TODO'}} <a>Book with KBXL</a>
+              </td>
+              <td></td>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="carrier-clicks-section">
+        <span class="carrier-clicks-label">Carrier Views</span>
+        <div style="margin-top: 10px; position: relative;">
+          <div *ngIf="loadingAuditLogs" class="small-spinner-container">
+            <p-progressSpinner></p-progressSpinner>
+          </div>
+          <span *ngIf="!loadingAuditLogs">{{ loadAuditLogs?.length || 0 }}</span>
+          <a class="detail-link" (click)="viewCarrierClicksClicked()">
+            <span>View Carriers</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="seperator"></div>
+
+    <div class="d-flex flex-column flex-xl-row justify-content-between px-1 px-xl-4">
+      <div class="detail-column flex-fill mr-xl-4">
+        <div class="kbxl-inputgroup-container">
+          <div class="kbxl-field-label">
+            <label class="control-label" [ngClass]="{ 'field-error': detailErrors && detailErrors.commodity }"
+              >Commodity {{ detailErrors && detailErrors.commodity ? '*' : '' }}</label
+            >
+            <div class="small-spinner-container ml-2">
+              <p-progressSpinner *ngIf="loadingCommodities"></p-progressSpinner>
+            </div>
+          </div>
+          <div>
+            <p-dropdown
+              [options]="commodities"
+              [placeholder]="Select"
+              [(ngModel)]="selectedCommodity"
+              name="commodity"
+              dataKey="commodityName"
+              optionLabel="commodityName"
+              [disabled]="loadingCommodities"
+              [styleClass]="'ui-dropdown-primary'"
+              dropdownIcon="pi pi-caret-down"
+              appendTo="body"
+              kbxlCloseOnScroll
+              hideTransitionOptions="0ms"
+              onchange="onCommodityChange()"
+            >
+              <ng-template let-item pTemplate="selectedItem">
+                <span class="selected-item-label">{{ selectedCommodity?.commodityName }}</span>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="detail-column-seperator"></div>
+        <div class="d-flex justify-content-between">
+          <span class="detail-label">Equipment</span>
+          <span class="detail-value">{{ details.equipmentCategoryId || 'Other' }} - {{ details.equipmentTypeDisplay }}</span>
+        </div>
+        <div class="detail-column-seperator"></div>
+        <div class="d-flex justify-content-between">
+          <span class="detail-label">Mileage</span>
+          <span class="detail-value">{{ details.mileage | number }}</span>
+        </div>
+        <div class="detail-column-seperator"></div>
+        <div class="d-flex justify-content-between">
+          <span class="detail-label">Weight</span>
+          <span class="detail-value">{{ details.weight | number }} lbs</span>
+        </div>
+        <div class="detail-column-seperator"></div>
+        <div class="mt-2">
+          <div class="kbxl-field-label">
+            <label for="services" class="control-label">Services</label>
+            <div class="small-spinner-container ml-2">
+              <p-progressSpinner *ngIf="loadingServiceTypes"></p-progressSpinner>
+            </div>
+          </div>
+          <p-multiSelect
+            [options]="serviceTypes"
+            placeholder="Select All Services"
+            [(ngModel)]="details.serviceTypes"
+            name="services"
+            dataKey="serviceTypeId"
+            optionLabel="name"
+            [styleClass]="'ui-dropdown-primary'"
+            dropdownIcon="pi pi-caret-down"
+            appendTo="body"
+            maxSelectedLabels="10"
+            kbxlCloseOnScroll
+            hideTransitionOptions="0ms"
+          >
+          </p-multiSelect>
+        </div>
+      </div>
+      <div class="detail-column flex-fill mr-xl-4">
+        <div *ngIf="loadingCarriers" class="large-spinner-container">
+          <p-progressSpinner></p-progressSpinner>
+          <div class="ml-2">Loading Carriers</div>
+        </div>
+        <ng-container *ngIf="!loadingCarriers">
+          <div *ngIf="details.hasScacRestrictions" class="kbxl-inputgroup-container danger">
+            Lane Restriction Applied
+          </div>
+          <div *ngIf="displayGroups?.length > 0" class="kbxl-inputgroup-container">
+            <div class="kbxl-field-label">
+              <label class="control-label">Carrier Groups(s)</label>
+            </div>
+            <div>
+              <p-multiSelect
+                defaultLabel="Select"
+                [options]="displayGroups"
+                [(ngModel)]="selectedGroups"
+                name="groups"
+                dataKey="loadCarrierGroupId"
+                optionLabel="shippingLoadCarrierGroupDisplay"
+                maxSelectedLabels="1"
+                selectedItemsLabel="{0} Carrier Groups Selected"
+                dropdownIcon="pi pi-caret-down"
+                filterBy="groupName"
+                filterPlaceHolder="Filter Carrier Groups"
+                resetFilterOnHide="true"
+                appendTo="body"
+                kbxlCloseOnScroll
+                hideTransitionOptions="0ms"
+                (onChange)="onScacChange()"
+              >
+              </p-multiSelect>
+            </div>
+          </div>
+          <div *ngIf="displayGroups?.length > 0" class="kbxl-inputgroup-container">
+            <div class="kbxl-field-label">
+              <label class="control-label">Carrier Included By Selected Groups(s)</label>
+            </div>
+            <div>
+              <p-multiSelect
+                defaultLabel="Select"
+                [options]="groupCarriers"
+                [(ngModel)]="details.selectedGroupCarriers"
+                name="selectedGroupCarriers"
+                dataKey="carrierId"
+                optionLabel="carrierId"
+                maxSelectedLabels="1"
+                selectedItemsLabel="{0} Carrier(s) Selected"
+                dropdownIcon="pi pi-caret-down"
+                [virtualScroll]="true"
+                itemSize="30"
+                filterBy="value.carrierId"
+                filterPlaceHolder="Filter Group Carriers"
+                resetFilterOnHide="true"
+                appendTo="body"
+                kbxlCloseOnScroll
+                hideTransitionOptions="0ms"
+                (onChange)="onScacChange()"
+              >
+                <ng-template let-item pTemplate="item">
+                  <span>{{ item?.label | titlecase }}</span>
+                </ng-template>
+              </p-multiSelect>
+            </div>
+          </div>
+          <div class="kbxl-inputgroup-container">
+            <div class="kbxl-field-label">
+              <label class="control-label" *ngIf="loadCarrierGroups?.length > 0">Check to Include Additional Carriers</label>
+              <label class="control-label" *ngIf="loadCarrierGroups?.length === 0">All Carriers</label>
+            </div>
+            <div style="overflow: visible;">
+              <p-multiSelect
+                defaultLabel="Select"
+                [options]="availableCarriers"
+                [(ngModel)]="details.selectedCarriers"
+                name="selectedCarriers"
+                dataKey="carrierId"
+                optionLabel="carrierId"
+                maxSelectedLabels="1"
+                selectedItemsLabel="{0} Carrier(s) Selected"
+                dropdownIcon="pi pi-caret-down"
+                [virtualScroll]="true"
+                itemSize="30"
+                filterBy="value.carrierId"
+                filterPlaceHolder="Filter Carriers"
+                resetFilterOnHide="true"
+                defaultLabel="Select Carriers"
+                appendTo="body"
+                kbxlCloseOnScroll
+                hideTransitionOptions="0ms"
+                (onChange)="onScacChange()"
+              >
+                <ng-template let-item pTemplate="item">
+                  <span>{{ item?.label | titlecase }}</span>
+                </ng-template>
+              </p-multiSelect>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="detail-column flex-fill">
+        <div *ngIf="loadingScacs" class="large-spinner-container">
+          <p-progressSpinner></p-progressSpinner>
+          <div class="ml-2">Loading Contract Rates</div>
+        </div>
+        <ng-container *ngIf="!loadingScacs">
+          <div class="kbxl-inputgroup-container">
+            <div class="kbxl-field-label">
+              <label class="control-label">Contracted Rate (LH by SCAC)</label>
+            </div>
+            <div style="margin-bottom: 9px;">
+              <p-dropdown
+                [options]="visibleScacs"
+                [placeholder]="
+                  details.scacsSentWithLoad || details.onLoadshop ? 'Visible (' + (visibleScacs || []).length + ')' : 'Unavailable'
+                "
+                optionLabel="scac"
+                [filter]="true"
+                filterBy="value.scac"
+                [disabled]="!details.scacsSentWithLoad && !details.onLoadshop"
+                [virtualScroll]="true"
+                itemSize="30"
+                [styleClass]="'ui-dropdown-primary'"
+                dropdownIcon="pi pi-caret-down"
+                appendTo="body"
+                kbxlCloseOnScroll
+                hideTransitionOptions="0ms"
+              >
+                <ng-template let-item pTemplate="selectedItem">
+                  <span class="selected-item-label">Visible ({{ (visibleScacs || []).length }})</span>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>
+                    <span>{{ item.value.scac }}</span>
+                    <span style="float: right;">{{ item.value.contractRate ? (item.value.contractRate | currency) : 'N/A' }}</span>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
+            <div>
+              <p-dropdown
+                [options]="hiddenScacs"
+                [placeholder]="
+                  details.scacsSentWithLoad || details.onLoadshop ? 'Hidden (' + (hiddenScacs || []).length + ')' : 'Unavailable'
+                "
+                optionLabel="scac"
+                [filter]="true"
+                filterBy="value.scac"
+                [disabled]="!details.scacsSentWithLoad && !details.onLoadshop"
+                [virtualScroll]="true"
+                itemSize="30"
+                [styleClass]="'ui-dropdown-primary'"
+                dropdownIcon="pi pi-caret-down"
+                appendTo="body"
+                kbxlCloseOnScroll
+                hideTransitionOptions="0ms"
+              >
+                <ng-template let-item pTemplate="selectedItem">
+                  <span class="selected-item-label">Hidden ({{ (hiddenScacs || []).length }})</span>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>
+                    <span>{{ item.value.scac }}</span>
+                    <span style="float: right;">{{ item.value.contractRate ? (item.value.contractRate | currency) : 'N/A' }}</span>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
+          </div>
+        </ng-container>
+        <div class="detail-column-seperator mt-3"></div>
+        <div class="kbxl-inputgroup-container">
+          <div class="kbxl-field-label">
+            <label class="control-label">Special Instructions</label>
+          </div>
+          <p-editor name="comments" [(ngModel)]="details.comments" [style]="{ height: '100px' }" [readonly]="readonlyEditor">
+            <p-header>
+              <span class="ql-formats">
+                <button class="ql-bold" aria-label="Bold"></button>
+                <button class="ql-italic" aria-label="Italic"></button>
+                <button class="ql-underline" aria-label="Underline"></button>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-list" value="ordered" aria-label="Ordered List"></button>
+                <button class="ql-list" value="bullet" aria-label="Bulleted List"></button>
+              </span>
+            </p-header>
+          </p-editor>
+        </div>
+      </div>
+    </div>
+
+    <!--
+    <div class="seperator"></div>
+
+    <div>
+      <div class="analytics-container">
+        <div class="lane-analytics-header">
+          <span>Lane Analytics</span>
+          <a (click)="viewChart()">
+            <span>View Chart</span>
+          </a>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div>
+            <div>LOADSHOP SMART SHOP</div>
+            <div>{{details.smartSpotRate | currency}}</div>
+            <div class="analytics-line white"></div>
+          </div>
+          <div>
+            <div>LOADSHOP ACTUAL 90 DAY AVG</div>
+            <div>{{(details.smartSpotRate + 130) | currency}}</div>
+            <div class="analytics-line gray dashed"></div>
+          </div>
+          <div>
+            <div>AQUA CARRIERS</div>
+            <div>{{(details.smartSpotRate + 281) | currency}}</div>
+            <div class="analytics-line light-blue"></div>
+          </div>
+          <div>
+            <div>CONTRACT AVERAGE</div>
+            <div>{{(details.smartSpotRate + 485) | currency}}</div>
+            <div class="analytics-line light-green"></div>
+          </div>
+          <div>
+            <div>DASCHER SE</div>
+            <div>{{(details.smartSpotRate + 541) | currency}}</div>
+            <div class="analytics-line teal"></div>
+          </div>
+          <div>
+            <div>KERRY DISTRIBUTION LIMITED</div>
+            <div>{{(details.smartSpotRate + 801) | currency}}</div>
+            <div class="analytics-line gray"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    -->
+  </div>
+</form>

@@ -1,0 +1,42 @@
+@import 'variables';
+
+div,
+span {
+  color: $loadshopWhite;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.trip-location {
+  font-weight: 800;
+  margin-bottom: 5px;
+  white-space: nowrap;
+
+  & > span {
+    vertical-align: middle;
+  }
+}
+
+.origin-marker {
+  border: 2px solid $loadshopGray1;
+  border-radius: 7px;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.line {
+  border: 1px solid $loadshopGray1;
+  width: 50px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.destination-marker {
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 14px solid $loadshopGray1;
+  display: inline-block;
+  vertical-align: middle;
+}

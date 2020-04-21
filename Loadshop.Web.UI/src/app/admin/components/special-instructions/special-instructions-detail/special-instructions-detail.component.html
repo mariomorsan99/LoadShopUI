@@ -1,0 +1,87 @@
+<div class="page-container">
+  <div class="loading-indicator" *ngIf="processing">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+  <p-panel *ngIf="specialInstruction" styleClass="ui-panel-no-pad ui-panel-borderless">
+    <p-header>
+      Special Instructions
+    </p-header>
+    <div class="row" *ngIf="error">
+      <div class="col-12 error-container">
+        <p>{{ decodeProblemDetails() }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label for="name" class="control-label">Name</label>
+        </div>
+        <input id="name" type="text" class="ui-inputtext" [(ngModel)]="specialInstruction.name" pInputText maxlength="255" />
+      </div>
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div for="description" class="kbxl-field-label">
+          <label for="description" class="control-label">Description</label>
+        </div>
+        <input id="carrier" type="text" class="ui-inputtext" [(ngModel)]="specialInstruction.description" pInputText maxlength="500" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label class="control-label">Origin</label>
+        </div>
+        <div class="col-12 kbxl-inputgroup-container">
+          <p-checkbox [(ngModel)]="allOrigins" binary="true" label="All Origins" (onChange)="originChanged($event)"></p-checkbox>
+        </div>
+        <kbxl-address-autocomplete [(place)]="origin" [hidden]='allOrigins'></kbxl-address-autocomplete>
+      </div>
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label class="control-label">Destination</label>
+        </div>
+        <div class="col-12 kbxl-inputgroup-container">
+          <p-checkbox [(ngModel)]="allDestinations" binary="true" label="All Destinations" (onChange)="destinationChanged($event)"></p-checkbox>
+        </div>
+        <kbxl-address-autocomplete [(place)]="destination" [hidden]='allDestinations'></kbxl-address-autocomplete>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label class="control-label">Equipment</label>
+        </div>
+        <div>
+          <kbxl-tree-drop-down
+            [treeNodes]="groupedEquipment"
+            [(selectedNodes)]="selectedEquipment"
+            placeHolder="Select Equipment Type(s)"
+          ></kbxl-tree-drop-down>
+        </div>
+      </div>
+      <div class="col col-lg-6 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label class="control-label">Special Instructions</label>
+        </div>
+        <div>
+          <p-editor name="specialInstructions" [(ngModel)]="specialInstruction.comments" [style]="{ height: '100px' }">
+            <p-header>
+              <span class="ql-formats">
+                <button class="ql-bold" aria-label="Bold"></button>
+                <button class="ql-italic" aria-label="Italic"></button>
+                <button class="ql-underline" aria-label="Underline"></button>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-list" value="ordered" aria-label="Ordered List"></button>
+                <button class="ql-list" value="bullet" aria-label="Bulleted List"></button>
+              </span>
+            </p-header>
+          </p-editor>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex" [ngClass]="{ 'justify-content-between': !adding, 'justify-content-end': adding }">
+      <button *ngIf="!adding" pButton (click)="deleteClick()" label="Delete" class="ui-button-danger mr-2"></button>
+      <button pButton label="Save" (click)="updateClick()" class="ui-button-primary ml-2"></button>
+    </div>
+  </p-panel>
+</div>

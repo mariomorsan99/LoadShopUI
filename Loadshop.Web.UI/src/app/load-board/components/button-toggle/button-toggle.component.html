@@ -1,0 +1,6 @@
+<div>
+    <button (click)="HandleIconClick()" class="icon-button">
+        <fa-icon [icon]="onIcon" *ngIf="val"></fa-icon>
+        <fa-icon [icon]="offIcon" *ngIf="!val"></fa-icon>
+    </button>
+</div>

@@ -1,0 +1,326 @@
+@import 'variables';
+@import 'bootstrap-overrides';
+
+.trip-display {
+  width: inherit;
+  @include media-breakpoint-down($desktop-breakpoint) {
+    width: 100%;
+  }
+}
+
+.detail-container {
+  border: 1px solid rgba($loadshopLightBlue, 0.2);
+  border-radius: 5px;
+
+  line-height: 18px;
+  font-size: 12px;
+  color: $loadshopWhite;
+
+  position: relative; //parent for absolute positioning of the SmartSpot in header above All In Rate
+
+  & > div:last-child {
+    padding-bottom: 20px;
+  }
+
+  & .detail-header {
+    background-color: $loadshopGray1;
+    margin-bottom: 10px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+  }
+}
+.control-label {
+  font-weight: 800;
+}
+.load-id-label {
+  color: $loadshopWhite;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 23px;
+  margin-bottom: 0;
+}
+
+.detail-link,
+a.detail-link:not([href]):not([tabindex]) {
+  font-size: 10px;
+  text-decoration: underline;
+  font-style: italic;
+  cursor: pointer;
+  margin-left: 10px;
+
+  & span {
+    margin-left: 2px;
+  }
+}
+
+.on-loadshkop-check {
+  color: $loadshopTeal;
+  font-size: 10px;
+  font-weight: 800;
+  margin-bottom: 0;
+  line-height: 25px;
+
+  & > span {
+    margin-right: 10px;
+  }
+
+  & > fa-icon {
+    vertical-align: top;
+
+    & ::ng-deep svg {
+      width: 25px;
+      height: 25px;
+    }
+  }
+}
+
+.smart-spot-rate {
+  color: $loadshopTeal;
+  padding-top: 5px;
+
+  & > label {
+    font-weight: 800;
+    margin-bottom: 5px;
+  }
+}
+
+:host ::ng-deep .on-loadshop-checkbox.ui-chkbox.ui-widget {
+  width: 25px;
+  height: 25px;
+}
+
+:host ::ng-deep .on-loadshop-checkbox.ui-chkbox .ui-chkbox-box {
+  width: 25px;
+  height: 25px;
+  border-color: $loadshopTeal;
+  background-color: $loadshopTeal;
+
+  & span {
+    font-size: 21px;
+  }
+
+  &.ui-state-active,
+  &.ui-state-focus,
+  &.ui-state-active.ui-state-focus {
+    border-color: $loadshopTeal;
+    background-color: $loadshopTeal;
+
+    &:not(disabled):hover {
+      border-color: lighten($loadshopTeal, 20%);
+      background-color: lighten($loadshopTeal, 20%);
+    }
+  }
+}
+.pricing-table-container {
+  .pricing-table {
+    .pricing-table-header {
+      background-color: $loadshopGray1;
+      font-weight: 800;
+    }
+    .ui-inputtext.pricing-detail {
+      font-weight: 800;
+    }
+
+    .line-haul {
+      width: 105px;
+      text-align: center;
+    }
+    .fsc {
+      width: 105px;
+      text-align: center;
+    }
+    .total-rate {
+      width: 120px;
+      text-align: center;
+    }
+    .price-operator {
+      width: 30px;
+      text-align: center;
+    }
+  }
+}
+
+.pricing-table {
+  white-space: nowrap;
+  width: 100%;
+
+  & th {
+    background-color: $loadshopGray1;
+    font-weight: 800;
+  }
+
+  & th {
+    padding: 5px;
+  }
+
+  & td {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  & tr > th:first-of-type,
+  & tr > th:last-of-type {
+    width: 20px;
+  }
+
+  & tbody > tr:first-of-type {
+    height: 44px;
+  }
+
+  & td.pricing-detail {
+    padding-left: 5px;
+  }
+
+  & td .ui-inputtext.pricing-detail {
+    // color: $loadshopTeal;
+    width: 104px;
+    font-weight: 800;
+  }
+
+  & tr.seperator {
+    margin: 0;
+
+    & td {
+      padding: 0px;
+    }
+  }
+}
+
+.seperator {
+  border-top: 1px solid rgba($loadshopLightBlue, 0.2);
+  margin: 10px 0 10px 0;
+}
+
+.carrier-clicks-section {
+  border: 1px solid rgba($loadshopLightBlue, 0.2);
+  border-radius: 5px;
+  padding: 10px 15px 10px 15px;
+  min-width: 200px;
+
+  & .carrier-clicks-label {
+    font-weight: 800;
+  }
+
+  & a {
+    margin-left: 10px;
+  }
+}
+
+.small-spinner-container {
+  display: inline-block;
+
+  & ::ng-deep .ui-progress-spinner {
+    width: 18px;
+    height: 18px;
+    vertical-align: bottom;
+  }
+}
+
+.smart-spot-price-spinner-container {
+  display: block;
+  padding-left: 0px !important;
+
+  & ::ng-deep .ui-progress-spinner {
+    width: 18px;
+    height: 18px;
+    vertical-align: bottom;
+  }
+  div {
+    display: inline;
+    font-style: italic;
+  }
+}
+
+.large-spinner-container {
+  white-space: nowrap;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  & ::ng-deep .ui-progress-spinner {
+    width: 36px;
+    height: 36px;
+    vertical-align: bottom;
+  }
+}
+
+.detail-column {
+  @include media-breakpoint-up(xl) {
+    width: calc(1 / 3 * 100% - (1 - 1 / 3) * 44px);
+  }
+
+  & .detail-label {
+    font-weight: 800;
+  }
+
+  & .detail-label,
+  & .detail-value {
+    line-height: 44px;
+  }
+
+  & .detail-column-seperator {
+    border: 1px solid $loadshopGray1;
+  }
+}
+
+.kbxl-inputgroup-container {
+  width: 100%;
+  padding-top: 12px;
+  margin-bottom: 0;
+}
+
+.analytics-container {
+  padding: 5px 8px 0 0;
+  font-size: 10px;
+  line-height: 14px;
+}
+
+.lane-analytics-header {
+  font-size: 11px;
+  line-height: 15px;
+  margin-bottom: 20px;
+
+  a,
+  a:not([href]):not([tabindex]) {
+    text-decoration: underline;
+    font-style: italic;
+    cursor: pointer;
+    color: $loadshopTeal;
+
+    & span {
+      margin-left: 20px;
+    }
+  }
+}
+
+.analytics-line {
+  width: 60px;
+  border-top: 3px solid;
+  margin-top: 10px;
+
+  &.white {
+    border-color: $loadshopWhite;
+  }
+  &.gray {
+    border-color: $loadshopGray8;
+  }
+  &.light-blue {
+    border-color: $loadshopLightBlue;
+  }
+  &.light-green {
+    border-color: $loadshopLightGreen;
+  }
+  &.teal {
+    border-color: $loadshopTeal;
+  }
+
+  &.dashed {
+    border-style: dashed;
+  }
+}
+
+.error-container {
+  .load-detail-error {
+    display: block;
+  }
+}

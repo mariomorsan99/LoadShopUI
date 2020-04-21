@@ -1,0 +1,7 @@
+<kbxl-user-communication-grid
+  [allUserCommunications]="allUserCommunications$ | async"
+  (userCommunicationSelected)="userCommunicationSelected($event)"
+  (createNotification)="createNotification()"
+  [processing]="processing$ | async"
+>
+</kbxl-user-communication-grid>

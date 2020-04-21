@@ -1,0 +1,11 @@
+<p-sidebar [visible]="true" position="right" styleClass="detail-sidebar" [baseZIndex]="50" [modal]="true" [appendTo]="'body'" [blockScroll]="true" [dismissible]="true" [showCloseIcon]="false" (onHide)="onHide()">
+  <kbxl-sidebar-close (closed)="onHide()"></kbxl-sidebar-close> 
+  <kbxl-user-lane-detail 
+    [lane]="laneDetail$ | async" 
+    [states]="states$ | async" 
+    [equipment]="equipment$ | async | toTreeNodes" 
+    (updated)="updated($event)" 
+    (deleted)="deleted($event)" 
+    (closed)="closed($event)">
+  </kbxl-user-lane-detail>
+</p-sidebar>

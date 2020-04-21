@@ -1,0 +1,12 @@
+<div class="ui-inputgroup">
+  <p-autoComplete
+    id="value"
+    [(ngModel)]="description"
+    [suggestions]="suggestions"
+    (completeMethod)="citySearch($event)"
+    (onSelect)="populateValue(description)"
+    (onBlur)="validateSelection($event)"
+    [placeholder]="placeholder"
+  ></p-autoComplete>
+  <button pButton icon="pi pi-times-circle" (click)="clearValue()"></button>
+</div>

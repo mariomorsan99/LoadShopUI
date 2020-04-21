@@ -1,0 +1,26 @@
+@import 'variables';
+
+.color-bar-container.row {
+  padding-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+
+  .color-bar-item {
+    height: 8px;
+  }
+  .color-bar-1 {
+    background-color: $loadshopLightBlue;
+  }
+  .color-bar-2 {
+    background-color: $loadshopTeal;
+  }
+  .color-bar-3 {
+    background-color: $loadshopLightGreen;
+  }
+  .color-bar-4 {
+    background-color: $loadshopWhite;
+  }
+  .color-bar-none {
+    background-color: $loadshopDarkBlue;
+  }
+}

@@ -1,0 +1,158 @@
+<div class="progress-indicator" *ngIf="loading">
+  <div class="progressspinner-container">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+</div>
+<div *ngIf="groups">
+  <div class="d-none d-lg-block">
+    <p-panel styleClass="ui-panel-no-pad ui-panel-borderless">
+      <p-header>
+        <div class="d-flex justify-content-between pr-2">
+          <span>Carrier Groups</span>
+          <button
+            pButton
+            (click)="addClick()"
+            icon="pi pi-plus"
+            label="Add New"
+            type="button"
+            class="ui-button-primary ui-button-teal"
+          ></button>
+        </div>
+      </p-header>
+      <p-table
+        [rowHover]="true"
+        [value]="groups"
+        selectionMode="single"
+        #table
+        styleClass="ui-table-no-border"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [first]="first"
+        (onPage)="onPage($event)"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th [pSortableColumn]="'groupName'">
+              Name
+              <p-sortIcon [field]="'groupName'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'groupDescription'">
+              Description
+              <p-sortIcon [field]="'groupDescription'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'loadCarrierGroupTypeName'">
+              Type
+              <p-sortIcon [field]="'loadCarrierGroupTypeName'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'originDescription'">
+              Origin
+              <p-sortIcon [field]="'originDescription'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'destinationDescription'">
+              Destination
+              <p-sortIcon [field]="'destinationDescription'"></p-sortIcon>
+            </th>
+            <!-- <th [pSortableColumn]="'equipmentDescription'">
+              Equipment Type
+              <p-sortIcon [field]="'equipmentDescription'"></p-sortIcon>
+            </th> -->
+            <th>
+              Equipment
+            </th>
+            <th>
+              Assigned Carriers
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-group>
+          <tr (click)="onRowSelect(group)" [pSelectableRow]="group">
+            <td>{{ group.groupName }}</td>
+            <td>{{ group.groupDescription }}</td>
+            <td>{{ group.loadCarrierGroupTypeName }}</td>
+            <td>{{ group.originDescription  | titlecase}}</td>
+            <td>{{ group.destinationDescription  | titlecase}}</td>
+            <td>{{ getEquipmentCategoryDisplay(group) }}</td>
+            <td kbxlStopClickPropagation>
+              <div class="d-inline-block text-center">
+                <div>{{ group.carrierCount }}</div>
+                <a class="view-carriers-link" (click)="copyCarriersToNewGroup(group, $event)">
+                  <span>Copy Carriers</span>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+  </div>
+  <div class="d-lg-none pt-2">
+    <div class="title-bar">
+      <span>Carrier Groups</span>
+    </div>
+    <div class="group-item" *ngFor="let group of groups">
+      <p-card styleClass="group-grid-card" (click)="onRowSelect(group)">
+        <p-header>
+          <div>
+            {{ group.groupName }}
+          </div>
+        </p-header>
+        <div class="d-flex flex-column group-item-detail">
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>Description</span>
+            </div>
+            <div>
+              <span>{{ group.groupDescription }}</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>Origin</span>
+            </div>
+            <div>
+              <span>{{ group.originDescription }}</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>Destination</span>
+            </div>
+            <div>
+              <span>{{ group.destinationDescription }}</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>Equipment</span>
+            </div>
+            <div>
+              <span>{{ getEquipmentCategoryDisplay(group) }}</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap align-items-center" style="height: 60px;">
+            <div class="flex-grow-1">
+              <span>Assigned Carriers</span>
+            </div>
+            <div class="d-inline-block text-center" kbxlStopClickPropagation>
+              <div>{{ group.carrierCount }}</div>
+              <a class="view-carriers-link" (click)="copyCarriers(group, $event)">
+                <span>Copy Carriers</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+    <div>
+      <button
+        pButton
+        (click)="addClick()"
+        label="Add New"
+        icon="pi pi-plus"
+        type="button"
+        class="ui-button-primary mobile-add-button ui-button-teal"
+      ></button>
+    </div>
+  </div>
+</div>

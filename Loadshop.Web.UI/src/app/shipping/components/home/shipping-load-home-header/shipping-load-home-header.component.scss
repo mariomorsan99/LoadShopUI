@@ -1,0 +1,19 @@
+@import 'variables';
+
+.home-header-container {
+  background-color: $loadshopGray1;
+}
+
+:host ::ng-deep .ui-button.ui-button-primary.post-button {
+  background-color: $loadshopTeal;
+  width: 150px;
+}
+
+:host ::ng-deep .ui-button.button-outline-secondary.create-button {
+  width: 150px;
+
+  & .ui-button-icon-left {
+    left: 30px;
+    font-size: 18px;
+  }
+}

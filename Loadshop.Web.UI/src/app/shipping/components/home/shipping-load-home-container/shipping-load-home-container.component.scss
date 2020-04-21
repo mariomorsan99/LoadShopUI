@@ -1,0 +1,38 @@
+@import 'variables';
+@import 'bootstrap-overrides';
+
+.home-container {
+  background-color: $loadshopDarkBlue;
+  overflow-y: hidden;
+
+  & .card-container {
+    width: 425px;
+    min-width: 425px;
+
+    @include media-breakpoint-down($desktop-breakpoint) {
+      width: initial;
+      min-width: initial;
+    }
+
+    & .quickfilter {
+      margin-bottom: 10px;
+    }
+
+    & .card-scroll {
+      height: calc(100vh - 325px);
+      padding-right: 10px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  }
+
+  & .detail-container {
+    & :not(:first-child) {
+      margin-top: 20px;
+    }
+  }
+}
+
+// .filter-box {
+//   width: 200px !important;
+// }

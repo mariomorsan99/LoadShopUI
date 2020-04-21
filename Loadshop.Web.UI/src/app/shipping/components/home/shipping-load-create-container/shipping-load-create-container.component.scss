@@ -1,0 +1,25 @@
+@import 'variables';
+@import 'bootstrap-overrides';
+
+@include media-breakpoint-up(xl) {
+  .create-form-container,
+  .create-footer-container {
+    width: 75%;
+    max-width: 1200px;
+    margin: auto;
+  }
+}
+
+.row {
+  margin-right: 0px;
+}
+
+.small-spinner-container {
+  display: inline-block;
+
+  & ::ng-deep .ui-progress-spinner {
+    width: 18px;
+    height: 18px;
+    vertical-align: bottom;
+  }
+}

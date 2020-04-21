@@ -1,0 +1,50 @@
+//@import '~bootstrap/scss/variables';
+
+///* //from original mockup
+$loadshopDarkBlue: #232837;
+$loadshopDarkestBlue: #151928;
+$loadshopLightBlue: #23aae6;
+$loadshopTeal: #31c2ae;
+$loadshopLightGreen: #ace171;
+$loadshopWhite: #ffffff;
+$loadshopHighlight: #23425a;
+//*/
+
+/* //from color document
+$loadshopDarkBlue: #002a3a;
+$loadshopLightBlue: #4698cb;
+$loadshopTeal: #5DBAA9;
+$loadshopLightGreen: #c5e86c;
+//*/
+
+/* //from logo
+$loadshopDarkBlue: #0b1d30;
+$loadshopLightBlue: #56a4d1;
+$loadshopTeal: #67bcaf;
+$loadshopLightGreen: #c0d88c;
+//*/
+
+$loadshopGray1: #373c4b;
+$loadshopGray2: #4b505d;
+$loadshopGray3: #5f636f;
+$loadshopGray4: #737781;
+$loadshopGray5: #afb1b7;
+$loadshopGray6: #f0f0f5;
+$loadshopGray7: #d8d8d8;
+$loadshopGray8: #868686;
+
+$loadshopErrorDarkRed: #cd3a3a;
+$loadshopErrorLightRed: #dc7575;
+
+$loadshopYellow: #ffc107;
+
+$mobile-breakpoint: md;
+$desktop-breakpoint: lg;
+
+$bold-font-weight: 800;
+
+$background: #d6d6d6;
+$component-background: #323232;
+$addon-component-width: 60px;
+$addon-component-icon-font-size: 24px;
+$addon-component-gradient: linear-gradient(to right, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%);

@@ -1,0 +1,21 @@
+<div *ngIf="tripOrigin" class="d-flex justify-content-between">
+  <div>
+    <div class="trip-location">
+      <span>{{ tripOrigin.city | titlecase }}, {{ tripOrigin.state }}</span>
+    </div>
+    <div>{{ tripOrigin.lateDtTm | date: 'shortDate' }}</div>
+    <div>{{ tripOrigin.lateDtTm | date: 'shortTime' }}</div>
+  </div>
+  <div *ngIf="tripDestination" class="text-nowrap mx-1 mx-md-2 mx-xl-3">
+    <div class="origin-marker"></div>
+    <div class="line"></div>
+    <div class="destination-marker"></div>
+  </div>
+  <div *ngIf="tripDestination">
+    <div class="trip-location">
+      <span>{{ tripDestination.city | titlecase }}, {{ tripDestination.state }}</span>
+    </div>
+    <div class="text-right">{{ tripDestination.lateDtTm | date: 'shortDate' }}</div>
+    <div class="text-right">{{ tripDestination.lateDtTm | date: 'shortTime' }}</div>
+  </div>
+</div>

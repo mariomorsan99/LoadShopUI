@@ -1,0 +1,608 @@
+<div class="d-flex flex-column position-relative">
+  <div class="progress-indicator" *ngIf="processing$ | async">
+    <div class="progressspinner-container">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </div>
+  <p-panel styleClass="ui-panel-no-pad ui-panel-borderless">
+    <p-header>
+      <div class="d-flex justify-content-between pr-2">
+        <span>Shipper Profile</span>
+      </div>
+    </p-header>
+
+    <div class="d-flex">
+      <div class="left-tab">
+        <div class="kbxl-inputgroup-container">
+          <div class="ui-inputgroup">
+            <p-dropdown
+              [options]="shippers$ | async"
+              placeholder="Select Shipper"
+              [(ngModel)]="selectedShipper"
+              dataKey="customerId"
+              optionLabel="name"
+              [filter]="true"
+              (onChange)="loadShipper()"
+              filterBy="value.name"
+              [showClear]="false"
+              [virtualScroll]="true"
+              itemSize="30"
+              [styleClass]="'ui-dropdown-primary'"
+              dropdownIcon="pi pi-caret-down"
+            >
+              <ng-template let-item pTemplate="selectedItem">
+                <span class="selected-item-label">{{ selectedShipper?.name }}</span>
+              </ng-template>
+            </p-dropdown>
+            <button pButton type="button" icon="pi pi-plus" pToolTip="Setup New Shipper" (click)="newShipper()"></button>
+          </div>
+        </div>
+      </div>
+      <div class="right-tab flex-grow-1" *ngIf="shipper$ | async as s">
+        <form (ngSubmit)="saveChanges(s)" #form="ngForm">
+          <div class="row">
+            <div class="col-md-3 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="name" class="control-label">Name</label>
+              </div>
+              <div class="ui-inputgroup">
+                <input pInput type="text" [(ngModel)]="s.name" name="name" class="filter-box ui-inputtext" maxlength="100" required />
+              </div>
+            </div>
+
+            <div class="col-md-3 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="ownerId" class="control-label">Owner Id</label>
+              </div>
+              <div class="ui-inputgroup">
+                <input type="text" [(ngModel)]="s.topsOwnerId" name="ownerId" maxlength="20" class="filter-box ui-inputtext" [disabled]="isShipperMappingEligable(s)" />
+              </div>
+            </div>
+
+            <div class="col-md-6 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="customerCarrierScacs" class="control-label">Platform Carriers</label>
+              </div>
+              <div>
+                <p-multiSelect
+                  [options]="carriers"
+                  placeholder="Select Carrier/SCACS"
+                  [(ngModel)]="s.customerCarrierScacs"
+                  name="customerCarrierScacs"
+                  [filter]="true"
+                  filterBy="label"
+                  resetFilterOnHide="true"
+                  [virtualScroll]="true"
+                  itemSize="30"
+                  [styleClass]="'ui-dropdown-primary'"
+                  dropdownIcon="pi pi-caret-down"
+                  (onChange)="carrierChange(s)"
+                  [disabled]="contractedCarrierAssignment.isDisabled"
+                  #contractedCarrierAssignment="kbxlActionCheck"
+                  kbxlActionCheck="loadshop.ui.system.shipper.contractedcarriers.addedit"
+                  enforcementType="disable"
+                >
+                  <ng-template let-item pTemplate="item">
+                    <span>{{ item?.label | titlecase }}</span>
+                  </ng-template>
+                </p-multiSelect>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-3 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="defaultCommodity" class="control-label">Default Commodity</label>
+              </div>
+              <div>
+                <p-dropdown
+                  [options]="commodities$ | async | toSelectItem"
+                  placeholder="Default Commodity"
+                  [(ngModel)]="s.defaultCommodity"
+                  name="defaultCommodity"
+                  [filter]="true"
+                  [showClear]="false"
+                  [virtualScroll]="true"
+                  itemSize="30"
+                  [styleClass]="'ui-dropdown-primary'"
+                  dropdownIcon="pi pi-caret-down"
+                >
+                  <ng-template let-item pTemplate="selectedItem">
+                    <span class="selected-item-label">{{ s.defaultCommodity }}</span>
+                  </ng-template>
+                </p-dropdown>
+              </div>
+            </div>
+
+            <div class="col-xl-3 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="useFuelRerating" class="control-label">Re-Calculate Fuel</label>
+              </div>
+              <div class="ui-inputgroup">
+                <div class="col-4">
+                  <p-checkbox name="useFuelRerating" value="enabled" [(ngModel)]="s.useFuelRerating" binary="true"> </p-checkbox>
+                </div>
+                <div class="col-8" *ngIf="s.useFuelRerating">
+                  <input
+                    type="text"
+                    [(ngModel)]="s.fuelReratingNumberOfDays"
+                    name="rerateDays"
+                    placeholder="Days"
+                    pInputText
+                    pToolTip="Days to Re-Calculate Fuel"
+                    tooltipPosition="top"
+                    class="filter-box ui-inputtext"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 kbxl-inputgroup-container">
+              <div class="d-flex">
+                <div class="d-flex flex-column flex-fill align-items-center">
+                  <div class="kbxl-field-label">
+                    <label for="allowZeroFuel" class="control-label">Quotes Total Rate</label>
+                  </div>
+                  <div class="ui-inputgroup ">
+                    <p-checkbox name="allowZeroFuel" value="enabled" [(ngModel)]="s.allowZeroFuel" binary="true"> </p-checkbox>
+                  </div>
+                </div>
+                <div class="d-flex flex-column flex-fill align-items-center">
+                  <div class="kbxl-field-label">
+                    <label for="allowEditingFuel" class="control-label">Allow Editing Fuel</label>
+                  </div>
+                  <div class="ui-inputgroup ">
+                    <p-checkbox name="allowEditingFuel" value="enabled" [(ngModel)]="s.allowEditingFuel" binary="true"> </p-checkbox>
+                  </div>
+                </div>
+                <div class="d-flex flex-column flex-fill align-items-center">
+                  <div class="kbxl-field-label">
+                    <label for="allowAutoPostLoad" class="control-label">Auto Post to Marketplace</label>
+                  </div>
+                  <div class="ui-inputgroup ">
+                    <p-checkbox name="allowAutoPostLoad" value="enabled" [(ngModel)]="s.autoPostLoad" binary="true"> </p-checkbox>
+                  </div>
+                </div>
+                <div class="d-flex flex-column flex-fill align-items-center">
+                  <div class="kbxl-field-label">
+                    <label for="validateUniqueReferenceLoadIds" class="control-label">Unique Load Numbers</label>
+                  </div>
+                  <div class="ui-inputgroup ">
+                    <p-checkbox
+                      name="validateUniqueReferenceLoadIds"
+                      value="enabled"
+                      [(ngModel)]="s.validateUniqueReferenceLoadIds"
+                      binary="true"
+                    >
+                    </p-checkbox>
+                  </div>
+                </div>
+                <div class="d-flex flex-column flex-fill align-items-center">
+                  <div class="kbxl-field-label">
+                    <label for="allowManualLoadCreation" class="control-label">Order Entry</label>
+                  </div>
+                  <div class="ui-inputgroup ">
+                    <p-checkbox name="allowManualLoadCreation" value="enabled" [(ngModel)]="s.allowManualLoadCreation" binary="true">
+                    </p-checkbox>
+                  </div>
+                </div>
+                <div class="d-flex flex-column flex-fill align-items-center">
+                  <div class="kbxl-field-label">
+                    <label for="requireMarginalAnalysis" class="control-label">Marginal Analysis</label>
+                  </div>
+                  <div class="ui-inputgroup ">
+                    <p-checkbox name="requireMarginalAnalysis" value="enabled" [(ngModel)]="s.requireMarginalAnalysis" binary="true">
+                    </p-checkbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-md-1 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="allowZeroFuel" class="control-label">Quotes Total Rate</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-checkbox name="allowZeroFuel" value="enabled" [(ngModel)]="s.allowZeroFuel" binary="true"> </p-checkbox>
+              </div>
+            </div> -->
+
+            <!-- <div class="col-md-1 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="allowEditingFuel" class="control-label">Allow Editing Fuel</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-checkbox name="allowEditingFuel" value="enabled" [(ngModel)]="s.allowEditingFuel" binary="true"> </p-checkbox>
+              </div>
+            </div>
+            <div class="col-md-1 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="allowAutoPostLoad" class="control-label">Auto Post to Marketplace</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-checkbox name="allowAutoPostLoad" value="enabled" [(ngModel)]="s.autoPostLoad" binary="true"> </p-checkbox>
+              </div>
+            </div>
+            <div class="col-md-1 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="validateUniqueReferenceLoadIds" class="control-label">Unique Load Numbers</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-checkbox
+                  name="validateUniqueReferenceLoadIds"
+                  value="enabled"
+                  [(ngModel)]="s.validateUniqueReferenceLoadIds"
+                  binary="true"
+                >
+                </p-checkbox>
+              </div>
+            </div> -->
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 col-xl-3 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="successManagerUserId" class="control-label">Shipper Success Manager</label>
+              </div>
+              <div>
+                <p-dropdown
+                  [options]="adminUsers$ | async | toSelectItem"
+                  placeholder="Select User"
+                  [(ngModel)]="s.successManagerUserId"
+                  name="successManagerUserId"
+                  [filter]="true"
+                  required
+                  [styleClass]="'ui-dropdown-primary'"
+                  dropdownIcon="pi pi-caret-down"
+                >
+                  <ng-template let-item pTemplate="item">
+                    <span>{{ item?.label | titlecase }}</span>
+                  </ng-template>
+                </p-dropdown>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="successSpecialistUserId" class="control-label">Shipper Success Specialist</label>
+              </div>
+              <div>
+                <p-dropdown
+                  [options]="adminUsers$ | async | toSelectItem"
+                  placeholder="Select User"
+                  [(ngModel)]="s.successSpecialistUserId"
+                  name="successSpecialistUserId"
+                  [filter]="true"
+                  required
+                  [styleClass]="'ui-dropdown-primary'"
+                  dropdownIcon="pi pi-caret-down"
+                >
+                  <ng-template let-item pTemplate="item">
+                    <span>{{ item?.label | titlecase }}</span>
+                  </ng-template>
+                </p-dropdown>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="customerLoadTypeId" class="control-label">Customer Type</label>
+              </div>
+              <div>
+                <p-dropdown
+                  [options]="customerLoadTypes$ | async | toSelectItem"
+                  placeholder="Select Customer Type"
+                  [(ngModel)]="s.customerLoadTypeId"
+                  name="customerLoadTypeId"
+                  [filter]="true"
+                  [showClear]="true"
+                  [styleClass]="'ui-dropdown-primary'"
+                  dropdownIcon="pi pi-caret-down"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="customerLoadTypeExpirationDate" class="control-label">Expiration Date</label>
+              </div>
+              <div>
+                <p-calendar
+                  [(ngModel)]="s.customerLoadTypeExpirationDate"
+                  name="customerLoadTypeExpirationDate"
+                  [showIcon]="true"
+                  showButtonBar="true"
+                ></p-calendar>
+              </div>
+            </div>
+          </div>
+
+          <p-panel>
+            <p-header>
+              <div class="ui-helper-clearfix">
+                <span class="ui-panel-title pl-0">Contacts</span>
+              </div>
+            </p-header>
+
+            <div class="row" *ngIf="!s.customerContacts || s.customerContacts.length == 0">
+              <div class="col-md-3">
+                <button
+                  pButton
+                  type="button"
+                  class="ui-button-primary ui-button-teal"
+                  icon="pi pi-plus"
+                  label="Add Contact"
+                  (click)="addContact(s)"
+                ></button>
+              </div>
+            </div>
+
+            <div class="row" *ngFor="let contact of s.customerContacts; index as i; last as isLast">
+              <div class="col-md-1 kbxl-inputgroup-container">
+                <div class="ui-inputgroup" *ngIf="isLast">
+                  <button
+                    pButton
+                    type="button"
+                    class="ui-button-primay add-button contact-button ui-button-teal"
+                    icon="pi pi-plus"
+                    (click)="addContact(s)"
+                  ></button>
+                </div>
+              </div>
+
+              <div class="col-md-2 kbxl-inputgroup-container">
+                <div class="kbxl-field-label">
+                  <label for="firstname-{{ i }}" class="control-label">First Name</label>
+                </div>
+                <div class="ui-inputgroup">
+                  <input
+                    type="text"
+                    [(ngModel)]="contact.firstName"
+                    name="firstname-{{ i }}"
+                    maxlength="100"
+                    required
+                    class="filter-box ui-inputtext"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-2 kbxl-inputgroup-container">
+                <div class="kbxl-field-label">
+                  <label for="lastname-{{ i }}" class="control-label">Last Name</label>
+                </div>
+                <div class="ui-inputgroup">
+                  <input
+                    type="text"
+                    [(ngModel)]="contact.lastName"
+                    name="lastname-{{ i }}"
+                    maxlength="100"
+                    required
+                    class="filter-box ui-inputtext"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-2 kbxl-inputgroup-container">
+                <div class="kbxl-field-label">
+                  <label for="position-{{ i }}" class="control-label">Position</label>
+                </div>
+                <div class="ui-inputgroup">
+                  <input
+                    type="text"
+                    [(ngModel)]="contact.position"
+                    name="position-{{ i }}"
+                    maxlength="100"
+                    class="filter-box ui-inputtext"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-2 kbxl-inputgroup-container">
+                <div class="kbxl-field-label">
+                  <label for="phone-{{ i }}" class="control-label">Phone</label>
+                </div>
+                <div class="ui-inputgroup">
+                  <input
+                    type="text"
+                    [(ngModel)]="contact.phoneNumber"
+                    name="phone-{{ i }}"
+                    maxlength="20"
+                    class="filter-box ui-inputtext"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-3 kbxl-inputgroup-container">
+                <div class="kbxl-field-label">
+                  <label for="email-{{ i }}" class="control-label">Email</label>
+                </div>
+                <div class="d-flex">
+                  <input type="text" [(ngModel)]="contact.email" name="email-{{ i }}" maxlength="256" class="filter-box ui-inputtext" />
+                  <button
+                    pButton
+                    type="button"
+                    class="ui-button-danger contact-button ml-3"
+                    icon="pi pi-trash"
+                    (click)="deleteContact(s, i)"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </p-panel>
+
+          <p-panel>
+            <p-header>
+              <div class="ui-helper-clearfix">
+                <span class="ui-panel-title pl-0">Fee Structure</span>
+              </div>
+            </p-header>
+
+            <div class="row d-none d-xl-flex">
+              <div class="col-xl-2"></div>
+              <div class="col-xl-2">
+                <div class="kbxl-field-label decorated-input-group-header">
+                  <label class="control-label">Flat Fee</label>
+                </div>
+              </div>
+
+              <div class="col-xl-1 text-center">
+                <fa-icon [icon]="['fas', 'plus']" size="md"></fa-icon>
+              </div>
+
+              <div class="col-xl-2">
+                <div class="kbxl-field-label decorated-input-group-header">
+                  <label class="control-label">Percentage</label>
+                </div>
+              </div>
+
+              <!-- <div class="col-xl-2">
+                <div class="kbxl-field-label">
+                  <label class="control-label">Carrier LineHaul</label>
+                </div>
+              </div> -->
+            </div>
+
+            <div class="row">
+              <div class="col-xl-2 kbxl-inputgroup-container d-none d-xl-block">
+                <label class="control-label pull-right inline-text">In-Network</label>
+              </div>
+
+              <div class="col-6 d-xl-none">
+                <label class="control-label inline-text">In-Network Fee</label>
+              </div>
+              <div class="col-6 col-xl-2 kbxl-inputgroup-container">
+                <div class="decorated-input-group">
+                  <label class="control-label text-center">$</label>
+                  <input pInput type="number" step="0.01" [(ngModel)]="s.inNetworkFlatFee" name="inNetworkFlatFee" class="ui-inputtext" />
+                  <label></label>
+                </div>
+              </div>
+
+              <div class="col-5 d-xl-none">
+                <label class="control-label inline-text">In-Network Percent</label>
+              </div>
+              <div class="col-1 kbxl-inputgroup-container text-center inline-text">
+                <fa-icon [icon]="['fas', 'plus']" size="md"></fa-icon>
+              </div>
+              <div class="col-6 col-xl-2 kbxl-inputgroup-container">
+                <div class="decorated-input-group">
+                  <label></label>
+                  <kbxl-percentage [(percentage)]="s.inNetworkPercentFee" inputName="inNetworkPercentFee" inputClass="ui-inputtext"></kbxl-percentage>
+                  <label class="control-label text-center">%</label>
+                </div>
+              </div>
+
+              <!-- <div class="col-6 d-xl-none">
+                <label class="control-label inline-text">In-Network Carrier LineHaul</label>
+              </div>
+              <div class="col-6 col-xl-3 kbxl-inputgroup-container">
+                <div>
+                  <p-radioButton name="inNetworkFeeAdd" [value]="false" label="Subtract From" class="mr-3" [(ngModel)]="s.inNetworkFeeAdd">
+                  </p-radioButton>
+                </div>
+                <div>
+                  <p-radioButton name="inNetworkFeeAdd" [value]="true" label="Add To" [(ngModel)]="s.inNetworkFeeAdd">
+                  </p-radioButton>
+                </div>
+              </div> -->
+            </div>
+
+            <div class="row">
+              <div class="col-xl-2 kbxl-inputgroup-container d-none d-xl-block">
+                <label class="control-label pull-right inline-text">Out-Network</label>
+              </div>
+
+              <div class="col-6 d-xl-none">
+                <label class="control-label inline-text">Out-Network Fee</label>
+              </div>
+              <div class="col-6 col-xl-2 kbxl-inputgroup-container">
+                <div class="decorated-input-group">
+                  <label class="control-label text-center">$</label>
+                  <input pInput type="number" step="0.01" [(ngModel)]="s.outNetworkFlatFee" name="outNetworkFlatFee" class="ui-inputtext" />
+                  <label></label>
+                </div>
+              </div>
+
+              <div class="col-5 d-xl-none">
+                <label class="control-label inline-text">Out-Network Percent</label>
+              </div>
+              <div class="col-1 kbxl-inputgroup-container text-center inline-text">
+                <fa-icon [icon]="['fas', 'plus']" size="md"></fa-icon>
+              </div>
+              <div class="col-6 col-xl-2 kbxl-inputgroup-container">
+                <div class="decorated-input-group">
+                  <label></label>
+                  <kbxl-percentage [(percentage)]="s.outNetworkPercentFee" inputName="outNetworkPercentFee" inputClass="ui-inputtext"></kbxl-percentage>
+                  <label class="control-label text-center">%</label>
+                </div>
+              </div>
+
+              <!-- <div class="col-6 d-xl-none">
+                <label class="control-label inline-text">Out-Network Carrier LineHaul</label>
+              </div>
+              <div class="col-6 col-xl-3 kbxl-inputgroup-container">
+                <div>
+                  <p-radioButton name="outNetworkFeeAdd" [value]="false" label="Subtract From" class="mr-3"
+                    [(ngModel)]="s.outNetworkFeeAdd">
+                  </p-radioButton>
+                </div>
+                <div>
+                  <p-radioButton name="outNetworkFeeAdd" [value]="true" label="Add To" [(ngModel)]="s.outNetworkFeeAdd">
+                  </p-radioButton>
+                </div>
+              </div> -->
+            </div>
+
+          </p-panel>
+
+          <div class="row">
+            <div class="col-md-7 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label for="comments" class="control-label">Comments</label>
+              </div>
+              <div class="ui-inputgroup">
+                <textarea [rows]="5" [cols]="50" pInputTextarea [(ngModel)]="s.comments" name="comments"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button
+              kbxlActionCheck="loadshop.ui.shipperprofile.customermapping"
+              type="button"
+              pButton
+              label="Shipper Mappings"
+              class="ui-button-primary ui-button-teal m-2"
+              (click)="viewShipperMappings()"
+              *ngIf="isShipperMappingEligable(s)"
+            ></button>
+            <button
+              kbxlActionCheck="loadshop.ui.shipperprofile.customermapping"
+              type="button"
+              pButton
+              label="Enable API Processing"
+              class="ui-button-primary ui-button-teal m-2"
+              (click)="enableShipperApi(s)"
+              *ngIf="isShipperApiEligable(s)"
+            ></button>
+
+            <button type="button" pButton label="Cancel" class="button-outline-secondary m-2" (click)="cancel(s)"></button>
+            <button type="submit" pButton label="Save Shipper" class="ui-button-primary m-2" [disabled]="!form.valid"></button>
+          </div>
+        </form>
+
+        <p-dialog
+          header="Loadshop Shipper Mappings"
+          [(visible)]="displayShipperMappingsDialog"
+          [style]="{ left: '100px', 'max-width': 'calc(100vw - 200px)' }"
+          [modal]="true"
+          [closeOnEscape]="true"
+          *ngIf="isShipperMappingEligable(s)"
+        >
+          <kbxl-shipper-mapping-modal [ownerId]="s.topsOwnerId"></kbxl-shipper-mapping-modal>
+        </p-dialog>
+      </div>
+    </div>
+  </p-panel>
+</div>

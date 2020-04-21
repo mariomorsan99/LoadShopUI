@@ -1,0 +1,273 @@
+<div class="d-flex flex-column position-relative">
+  <div class="progress-indicator" *ngIf="processing || loadingCarrierUsers">
+    <div class="progressspinner-container">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </div>
+  <div *ngIf="userProfileForm.errors && submitted">
+    <div class=" error-container">
+      <p class="m-0 pl-2 text-white" *ngIf="userProfileForm.errors['noPhoneContacts']">
+        Contact Phone Number Must Be Provided
+      </p>
+    </div>
+  </div>
+  <p-panel styleClass="ui-panel-no-pad ui-panel-borderless">
+    <div class="d-flex flex-column flex-lg-row">
+      <div class="p-4 user-selector" #userSelector>
+        <div class="ui-inputgroup">
+          <p-autoComplete
+            [(ngModel)]="selectedUser"
+            [suggestions]="userResults"
+            (completeMethod)="searchUsers($event)"
+            (onSelect)="select()"
+            field="username"
+            placeholder="Search for User"
+          >
+            <ng-template let-item pTemplate="item">
+              <span
+                ><b>{{ item.username }}</b
+                >-{{ item.firstName | titlecase }} {{ item.lastName | titlecase }}</span
+              >
+            </ng-template>
+          </p-autoComplete>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-plus"
+            pToolTip="Setup New User"
+            class="ui-button-secondary"
+            (click)="setupNewUser.toggle($event)"
+          ></button>
+        </div>
+        <div class="ui-inputgroup mt-2 carrier-field" kbxlActionCheck="loadshop.ui.system.carrier.user.addedit">
+          <div class="small-covering-spinner-container" *ngIf="loadingCarriers">
+            <p-progressSpinner></p-progressSpinner>
+          </div>
+          <p-dropdown
+            [options]="carriers"
+            [(ngModel)]="selectedCarrier"
+            placeholder="Select Carrier"
+            [styleClass]="'ui-dropdown-primary'"
+            dropdownIcon="pi pi-caret-down"
+            (onChange)="onCarrierSelected()"
+            [disabled]="loadingCarriers"
+            [filter]="true"
+            filterBy="value"
+            [virtualScroll]="true"
+            itemSize="30"
+          >
+            <ng-template let-item pTemplate="item">
+              <span>{{ item?.label | titlecase }}</span>
+            </ng-template>
+          </p-dropdown>
+        </div>
+        <p-overlayPanel [dismissable]="true" [showCloseIcon]="true" #setupNewUser appendTo="body">
+          <h3>Setup User</h3>
+          <p class="mb-1">Enter the registered <b>user name</b> of the user you want to setup</p>
+          <div class="kbxl-field-label">
+            <label class="control-label">User Name</label>
+          </div>
+          <input type="text" [(ngModel)]="newUser" class="ui-user-setup-input ui-inputtext mb-2" />
+
+          <div class="d-flex justify-content-end">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-plus"
+              pToolTip="Setup New User"
+              class="ui-button-primary ui-button-teal m-2"
+              (click)="add(setupNewUser)"
+              label="&nbsp;Add User"
+            ></button>
+          </div>
+          <p>*If the user has not registered, they must <a [href]="registrationUrl" target="_blank">Create an Account</a></p>
+        </p-overlayPanel>
+      </div>
+      <div class="flex-fill p-4">
+        <div *ngIf="!updatingUser && !selectedCarrier">Please Select a User <span kbxlActionCheck="loadshop.ui.system.carrier.user.addedit">or Carrier</span></div>
+        <div *ngIf="updatingUser && !selectedCarrier">
+          <form [formGroup]="userProfileForm" (ngSubmit)="saveUser()">
+            <h3>{{ updatingUser.firstName | titlecase }} {{ updatingUser.lastName | titlecase }}</h3>
+            <div class="row mb-4">
+              <div class="col-md-4">
+                <label class="user-admin-detail-label">User Name</label>
+                {{ updatingUser.username }}
+              </div>
+              <div class="col-md-4">
+                <label class="user-admin-detail-label">
+                  Company Name
+                </label>
+                {{ updatingUser.companyName }}
+              </div>
+              <div class="col-md-4">
+                <label class="user-admin-detail-label">
+                  Email
+                </label>
+                {{ updatingUser.email }}
+              </div>
+            </div>
+            <div class="d-flex flex-column flex-lg-row justify-content-between">
+              <div class="flex-fill pr-4">
+                <!--           <div class="kbxl-field-label">
+                        <label class="control-label"
+                            [ngClass]="{'field-error': detailErrors && detailErrors.commodity}">Commodity
+                            {{(detailErrors && detailErrors.commodity) ? '*' : ''}}</label>
+                        <div class="small-spinner-container ml-2">
+                            <p-progressSpinner *ngIf="loadingCommodities"></p-progressSpinner>
+                        </div>
+                    </div> -->
+                <div class="kbxl-field-label">
+                  <label class="control-label">Security Role(s)</label>
+                  <div class="small-spinner-container ml-2">
+                    <p-progressSpinner *ngIf="loadingSecurityRoles"></p-progressSpinner>
+                  </div>
+                </div>
+                <div>
+                  <p-multiSelect
+                    [options]="allAuthorizedSecurityRoles"
+                    formControlName="securityRoleIds"
+                    placeholder="Select Users Security Role"
+                    [styleClass]="'ui-dropdown-primary'"
+                    resetFilterOnHide="true"
+                    name="securityRoleIds"
+                  >
+                  </p-multiSelect>
+                </div>
+              </div>
+              <div class="flex-fill pr-4" *ngIf="displayShippers()">
+                <div kbxlActionCheck="loadshop.ui.system.shipper.user.addedit">
+                  <div class="kbxl-field-label">
+                    <label class="control-label">Shipper(s)</label>
+                    <div class="small-spinner-container ml-2">
+                      <p-progressSpinner *ngIf="loadingAuthorizedShippers"></p-progressSpinner>
+                    </div>
+                  </div>
+                  <div>
+                    <p-multiSelect
+                      [options]="allAuthorizedShippers"
+                      formControlName="shipperIds"
+                      placeholder="Select Authorized Shippers"
+                      [styleClass]="'ui-dropdown-primary'"
+                      resetFilterOnHide="true"
+                      name="shipperIds"
+                    >
+                    </p-multiSelect>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-fill pr-4" *ngIf="displayCarrierScacs()">
+                <div kbxlActionCheck="loadshop.ui.system.carrier.user.addedit">
+                  <div class="kbxl-field-label">
+                    <label class="control-label">Carrier/Carrier Scac(s)</label>
+                    <div class="small-spinner-container ml-2">
+                      <p-progressSpinner *ngIf="loadingAuthorizedCarrierScacs"> </p-progressSpinner>
+                    </div>
+                  </div>
+                  <div>
+                    <p-multiSelect
+                      [options]="allAuthorizedCarrierScacs"
+                      formControlName="carrierScacs"
+                      placeholder="Select User's Select Carrier/SCACS"
+                      [virtualScroll]="true"
+                      (onChange)="carrierScacsChanged()"
+                      itemSize="30"
+                      filterBy="label"
+                      filterPlaceHolder="Search Carrier/SCACS"
+                      maxSelectedLabels="2"
+                      [styleClass]="'ui-dropdown-primary'"
+                      resetFilterOnHide="true"
+                      name="carrierScacs"
+                    >
+                      <ng-template let-item pTemplate="item">
+                        <span>{{ item?.label | titlecase }}</span>
+                      </ng-template>
+                    </p-multiSelect>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-column mt-3">
+              <p-checkbox
+                name="isNotificationsEnabled"
+                formControlName="isNotificationsEnabled"
+                label="Notifications Enabled"
+                binary="true"
+              ></p-checkbox>
+            </div>
+            <div class="d-flex flex-column mt-3">
+              <div class="kbxl-field-label">
+                <label
+                  class="control-label"
+                  [ngClass]="{ error: userProfileForm.errors && submitted && userProfileForm.errors['noPhoneContacts'] }"
+                  >Contact Numbers</label
+                >
+              </div>
+              <div class="flex-fill pr-4 " *ngFor="let itemFormGroup of contactNumbers; let i = index">
+                <div class="row kbxl-inputgroup-container contact-numbers" formArrayName="contactNumbers">
+                  <div [formGroupName]="i" class="col d-flex">
+                    <div class="d-flex align-items-center">
+                      <p-dropdown class="mr-2 w-auto" [options]="messageTypes" placeholder="Contact Number" formControlName="messageTypeId">
+                      </p-dropdown>
+                      <p-inputMask mask="(999) 999-9999" formControlName="notificationValue" placeholder="(999) 999-9999"></p-inputMask>
+                      <div class="mr-2 hidden" [ngClass]="{ visible: itemFormGroup?.value?.messageTypeId === 'Phone' }">
+                        <span class="mx-2">Ext.</span>
+                        <input
+                          class="ui-inputtext phone-extension"
+                          type="tel"
+                          formControlName="additionalValue"
+                          placeholder="999999"
+                          maxlength="6"
+                        />
+                      </div>
+                      <button
+                        *ngIf="i > 0"
+                        class="ui-button-danger"
+                        pButton
+                        icon="pi pi-trash"
+                        (click)="removeContact(i)"
+                        title="Delete Contact"
+                      ></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-fill pr-4 ">
+                <button
+                  pButton
+                  type="button"
+                  class="ui-button-primary ui-button-teal"
+                  icon="pi pi-plus"
+                  label="Add New"
+                  (click)="addContact()"
+                ></button>
+              </div>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button pButton label="Save User" type="submit" class="ui-button-primary m-2"></button>
+            </div>
+          </form>
+        </div>
+        <div *ngIf="!updatingUser && selectedCarrier" kbxlActionCheck="loadshop.ui.system.carrier.user.addedit">
+          <p-dataView *ngIf="!loadingCarrierUsers" [value]="carrierUsers" layout="grid">
+            <p-header>Carrier Users</p-header>
+            <ng-template let-carrierUser pTemplate="gridItem">
+              <div style="padding:.5em" class="ui-g-12 ui-md-4">
+                <p-card styleClass="carrier-card active">
+                  <p-header>
+                    {{carrierUser.firstName}} {{carrierUser.lastName}}
+                  </p-header>
+                  <div class="mt-2">
+                    <span class="mr-2" *ngFor="let role of carrierUser.securityRoles; let isLast=last">{{role.accessRoleName}}{{isLast ? '' : ','}}</span>
+                  </div>
+                  <div class="mt-2" *ngFor="let notification of carrierUser.userNotifications">
+                    <span *ngIf="notification.messageTypeId === 'Phone' || notification.messageTypeId === 'Cell_Phone'">{{notification.notificationValue}}</span>
+                  </div>
+                </p-card>
+              </div>
+            </ng-template>
+          </p-dataView>
+        </div>
+      </div>
+    </div>
+  </p-panel>
+</div>

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <Configurations>Debug;Release;Web.API;Customer.API Release</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard20</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+    <PackageReference Include="TMS.Infrastructure.Hosting.Web" Version="1.0.4944" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loadshop.DomainServices\Loadshop.DomainServices.csproj" />
+    <PackageReference Include="Loadshop.API.Models">
+      <Version>1.0.10251</Version>
+    </PackageReference>
+    <PackageReference Include="TMS.Infrastructure.Hosting.Web">
+      <Version>3.1.8662</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>

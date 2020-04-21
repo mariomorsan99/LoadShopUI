@@ -1,0 +1,57 @@
+<div>
+  <div class="kbxl-inputgroup-container">
+    <div class="kbxl-field-label">
+      <label id="filter-loads-quickFilter" class="control-label ">Quick Filter</label>
+    </div>
+    <div class="ui-inputgroup">
+      <input type="text" [(ngModel)]="localFilterCriteria.quickFilter" class="filter-box ui-inputtext" placeholder="Search Criteria" />
+      <button pButton type="button" icon="pi pi-times-circle" class="ui-button-secondary" (click)="clearFilter('quickFilter')"></button>
+    </div>
+  </div>
+
+  <div class="kbxl-inputgroup-container">
+    <div class="kbxl-field-label">
+      <label class="control-label ">Equipment</label>
+    </div>
+    <div>
+      <kbxl-tree-drop-down
+        [treeNodes]="equipment"
+        [(selectedNodes)]="selectedEquipment"
+        placeHolder="Select Equipment Type(s)"
+        class="ui-dialog-tree-view">
+      </kbxl-tree-drop-down>
+    </div>
+  </div>
+  <div class="kbxl-inputgroup-container">
+    <div class="kbxl-field-label">
+      <label class="control-label ">Customer Type</label>
+    </div>
+    <div>
+      <p-multiSelect
+        [options]="customerLoadTypes"
+        [(ngModel)]="localFilterCriteria.customerLoadTypes"
+        defaultLabel="Select Customer Type(s)"
+        [styleClass]="'ui-dropdown-primary'"
+        resetFilterOnHide="true"
+        optionLabel="name"
+        dataKey="customerLoadTypeId">
+      </p-multiSelect>
+    </div>
+  </div>
+  <div class="kbxl-inputgroup-container">
+    <div class="kbxl-field-label">
+      <label class="control-label">Origin</label>
+    </div>
+    <kbxl-address-autocomplete [(place)]="localFilterCriteria.origin" [includeAddress]="false" [placeholder]="'Search by City/State/Province'"></kbxl-address-autocomplete>
+  </div>
+  <div class="kbxl-inputgroup-container">
+    <div class="kbxl-field-label">
+      <label class="control-label">Destination</label>
+    </div>
+    <kbxl-address-autocomplete [(place)]="localFilterCriteria.dest" [includeAddress]="false" [placeholder]="'Search by City/State/Province'"></kbxl-address-autocomplete>
+  </div>
+  <div class="text-right">
+    <button pButton (click)="clear()" class="ui-button button-outline-secondary mr-3 px-3" label="Clear"></button>
+    <button pButton (click)="search()" class="ui-button-primary px-3" label="Search"></button>
+  </div>
+</div>

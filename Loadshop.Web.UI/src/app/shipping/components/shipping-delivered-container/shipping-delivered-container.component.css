@@ -1,0 +1,15 @@
+.construction-message {
+    margin: 50px;
+    color: rgb(244, 189, 33);
+    text-align: center;
+}
+
+.construction-message fa-icon {
+    margin-right: 20px;
+    vertical-align: middle;
+}
+
+.construction-message span {
+    font-size: 30px;
+    vertical-align: middle;
+}

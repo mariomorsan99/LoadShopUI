@@ -1,0 +1,5 @@
+@import 'variables';
+
+:host ::ng-deep .ui-table .ui-table-thead > tr > th {
+  top: 0;
+}

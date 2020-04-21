@@ -1,0 +1,226 @@
+<div class="d-flex flex-column position-relative">
+  <div class="progress-indicator" *ngIf="processing">
+    <div class="progressspinner-container">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </div>
+  <p-panel>
+    <p-header>
+      <div class="d-flex justify-content-between pr-2">
+        <span>Carrier Profile</span>
+      </div>
+    </p-header>
+  </p-panel>
+  <div class="d-flex flex-column flex-lg-row ui-widget">
+    <div class="d-flex">
+      <div class="left-tab">
+        <div class="kbxl-inputgroup-container">
+          <div class="ui-inputgroup">
+            <p-dropdown
+              [options]="carriers"
+              placeholder="Select Carrier"
+              [(ngModel)]="selectedCarrier"
+              dataKey="carrierId"
+              optionLabel="carrierName"
+              [filter]="true"
+              (onChange)="carrierChange()"
+              filterBy="value.carrierName"
+              [showClear]="false"
+              [virtualScroll]="true"
+              itemSize="30"
+              [styleClass]="'ui-dropdown-primary'"
+              dropdownIcon="pi pi-caret-down"
+            >
+              <ng-template let-item pTemplate="selectedItem">
+                <span class="selected-item-label">{{ selectedCarrier?.carrierName | titlecase }}</span>
+              </ng-template>
+
+              <ng-template let-item pTemplate="item">
+                <span>{{ item?.label | titlecase }}</span>
+              </ng-template>
+            </p-dropdown>
+            <!-- <button pButton type="button" icon="pi pi-plus" pToolTip="Setup New Carrier"
+                            (click)="newCarrier()"></button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-tab flex-grow-1">
+      <div *ngIf="selectedCarrierProfile">
+        <form [formGroup]="carrierProfileForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-lg-5">
+              <div class="row">
+                <div class="col-lg-6 kbxl-inputgroup-container">
+                  <label class="ui-carrier-profile-detail-label">Carrier Name</label>
+                  {{ selectedCarrierProfile.carrierName | titlecase }}
+                </div>
+                <div class="col-lg-6 kbxl-inputgroup-container">
+                  <label class="ui-carrier-profile-detail-label">US DOT Number</label>
+                  {{ selectedCarrierProfile.usdotNbr }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 kbxl-inputgroup-container">
+                  <label class="ui-carrier-profile-detail-label">Address</label>
+                  {{ selectedCarrierProfile.address | titlecase }}
+                </div>
+                <div class="col-lg-6 kbxl-inputgroup-container">
+                  <label class="ui-carrier-profile-detail-label">Operating Authority Number</label>
+                  {{ selectedCarrierProfile.operatingAuthNbr }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 kbxl-inputgroup-container">
+                  <label class="ui-carrier-profile-detail-label">City</label>
+                  {{ selectedCarrierProfile.city | titlecase }}
+                </div>
+                <div class="col-lg-6 kbxl-inputgroup-container">
+                  <label class="ui-carrier-profile-detail-label">Carrier Status</label>
+                  {{ selectedCarrierProfile.isLoadshopActive ? 'Active' : 'Inactive' }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-1 kbxl-inputgroup-container">
+                  <label class="ui-carrier-profile-detail-label">State</label>
+                  {{ selectedCarrierProfile.state }}
+                </div>
+                <div class="col-lg-2 kbxl-inputgroup-container">
+                  <label class="ui-carrier-profile-detail-label">Zip</label>
+                  {{ selectedCarrierProfile.zip }}
+                </div>
+                <div class="col-lg-3 kbxl-inputgroup-container">
+                  <label class="ui-carrier-profile-detail-label">Country</label>
+                  {{ selectedCarrierProfile.country }}
+                </div>
+                <div class="col-lg-6 kbxl-inputgroup-container">
+                  <label class="ui-carrier-profile-detail-label">RMIS Certified</label>
+                  {{ selectedCarrierProfile.rmisCertification }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div>
+                    <div class="kbxl-field-label">
+                      <label class="control-label">
+                        <span *ngIf="!carrierProfileForm.value.carrierSuccessTeamLeadId" class="text-danger">* </span>
+                        <span [ngClass]="{ 'text-danger': !carrierProfileForm.value.carrierSuccessTeamLeadId }"
+                          >Carrier Success Team Lead</span
+                        >
+                      </label>
+                    </div>
+                    <div>
+                      <p-dropdown
+                        [options]="adminUsers | toSelectItem"
+                        placeholder="Select User"
+                        formControlName="carrierSuccessTeamLeadId"
+                        [filter]="true"
+                        [showClear]="false"
+                        [virtualScroll]="true"
+                        itemSize="30"
+                        [styleClass]="'ui-dropdown-primary'"
+                        dropdownIcon="pi pi-caret-down"
+                      >
+                        <ng-template let-item pTemplate="item">
+                          <span>{{ item?.label | titlecase }}</span>
+                        </ng-template>
+                      </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div>
+                    <div class="kbxl-field-label">
+                      <label class="control-label">
+                        <span *ngIf="!carrierProfileForm.value.carrierSuccessSpecialistId" class="text-danger">* </span>
+                        <span [ngClass]="{ 'text-danger': !carrierProfileForm.value.carrierSuccessSpecialistId }"
+                          >Carrier Success Specialist</span
+                        >
+                      </label>
+                    </div>
+                    <div>
+                      <p-dropdown
+                        [options]="adminUsers | toSelectItem"
+                        placeholder="Select User"
+                        formControlName="carrierSuccessSpecialistId"
+                        [filter]="true"
+                        [showClear]="false"
+                        [virtualScroll]="true"
+                        itemSize="30"
+                        [styleClass]="'ui-dropdown-primary'"
+                        dropdownIcon="pi pi-caret-down"
+                      >
+                        <ng-template let-item pTemplate="item">
+                          <span>{{ item?.label | titlecase }}</span>
+                        </ng-template>
+                      </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7">
+              <div formArrayName="scacs">
+                <p-table [value]="scacs">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>SCAC</th>
+                      <th>Name</th>
+                      <th>Booking Eligible</th>
+                      <th>Dedicated</th>
+                      <th>Effective</th>
+                      <th>Expires</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-i="rowIndex" let-carrierScacGroup>
+                    <tr formGroupName="{{ i }}">
+                      <td>{{ carrierScacGroup.value.scac }}</td>
+                      <td>{{ carrierScacGroup.value.scacName | titlecase }}</td>
+                      <td>
+                        <p-inputSwitch formControlName="isBookingEligible"></p-inputSwitch>
+                      </td>
+                      <td>
+                        <p-inputSwitch formControlName="isDedicated"></p-inputSwitch>
+                      </td>
+                      <td>{{ carrierScacGroup.value.effectiveDate | date: 'shortDate' }}</td>
+                      <td>{{ carrierScacGroup.value.expirationDate | date: 'shortDate' }}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+              <div class="d-flex flex-column flex-lg-row justify-content-between mt-2">
+                <div>
+                  <p-checkbox class="mr-1" label="Available for Loadshop Loads" formControlName="isLoadshopActive" binary="true">
+                  </p-checkbox>
+                </div>
+                <div>
+                  <p-checkbox class="mr-1" label="KBX Contracted" formControlName="kbxlContracted" binary="true"> </p-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-lg-8">
+              <div class="kbxl-field-label">
+                <label class="control-label">
+                  <span>Comments</span>
+                </label>
+              </div>
+              <textarea [rows]="5" [cols]="300" pInputTextarea formControlName="comments"></textarea>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button pButton type="button" (click)="cancel()" class="button-outline-secondary m-2" label="Cancel"></button>
+            <button
+              pButton
+              type="submit"
+              class="ui-button-primary m-2"
+              label="Save Carrier"
+              [disabled]="!carrierProfileForm.valid"
+            ></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

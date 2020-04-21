@@ -1,0 +1,5 @@
+<kbxl-load-status [loadDetail]="loadDetail$ | async" [loadStatus]="loadStatus$ | async" [loadStatusErrors]="loadStatusErrors$ | async"
+                  [loadingStatus]="loadingStatus$ | async" [savingStatus]="savingStatus$ | async" [states]="states$ | async"
+                  [user]="user$ | async"
+                  (saveStopStatuses)="saveStopStatuses($event)" (saveInTransitStatus)="saveInTransitStatus($event)"
+                  ></kbxl-load-status>

@@ -1,0 +1,25 @@
+<div>
+    <div class="ui-inputgroup ui-tree-dropdown-toggle">
+        <button pButton class="ui-tree-button" (click)="toggle()">
+            <span [hidden]="hidePlaceholder()">{{placeHolder}}</span>
+            <span [hidden]="!hidePlaceholder()">{{getSelectedNodesDisplay()}}</span>
+        </button>
+        <button pButton [icon]="show ? 'pi  pi-caret-up' : 'pi pi-caret-down'" class="ui-dropdown-trigger" (click)="toggle()"></button>
+    </div>
+    <div [hidden]='!show' class="ui-tree-wrapper">
+        <p-tree *ngIf="singleSelection"
+            [value]="treeNodes"
+            selectionMode="single"
+            [(selection)]="selectedNode"
+            [filter]="true"
+            (onNodeSelect)="selectionChanged()"
+            (onNodeUnselect)="selectionChanged()"></p-tree>
+        <p-tree *ngIf="!singleSelection"
+            [value]="treeNodes"
+            selectionMode="checkbox"
+            [(selection)]="selectedNodes"
+            [filter]="true"
+            (onNodeSelect)="selectionChanged()"
+            (onNodeUnselect)="selectionChanged()"></p-tree>
+    </div>
+</div>

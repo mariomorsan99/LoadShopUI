@@ -1,0 +1,550 @@
+<div class="page-container">
+  <div class="d-none d-lg-block">
+    <p-panel styleClass="ui-panel-no-pad ui-panel-borderless">
+      <p-header>
+        <div class="d-flex justify-content-between">
+          <span></span>
+          <button
+            *ngIf="showExport"
+            pButton
+            type="button"
+            class="button-outline-secondary float-left"
+            label="Export Data"
+            (click)="table.exportCSV()"
+            kbxlActionCheck
+            action="loadshop.ui.myloads.exportbooked"
+          >
+            <fa-icon class="file-csv-icon" [icon]="['fas', 'file-csv']"></fa-icon>
+          </button>
+        </div>
+      </p-header>
+      <p-table
+        [rowHover]="true"
+        [columns]="columns"
+        [value]="loads"
+        #table
+        styleClass="ui-table-no-border"
+        [loading]="loading"
+        selectionMode="single"
+        [paginator]="true"
+        [rows]="50"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [first]="first"
+        (onPage)="onPage($event)"
+        [lazy]="lazy"
+        [totalRecords]="totalRecords"
+        (onLazyLoad)="onLazyLoad($event)"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th [pSortableColumn]="'equipmentCategoryId'" *ngIf="isMarketplace">
+              Equipment
+              <p-sortIcon [field]="'equipmentCategoryId'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'equipmentTypeDisplay'" *ngIf="isMarketplace">
+              Equipment Detail
+              <p-sortIcon [field]="'equipmentTypeDisplay'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'serviceTypeIds'" *ngIf="isMarketplace">
+              Service Types
+              <p-sortIcon [field]="'serviceTypeIds'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'referenceLoadDisplay'" *ngIf="!isMarketplace">
+              Shipper’s Order Number
+              <p-sortIcon [field]="'referenceLoadDisplay'"></p-sortIcon>
+            </th>
+            <th *ngIf="isBookedLoads" [pSortableColumn]="'billingLoadDisplay'">
+              Billing Load ID
+              <p-sortIcon [field]="'billingLoadDisplay'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'originCity'">
+              Origin
+              <p-sortIcon [field]="'originCity'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'destCity'">
+              Destination
+              <p-sortIcon [field]="'destCity'"></p-sortIcon>
+            </th>
+            <th *ngIf="!isBookedLoads && !user?.isShipper" [pSortableColumn]="'distanceFrom'" style="width: 85px;">
+              Origin Radius
+              <p-sortIcon [field]="'distanceFrom'"></p-sortIcon>
+            </th>
+            <th *ngIf="showTruckNumberColumn()" [pSortableColumn]="'visibilityTruckNumber'">
+              Truck #
+              <p-sortIcon [field]="'visibilityTruckNumber'"></p-sortIcon>
+            </th>
+            <th *ngIf="showPhoneNumberColumn()" [pSortableColumn]="'visibilityPhoneNumber'" style="width: 150px;">
+              Phone #
+              <p-sortIcon [field]="'visibilityPhoneNumber'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'originLateDtTm'">
+              Pickup
+              <p-sortIcon [field]="'originLateDtTm'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'destLateDtTm'">
+              Delivery
+              <p-sortIcon [field]="'destLateDtTm'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'equipmentCategoryId'" *ngIf="!isMarketplace">
+              Equipment
+              <p-sortIcon [field]="'equipmentCategoryId'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'equipmentTypeDisplay'" *ngIf="!isMarketplace">
+              Equipment Detail
+              <p-sortIcon [field]="'equipmentTypeDisplay'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'serviceTypeIds'" *ngIf="!isMarketplace">
+              Service Types
+              <p-sortIcon [field]="'serviceTypeIds'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'referenceLoadDisplay'" *ngIf="isMarketplace">
+              Shipper’s Order Number
+              <p-sortIcon [field]="'referenceLoadDisplay'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'miles'" style="width: 125px;">
+              Distance (Mi)
+              <p-sortIcon [field]="'miles'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'lineHaulRate'">
+              Total Rate
+              <p-sortIcon [field]="'lineHaulRate'"></p-sortIcon>
+            </th>
+            <th *ngIf="isBookedLoads" [pSortableColumn]="'scac'" style="width: 90px;">
+              SCAC
+              <p-sortIcon [field]="'scac'"></p-sortIcon>
+            </th>
+            <th *ngIf="displayStatusColumn"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-loads let-rowIndex="rowIndex">
+          <tr (click)="onRowSelect(loads)" [pSelectableRow]="loads">
+            <td *ngIf="isMarketplace">
+              {{ loads.equipmentCategoryId }}
+            </td>
+            <td *ngIf="isMarketplace">
+              {{ loads.equipmentTypeDisplay }}
+            </td>
+            <td
+              *ngIf="isMarketplace"
+              (mouseenter)="serviceTypeMouseHover(loads, serviceTypesOverlay, $event)"
+              (mouseleave)="serviceTypeMouseHoverOut(serviceTypesOverlay)"
+            >
+              {{ getServiceTypes(loads) }}
+            </td>
+            <td *ngIf="!isMarketplace">
+              <kbxl-customer-type-icon
+                [referenceLoadDisplay]="loads.referenceLoadDisplay"
+                [customerLoadTypeId]="loads.customerLoadTypeId"
+              ></kbxl-customer-type-icon>
+            </td>
+            <td [hidden]="!isBookedLoads">
+              {{ loads.billingLoadDisplay }}
+            </td>
+            <td>{{ loads.originCity | titlecase }}, {{ loads.originState }}</td>
+            <td>{{ loads.destCity | titlecase }}, {{ loads.destState }}</td>
+            <td [hidden]="isBookedLoads && !user?.isShipper" class="text-center">
+              {{ loads.distanceFrom ? loads.distanceFrom + ' mi' : 'N/A' }}
+            </td>
+
+            <td *ngIf="showROTruckNumber(loads.destLateDtTm)" class="text-right wrapword wrap-overflow">
+              {{ loads.visibilityTruckNumber }}
+            </td>
+            <td
+              *ngIf="showEditTruckNumber(loads.destLateDtTm)"
+              class="text-center editable-table-cell wrapword wrap-overflow"
+              [pEditableColumn]="loads"
+              [pEditableColumnField]="'visibilityTruckNumber'"
+              (click)="onEditTruckNumberInit($event, loads)"
+            >
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input
+                    pInputText
+                    type="text"
+                    [(ngModel)]="loads.visibilityTruckNumber"
+                    (blur)="onEditComplete('visibilityTruckNumber', loads, rowIndex, table, $event)"
+                    (keydown.enter)="onEditComplete('visibilityTruckNumber', loads, rowIndex, table, $event)"
+                  />
+                </ng-template>
+                <ng-template pTemplate="output">
+                  <i
+                    *ngIf="savingLoadId !== loads.loadId && !showVisibilityWarning(loads) && !loads.visibilityTruckNumber"
+                    class="pi pi-pencil empty"
+                  ></i>
+                  <i
+                    *ngIf="savingLoadId !== loads.loadId && !showVisibilityWarning(loads) && loads.visibilityTruckNumber"
+                    class="pi pi-pencil filled"
+                  ></i>
+                  <i *ngIf="savingLoadId !== loads.loadId && showVisibilityWarning(loads)" class="pi pi-exclamation-triangle"></i>
+                  <span *ngIf="savingLoadId !== loads.loadId && errorLoadId !== loads.loadId">{{ loads.visibilityTruckNumber }}</span>
+                  <span *ngIf="savingLoadId !== loads.loadId && errorLoadId === loads.loadId && truckError === false">{{
+                    loads.visibilityTruckNumber
+                  }}</span>
+                  <span *ngIf="savingLoadId !== loads.loadId && errorLoadId === loads.loadId && truckError === true" class="error">{{
+                    loads.visibilityTruckNumber
+                  }}</span>
+                  <i *ngIf="savingLoadId === loads.loadId" class="ui-table-loading-icon pi-spin pi pi-spinner"></i>
+                </ng-template>
+              </p-cellEditor>
+            </td>
+
+            <td *ngIf="showROPhoneNumber(loads.destLateDtTm)" class="text-center wrapword wrap-overflow">
+              {{ loads.visibilityPhoneNumber }}
+            </td>
+            <td
+              *ngIf="showEditPhoneNumber(loads.destLateDtTm)"
+              class="text-center editable-table-cell wrapword wrap-overflow"
+              [pEditableColumn]="loads"
+              [pEditableColumnField]="'visibilityPhoneNumber'"
+              (click)="onEditPhoneNumberInit($event, loads)"
+            >
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <p-inputMask
+                    pInputText
+                    #phoneInputMask
+                    mask="(999) 999-9999"
+                    [(ngModel)]="loads.visibilityPhoneNumber"
+                    (onBlur)="onEditComplete('visibilityPhoneNumber', loads, rowIndex, table, $event)"
+                    (keydown.enter)="onEditComplete('visibilityPhoneNumber', loads, rowIndex, table, $event)"
+                    placeholder="(999) 999-9999"
+                  >
+                  </p-inputMask>
+                </ng-template>
+                <ng-template pTemplate="output">
+                  <i
+                    *ngIf="
+                      savingLoadId !== loads.loadId &&
+                      !showVisibilityWarning(loads) &&
+                      !loads.visibilityPhoneNumber &&
+                      !loads.mobileExternallyEntered
+                    "
+                    class="pi pi-pencil empty"
+                  ></i>
+                  <i
+                    *ngIf="
+                      savingLoadId !== loads.loadId &&
+                      !showVisibilityWarning(loads) &&
+                      !loads.visibilityPhoneNumber &&
+                      loads.mobileExternallyEntered
+                    "
+                    class="pi pi-check"
+                  ></i>
+                  <i
+                    *ngIf="savingLoadId !== loads.loadId && !showVisibilityWarning(loads) && loads.visibilityPhoneNumber"
+                    class="pi pi-pencil filled"
+                  ></i>
+                  <i *ngIf="savingLoadId !== loads.loadId && showVisibilityWarning(loads)" class="pi pi-exclamation-triangle"></i>
+                  <span *ngIf="savingLoadId !== loads.loadId && errorLoadId !== loads.loadId">{{ loads.visibilityPhoneNumber }}</span>
+                  <span *ngIf="savingLoadId !== loads.loadId && errorLoadId === loads.loadId && phoneError === false">{{
+                    loads.visibilityPhoneNumber
+                  }}</span>
+                  <span *ngIf="savingLoadId !== loads.loadId && errorLoadId === loads.loadId && phoneError === true" class="error">{{
+                    loads.visibilityPhoneNumber
+                  }}</span>
+                  <i *ngIf="savingLoadId === loads.loadId" class="ui-table-loading-icon pi-spin pi pi-spinner"></i>
+                </ng-template>
+              </p-cellEditor>
+            </td>
+
+            <td>
+              <span *ngIf="loads.originEarlyDtTm && loads.originEarlyDtTm !== loads.originLateDtTm">
+                {{ loads.originEarlyDtTm | date: 'short' }}
+                <br />{{ loads.originLateDtTm | date: 'short' }}
+              </span>
+              <span *ngIf="!loads.originEarlyDtTm || loads.originEarlyDtTm === loads.originLateDtTm">
+                {{ loads.originLateDtTm | date: 'short' }}
+              </span>
+            </td>
+            <td>
+              <span *ngIf="loads.destEarlyDtTm && loads.destEarlyDtTm !== loads.destLateDtTm">
+                {{ loads.destEarlyDtTm | date: 'short' }}
+                <br />{{ loads.destLateDtTm | date: 'short' }}
+              </span>
+              <span *ngIf="!loads.destEarlyDtTm || loads.destEarlyDtTm === loads.destLateDtTm">
+                {{ loads.destLateDtTm | date: 'short' }}
+              </span>
+            </td>
+            <td *ngIf="!isMarketplace">
+              {{ loads.equipmentCategoryId }}
+            </td>
+            <td *ngIf="!isMarketplace">
+              {{ loads.equipmentTypeDisplay }}
+            </td>
+            <td
+              *ngIf="!isMarketplace"
+              (mouseenter)="serviceTypeMouseHover(loads, serviceTypesOverlay, $event)"
+              (mouseleave)="serviceTypeMouseHoverOut(serviceTypesOverlay)"
+            >
+              {{ getServiceTypes(loads) }}
+            </td>
+            <td *ngIf="isMarketplace">
+              <kbxl-customer-type-icon
+                [referenceLoadDisplay]="loads.referenceLoadDisplay"
+                [customerLoadTypeId]="loads.customerLoadTypeId"
+              ></kbxl-customer-type-icon>
+            </td>
+            <td class="text-right">
+              {{ loads.miles }}
+            </td>
+            <td
+              class="text-right"
+              (mouseenter)="hoveredPricingRow = loads; pricingOverlay.show($event)"
+              (mouseleave)="pricingOverlay.hide($event); hoveredPricingRow = null"
+            >
+              <fa-icon *ngIf="loads.isEstimatedFSC" [icon]="['fas', 'asterisk']" class="estimated-fsc-icon orange"></fa-icon>
+              {{ loads.lineHaulRate + loads.fuelRate | currency }}
+            </td>
+            <td [hidden]="!isBookedLoads">
+              {{ loads.scac }}
+            </td>
+            <td *ngIf="displayStatusColumn" class="text-center">
+              <button
+                *ngIf="loads.isPlatformPlus"
+                type="button"
+                class="button-outline-secondary ui-status-button"
+                pButton
+                label="Status"
+                (click)="onStatusClicked(loads, $event)"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="numberOfColumns text-center" style="height: 80px;">
+              <span *ngIf="loading">Loading...</span>
+              <span *ngIf="!loading">No results</span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+  </div>
+  <div class="d-lg-none">
+    <div class="load-item" *ngFor="let load of loads; let i = index">
+      <a (click)="onRowSelect(load)">
+        <p-card styleClass="load-grid-card">
+          <p-header>
+            <div class="d-flex flex-column">
+              <div class="d-flex flex-wrap align-items-center">
+                <div class="flex-grow-1">
+                  <div class="trip-origin">
+                    <div class="trip-marker-icon">
+                      <fa-icon [icon]="['far', 'circle']" size="md"></fa-icon>
+                    </div>
+                    <span class="trip-text">{{ load.originCity | titlecase }}, {{ load.originState }}</span>
+                  </div>
+                  <div class="trip-ellipsis-icon">
+                    <fa-icon [icon]="['fas', 'ellipsis-v']" size="md"></fa-icon>
+                  </div>
+                  <div class="trip-destination">
+                    <div class="trip-marker-icon">
+                      <fa-icon [icon]="['fas', 'map-marker-alt']" size="md"></fa-icon>
+                    </div>
+                    <span class="trip-text">{{ load.destCity | titlecase }}, {{ load.destState }}</span>
+                  </div>
+                </div>
+                <div>
+                  <p class="all-in-rate-value">{{ load.lineHaulRate + load.fuelRate | currency }}</p>
+                  <p class="all-in-rate-label text-right">Total Rate</p>
+                </div>
+              </div>
+            </div>
+          </p-header>
+          <div class="d-flex flex-column load-item-detail">
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="flex-grow-1">
+                <span>Shipper’s Order Number</span>
+              </div>
+              <div>
+                <span>{{ load.referenceLoadDisplay }}</span>
+              </div>
+            </div>
+            <div *ngIf="isBookedLoads" class="d-flex flex-wrap align-items-center">
+              <div class="flex-grow-1">
+                <span>Billing Load ID</span>
+              </div>
+              <div>
+                <span>{{ load.billingLoadDisplay }}</span>
+              </div>
+            </div>
+            <div *ngIf="showTruckNumberColumn()" class="d-flex flex-wrap align-items-center">
+              <div class="flex-grow-1">
+                <span>Truck #</span>
+              </div>
+              <div *ngIf="showROTruckNumber(load.destLateDtTm)">
+                <span>{{ load.visibilityTruckNumber }}</span>
+              </div>
+              <div *ngIf="showEditTruckNumber(load.destLateDtTm)" kbxlStopClickPropagation class="edit-item">
+                <a
+                  *ngIf="savingLoadId !== load.loadId && editingTruckNumberLoadId !== load.loadId"
+                  (click)="onEditTruckNumberInit($event, load)"
+                >
+                  <i *ngIf="!showVisibilityWarning(load) && !load.visibilityTruckNumber" class="pi pi-pencil empty"></i>
+                  <i *ngIf="!showVisibilityWarning(load) && load.visibilityTruckNumber" class="pi pi-pencil filled"></i>
+                  <i *ngIf="showVisibilityWarning(load)" class="pi pi-exclamation-triangle"></i>
+                  <span *ngIf="load.visibilityTruckNumber" class="ml-2">{{ load.visibilityTruckNumber }}</span>
+                </a>
+                <ng-container *ngIf="editingTruckNumberLoadId === load.loadId">
+                  <div class="edit-backdrop"></div>
+                  <input
+                    pInputText
+                    kbxlAutoFocus
+                    type="text"
+                    class="ui-inputtext"
+                    [(ngModel)]="load.visibilityTruckNumber"
+                    (blur)="onEditComplete('visibilityTruckNumber', load, null, null, $event)"
+                    (keydown.enter)="onEditComplete('visibilityTruckNumber', load, null, null, $event)"
+                  />
+                </ng-container>
+                <i *ngIf="savingLoadId === load.loadId" class="ui-table-loading-icon pi-spin pi pi-spinner"></i>
+              </div>
+            </div>
+            <div *ngIf="showPhoneNumberColumn()" class="d-flex flex-wrap align-items-center">
+              <div class="flex-grow-1">
+                <span>Phone #</span>
+              </div>
+              <div *ngIf="showROPhoneNumber(load.destLateDtTm)">
+                <span>{{ load.visibilityPhoneNumber }}</span>
+              </div>
+              <div *ngIf="showEditPhoneNumber(load.destLateDtTm)" kbxlStopClickPropagation class="edit-item">
+                <a
+                  *ngIf="savingLoadId !== load.loadId && editingPhoneNumberLoadId !== load.loadId"
+                  (click)="onEditPhoneNumberInit($event, load)"
+                >
+                  <i
+                    *ngIf="!showVisibilityWarning(load) && !load.visibilityPhoneNumber && !loads.mobileExternallyEntered"
+                    class="pi pi-pencil empty"
+                  ></i>
+                  <i
+                    *ngIf="!showVisibilityWarning(load) && !load.visibilityPhoneNumber && load.mobileExternallyEntered"
+                    class="pi pi-check"
+                  ></i>
+                  <i *ngIf="!showVisibilityWarning(load) && load.visibilityPhoneNumber" class="pi pi-pencil filled"></i>
+                  <i *ngIf="showVisibilityWarning(load)" class="pi pi-exclamation-triangle"></i>
+                  <span *ngIf="load.visibilityPhoneNumber" class="ml-2">{{ load.visibilityPhoneNumber }}</span>
+                </a>
+                <p-inputMask
+                  *ngIf="editingPhoneNumberLoadId === load.loadId"
+                  pInputText
+                  kbxlAutoFocus
+                  mask="(999) 999-9999"
+                  [(ngModel)]="load.visibilityPhoneNumber"
+                  (onBlur)="onEditComplete('visibilityPhoneNumber', load, null, null, $event)"
+                  (keydown.enter)="onEditComplete('visibilityPhoneNumber', load, null, null, $event)"
+                  placeholder="(999) 999-9999"
+                >
+                </p-inputMask>
+                <i *ngIf="savingLoadId === load.loadId" class="ui-table-loading-icon pi-spin pi pi-spinner"></i>
+                <div *ngIf="editingPhoneNumberLoadId === load.loadId" class="edit-backdrop"></div>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="flex-grow-1">
+                <span>Pickup</span>
+              </div>
+              <div>
+                <span *ngIf="load.originEarlyDtTm && load.originEarlyDtTm !== load.originLateDtTm">
+                  {{ load.originEarlyDtTm | date: 'short' }} - {{ load.originLateDtTm | date: 'short' }}
+                </span>
+                <span *ngIf="!load.originEarlyDtTm || load.originEarlyDtTm === load.originLateDtTm">
+                  {{ load.originLateDtTm | date: 'short' }}
+                </span>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="flex-grow-1">
+                <span>Delivery</span>
+              </div>
+              <div>
+                <span *ngIf="load.destEarlyDtTm && load.destEarlyDtTm !== load.destLateDtTm">
+                  {{ load.destEarlyDtTm | date: 'short' }} - {{ load.destLateDtTm | date: 'short' }}
+                </span>
+                <span *ngIf="!load.destEarlyDtTm || load.destEarlyDtTm === load.destLateDtTm">
+                  {{ load.destLateDtTm | date: 'short' }}
+                </span>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="flex-grow-1">
+                <span>Distance</span>
+              </div>
+              <div>
+                <span>{{ load.miles }}</span>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="flex-grow-1">
+                <span>Equipment</span>
+              </div>
+              <div>
+                <span>{{ load.equipmentCategoryId }} - {{ load.equipmentTypeDisplay }} </span>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap align-items-center" *ngIf="load.serviceTypeIds?.length > 0">
+              <div class="flex-grow-1">
+                <span>Service Types</span>
+              </div>
+              <div>
+                <span>{{ getServiceTypeNames(load) }}</span>
+              </div>
+            </div>
+            <div *ngIf="isBookedLoads" class="d-flex flex-wrap align-items-center">
+              <div class="flex-grow-1">
+                <span>SCAC</span>
+              </div>
+              <div>
+                <span>{{ load.scac }}</span>
+              </div>
+            </div>
+          </div>
+        </p-card>
+      </a>
+    </div>
+  </div>
+</div>
+
+<p-overlayPanel #pricingOverlay showTransitionOptions="0ms" hideTransitionOptions="0ms">
+  <table *ngIf="hoveredPricingRow" class="pricing-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Line Haul</th>
+        <th>
+          <fa-icon [icon]="['fas', 'plus']" size="md"></fa-icon>
+        </th>
+        <th>
+          <span *ngIf="!hoveredPricingRow.isEstimatedFSC">FSC</span>
+          <span *ngIf="hoveredPricingRow.isEstimatedFSC"><i>* Est FSC </i></span>
+        </th>
+        <th>
+          <fa-icon [icon]="['fas', 'equals']" size="md"></fa-icon>
+        </th>
+        <th>Total Rate</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td>{{ hoveredPricingRow.lineHaulRate | currency }}</td>
+        <td>
+          <fa-icon [icon]="['fas', 'plus']" size="md"></fa-icon>
+        </td>
+        <td>{{ hoveredPricingRow.fuelRate | currency }}</td>
+        <td>
+          <fa-icon [icon]="['fas', 'equals']" size="md"></fa-icon>
+        </td>
+        <td class="pricing-detail">{{ hoveredPricingRow.lineHaulRate + hoveredPricingRow.fuelRate | currency }}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</p-overlayPanel>
+
+<p-overlayPanel #serviceTypesOverlay showTransitionOptions="0ms" hideTransitionOptions="0ms">
+  <div *ngIf="hoveredPricingRow">
+    {{ getServiceTypesHover(hoveredPricingRow) }}
+  </div>
+</p-overlayPanel>

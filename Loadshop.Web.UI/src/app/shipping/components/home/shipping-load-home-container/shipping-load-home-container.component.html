@@ -1,0 +1,77 @@
+<div class="d-flex flex-column">
+  <div class="progress-indicator" *ngIf="loading$ | async">
+    <div class="progressspinner-container">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </div>
+  <kbxl-shipping-load-home-header
+    [selectedLoads]="selectedLoads$ | async"
+    [loadingAnySmartSpotPrices]="loadingAnySmartSpotPrices$ | async"
+    [smartSpotPrices]="smartSpotPrices$ | async"
+    [allowManualLoadCreation]="(userProfile$ | async)?.allowManualLoadCreation"
+    (postLoads)="postLoads($event)"
+    (createLoad)="createLoad()"
+  >
+  </kbxl-shipping-load-home-header>
+
+  <kbxl-color-bar></kbxl-color-bar>
+
+  <div class="d-flex home-container p-1 p-xl-4">
+    <div class="card-container" *ngIf="!(loading$ | async)">
+      <div class="quickfilter">
+        <div class="kbxl-field-label">
+          <label id="filter-loads-string" class="control-label">Quick Filter</label>
+        </div>
+        <div class="ui-inputgroup">
+          <input
+            type="text"
+            [(ngModel)]="filterCriteria.quickFilter"
+            class="filter-box ui-inputtext"
+            pInputText
+            placeholder="Search Criteria"
+            (keyup)="onFilterChange(filterCriteria)"
+          />
+          <button pButton type="button" icon="pi pi-times-circle" (click)="clearFilter('quickFilter')"></button>
+          <button pButton type="button" icon="pi pi-filter" class="ui-button-secondary" (click)="viewFilterCriteria()"></button>
+        </div>
+      </div>
+      <div class="card-scroll">
+        <kbxl-shipping-load-cards
+          [loads]="loads$ | async"
+          [selectedLoads]="selectedLoads$ | async"
+          (loadSelected)="loadSelected($event)"
+          (loadUnselected)="loadUnselected($event)"
+          (removeLoad)="removeLoad($event)"
+          (deleteLoad)="deleteLoad($event)"
+        ></kbxl-shipping-load-cards>
+      </div>
+    </div>
+    <div class="detail-container flex-grow-1 ml-2 ml-xl-4">
+      <div *ngFor="let detail of selectedLoads$ | async">
+        <kbxl-shipping-load-detail-container
+          [detail]="detail"
+          [errors]="postValidationProblemDetails$ | async"
+          (deselectLoad)="loadUnselected($event)"
+        ></kbxl-shipping-load-detail-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  header="Filter Criteria"
+  [(visible)]="displayFilterCriteriaDialog"
+  [style]="{ left: '100px', 'max-width': 'calc(100vw - 200px)' }"
+  [modal]="true"
+  [closeOnEscape]="true"
+  (onHide)="onFilterChange(filterCriteria)"
+>
+  <kbxl-shipping-load-filter
+    [(filterCriteria)]="filterCriteria"
+    [equipment]="equipment$ | async | toTreeNodes"
+    [customerLoadTypes]="customerLoadTypes$ | async"
+    [states]="states$ | async"
+    [(visible)]="displayFilterCriteriaDialog"
+  >
+  </kbxl-shipping-load-filter>
+</p-dialog>

@@ -1,0 +1,645 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2754cc78-5e6e-4759-bc50-f2d20f47c8dd}</ProjectGuid>
+    <ProjectHome />
+    <ProjectView>ShowAllFiles</ProjectView>
+    <StartupFile>src\main.ts</StartupFile>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+    <EnableTypeScript>true</EnableTypeScript>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <StartWebBrowser>True</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Content Include=".angular.json" />
+    <Content Include="package.json" />
+    <Content Include="src\app\admin\components\admin-container\admin-container.component.html" />
+    <Content Include="src\app\admin\components\admin-container\admin-container.component.scss" />
+    <Content Include="src\app\admin\components\carrier-profile\carrier-profile-container\carrier-profile-container.component.html" />
+    <Content Include="src\app\admin\components\carrier-profile\carrier-profile-container\carrier-profile-container.component.scss" />
+    <Content Include="src\app\admin\components\load-carrier-group-container\load-carrier-group-container.component.scss" />
+    <Content Include="src\app\admin\components\load-carrier-group-container\load-carrier-group-container.component.html" />
+    <Content Include="src\app\admin\components\load-carrier-group-detail\load-carrier-group-detail.component.css" />
+    <Content Include="src\app\admin\components\load-carrier-group-detail\load-carrier-group-detail.component.html" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-container\load-carrier-group-carriers-container.component.html" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-container\load-carrier-group-carriers-container.component.scss" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-detail\load-carrier-group-carriers-detail.component.html" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-detail\load-carrier-group-carriers-detail.component.scss" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-container\load-carrier-group-container.component.html" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-container\load-carrier-group-container.component.scss" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail-container\load-carrier-group-detail-container.component.html" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail-container\load-carrier-group-detail-container.component.scss" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail\load-carrier-group-detail.component.css" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail\load-carrier-group-detail.component.html" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-grid\load-carrier-group-grid.component.html" />
+    <Content Include="src\app\admin\components\load-carrier-group\load-carrier-group-grid\load-carrier-group-grid.component.scss" />
+    <Content Include="src\app\admin\components\shipper-profile\shipper-profile-container\shipper-profile-container.component.html" />
+    <Content Include="src\app\admin\components\shipper-profile\shipper-profile-container\shipper-profile-container.component.scss" />
+    <Content Include="src\app\admin\components\special-instructions\special-instructions-container\special-instructions-container.component.html" />
+    <Content Include="src\app\admin\components\special-instructions\special-instructions-container\special-instructions-container.component.scss" />
+    <Content Include="src\app\admin\components\users\users-container\users-container.component.html" />
+    <Content Include="src\app\admin\components\users\users-container\users-container.component.scss" />
+    <Content Include="src\app\app.component.scss" />
+    <Content Include="src\app\load-board\components\load-detail\load-detail.component.scss" />
+    <Content Include="src\app\load-board\components\load-grid\load-grid.component.scss" />
+    <Content Include="src\app\shared\components\color-bar\color-bar.component.html" />
+    <Content Include="src\app\shared\components\color-bar\color-bar.component.scss" />
+    <Content Include="src\app\shared\components\sidebar-close\sidebar-close.component.html" />
+    <Content Include="src\app\shared\components\sidebar-close\sidebar-close.component.scss" />
+    <Content Include="src\app\shipping\components\home\shipping-load-audit-log-grid\shipping-load-audit-log-grid.component.html" />
+    <Content Include="src\app\shipping\components\home\shipping-load-audit-log-grid\shipping-load-audit-log-grid.component.scss" />
+    <Content Include="src\app\shipping\components\home\shipping-load-cards\shipping-load-cards.component.html" />
+    <Content Include="src\app\shipping\components\home\shipping-load-cards\shipping-load-cards.component.scss" />
+    <Content Include="src\app\shipping\components\home\shipping-load-detail-container\shipping-load-detail-container.component.css" />
+    <Content Include="src\app\shipping\components\home\shipping-load-detail-container\shipping-load-detail-container.component.html" />
+    <Content Include="src\app\shipping\components\home\shipping-load-detail\shipping-load-detail.component.html" />
+    <Content Include="src\app\shipping\components\home\shipping-load-detail\shipping-load-detail.component.scss" />
+    <Content Include="src\app\shipping\components\home\shipping-load-filter\shipping-load-filter.component.html" />
+    <Content Include="src\app\shipping\components\home\shipping-load-filter\shipping-load-filter.component.scss" />
+    <Content Include="src\app\shipping\components\home\shipping-load-home-container\shipping-load-home-container.component.html" />
+    <Content Include="src\app\shipping\components\home\shipping-load-home-container\shipping-load-home-container.component.scss" />
+    <Content Include="src\app\shipping\components\home\shipping-load-home-header\shipping-load-home-header.component.html" />
+    <Content Include="src\app\shipping\components\home\shipping-load-home-header\shipping-load-home-header.component.scss" />
+    <Content Include="src\app\shipping\components\shipping-booked-container\shipping-booked-container.component.css" />
+    <Content Include="src\app\shipping\components\shipping-booked-container\shipping-booked-container.component.html" />
+    <Content Include="src\app\shipping\components\shipping-delivered-container\shipping-delivered-container.component.css" />
+    <Content Include="src\app\shipping\components\shipping-delivered-container\shipping-delivered-container.component.html" />
+    <Content Include="src\app\shipping\components\shipping-grid\shipping-grid.component.html" />
+    <Content Include="src\app\shipping\components\shipping-grid\shipping-grid.component.scss" />
+    <Content Include="src\app\shipping\components\shipping-load-detail-container\shipping-load-detail-container.component.css" />
+    <Content Include="src\app\shipping\components\shipping-load-detail-container\shipping-load-detail-container.component.html" />
+    <Content Include="src\app\shipping\components\shipping-load-detail\shipping-load-detail.component.html" />
+    <Content Include="src\app\shipping\components\shipping-load-detail\shipping-load-detail.component.scss" />
+    <Content Include="src\app\shipping\components\shipping-posted-container\shipping-posted-container.component.css" />
+    <Content Include="src\app\shipping\components\shipping-posted-container\shipping-posted-container.component.html" />
+    <Content Include="src\app\user\components\user-focus-entity-selector-container\user-focus-entity-selector-container.component.html" />
+    <Content Include="src\app\user\components\user-focus-entity-selector-container\user-focus-entity-selector-container.component.scss" />
+    <Content Include="src\app\user\components\user-focus-entity-selector\user-focus-entity-selector.component.html" />
+    <Content Include="src\app\user\components\user-focus-entity-selector\user-focus-entity-selector.component.scss" />
+    <Content Include="src\app\user\components\user-lane-detail-container\user-lane-detail-container.component.css" />
+    <Content Include="src\app\user\components\user-lane-detail-container\user-lane-detail-container.component.html" />
+    <Content Include="src\app\user\components\user-lane-detail\user-lane-detail.component.scss" />
+    <Content Include="src\app\user\components\user-saved-lanes\user-saved-lanes.component.scss" />
+    <Content Include="src\assets\icons.png" />
+    <Content Include="src\assets\loadshop-logo-alternate.png" />
+    <Content Include="src\assets\loadshop-logo-period.png" />
+    <Content Include="src\assets\loadshop-logo.png" />
+    <Content Include="src\styles.scss" />
+    <Content Include="src\variables.scss" />
+    <Content Include="tsconfig.json" />
+    <Content Include="tslint.json" />
+    <Compile Include="karma.conf.js" />
+    <Compile Include="protractor.conf.js" />
+    <Content Include="e2e\tsconfig.e2e.json" />
+    <TypeScriptCompile Include="e2e\app.e2e-spec.ts" />
+    <TypeScriptCompile Include="e2e\app.po.ts" />
+    <Content Include="src\index.html" />
+    <Content Include="src\favicon.ico" />
+    <Content Include="src\tsconfig.app.json" />
+    <Content Include="src\tsconfig.spec.json" />
+    <TypeScriptCompile Include="src\app\admin\admin.module.ts" />
+    <TypeScriptCompile Include="src\app\admin\admin.routing.module.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\admin-container\admin-container.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\carrier-profile\carrier-profile-container\carrier-profile-container.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group-container\load-carrier-group-container.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group-container\load-carrier-group-container.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group-container\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group-detail\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group-detail\load-carrier-group-detail.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group-detail\load-carrier-group-detail.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-container\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-container\load-carrier-group-carriers-container.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-container\load-carrier-group-carriers-container.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-detail\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-detail\load-carrier-group-carriers-detail.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-detail\load-carrier-group-carriers-detail.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-container\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-container\load-carrier-group-container.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-container\load-carrier-group-container.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail-container\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail-container\load-carrier-group-detail-container.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail-container\load-carrier-group-detail-container.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail\load-carrier-group-detail.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail\load-carrier-group-detail.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-grid\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-grid\load-carrier-group-grid.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\load-carrier-group\load-carrier-group-grid\load-carrier-group-grid.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\shipper-profile\shipper-profile-container\shipper-profile-container.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\special-instructions\special-instructions-container\special-instructions-container.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\components\users\users-container\users-container.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\services\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\services\load-carrier-group.service.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\actions\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\actions\load-carrier-group-carrier.actions.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\actions\load-carrier-group.actions.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\effects\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\effects\load-carrier-group-carrier.effects.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\effects\load-carrier-group.effects.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\reducers\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\reducers\load-carrier-group-carrier.reducer.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\reducers\load-carrier-group.reducer.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\selectors\index.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\selectors\load-carrier-group-carrier.selector.ts" />
+    <TypeScriptCompile Include="src\app\admin\store\selectors\load-carrier-group.selector.ts" />
+    <TypeScriptCompile Include="src\app\core\components\mobile-browser-detection\index.ts" />
+    <TypeScriptCompile Include="src\app\core\components\mobile-browser-detection\mobile-browser-detection.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\core\components\mobile-browser-detection\mobile-browser-detection.component.ts" />
+    <TypeScriptCompile Include="src\app\core\services\google-analytics.service.ts" />
+    <TypeScriptCompile Include="src\app\core\store\actions\browser.actions.ts" />
+    <TypeScriptCompile Include="src\app\core\store\actions\carrier.actions.ts" />
+    <TypeScriptCompile Include="src\app\core\store\actions\commodity.actions.ts" />
+    <TypeScriptCompile Include="src\app\core\store\actions\customer.actions.ts" />
+    <TypeScriptCompile Include="src\app\core\store\effects\analytics.effects.ts" />
+    <TypeScriptCompile Include="src\app\core\store\effects\carrier.effects.ts" />
+    <TypeScriptCompile Include="src\app\core\store\effects\commodity.effects.ts" />
+    <TypeScriptCompile Include="src\app\core\store\effects\customer.effects.ts" />
+    <TypeScriptCompile Include="src\app\core\store\reducers\browser.reducer.ts" />
+    <TypeScriptCompile Include="src\app\core\store\reducers\carrier.reducer.ts" />
+    <TypeScriptCompile Include="src\app\core\store\reducers\commodity.reducer.ts" />
+    <TypeScriptCompile Include="src\app\core\store\reducers\customer.reducer.ts" />
+    <TypeScriptCompile Include="src\app\core\store\selectors\browser.selectors.ts" />
+    <TypeScriptCompile Include="src\app\core\store\selectors\carrier.selectors.ts" />
+    <TypeScriptCompile Include="src\app\core\store\selectors\commodity.selector.ts" />
+    <TypeScriptCompile Include="src\app\core\store\selectors\customer.selectors.ts" />
+    <TypeScriptCompile Include="src\app\shared\components\color-bar\color-bar.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\components\color-bar\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\components\sidebar-close\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\components\sidebar-close\sidebar-close.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\directives\auto-focus\auto-focus.directive.spec.ts" />
+    <TypeScriptCompile Include="src\app\shared\directives\auto-focus\auto-focus.directive.ts" />
+    <TypeScriptCompile Include="src\app\shared\directives\auto-focus\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\directives\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\directives\stop-click-propagation\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\directives\stop-click-propagation\stop-click-propagation.directive.spec.ts" />
+    <TypeScriptCompile Include="src\app\shared\directives\stop-click-propagation\stop-click-propagation.directive.ts" />
+    <TypeScriptCompile Include="src\app\shared\guards\root.guard.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\audit-type.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\carrier-scac.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\carrier.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\commodity.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\customer.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\grouping.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load-audit-log-data.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load-audit.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load-carrier-group-carrier-data.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load-carrier-group-data.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load-carrier-group.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load-carrier-scac-data.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load-claim.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load-detail.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\post-loads-client-response.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\posting-load.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\save-visibility-data-response.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\security-access-role-data.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\security-app-action-data.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\security-app-action-type.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\shipping-load-carrier-group-data.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\shipping-load-detail-error.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\shipping-load-detail.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\shipping-load-filter.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\shipping-load-search-types.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\shipping-load-view.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\user-focus-entity-result.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\user-focus-entity.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\validation-problem-details.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\visibility-badge.ts" />
+    <TypeScriptCompile Include="src\app\shared\utilities\validate-userlane-city.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-audit-log-grid\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-audit-log-grid\shipping-load-audit-log-grid.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-audit-log-grid\shipping-load-audit-log-grid.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-cards\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-cards\shipping-load-cards.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-cards\shipping-load-cards.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-detail-container\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-detail-container\shipping-load-detail-container.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-detail-container\shipping-load-detail-container.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-detail\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-detail\shipping-load-detail.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-detail\shipping-load-detail.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-filter\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-filter\shipping-load-filter.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-filter\shipping-load-filter.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-home-container\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-home-container\shipping-load-home-container.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-home-container\shipping-load-home-container.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-home-header\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-home-header\shipping-load-home-header.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\home\shipping-load-home-header\shipping-load-home-header.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-booked-container\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-booked-container\shipping-booked-container.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-delivered-container\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-delivered-container\shipping-delivered-container.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-grid\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-grid\shipping-grid.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-load-detail-container\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-load-detail-container\shipping-load-detail-container.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-load-detail-container\shipping-load-detail-container.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-load-detail\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-load-detail\shipping-load-detail.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-load-detail\shipping-load-detail.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-posted-container\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\components\shipping-posted-container\shipping-posted-container.component.ts" />
+    <TypeScriptCompile Include="src\app\shipping\services\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\services\shipping.service.spec.ts" />
+    <TypeScriptCompile Include="src\app\shipping\services\shipping.service.ts" />
+    <TypeScriptCompile Include="src\app\shipping\shipping-routing.module.ts" />
+    <TypeScriptCompile Include="src\app\shipping\shipping.module.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\actions\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\actions\shipping-booked.actions.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\actions\shipping-delivered.actions.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\actions\shipping-load-audit-log.actions.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\actions\shipping-load-carrier-group.actions.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\actions\shipping-load-carrier-scac.actions.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\actions\shipping-load-detail.actions.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\actions\shipping-posted.actions.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\effects\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\effects\shipping-booked.effects.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\effects\shipping-delivered.effects.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\effects\shipping-load-audit-logs.effects.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\effects\shipping-load-carrier-group.effects.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\effects\shipping-load-carrier-scac.effects.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\effects\shipping-load-detail.effects.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\effects\shipping-posted.effects.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\reducers\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\reducers\shipping-booked.reducer.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\reducers\shipping-delivered.reducer.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\reducers\shipping-load-audit-log.reducer.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\reducers\shipping-load-carrier-group.reducer.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\reducers\shipping-load-carrier-scac.reducer.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\reducers\shipping-load-detail.reducer.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\reducers\shipping-posted.reducer.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\selectors\index.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\selectors\shipping-booked.selectors.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\selectors\shipping-delivered.selectors.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\selectors\shipping-load-audit-log.selectors.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\selectors\shipping-load-carrier-group.selectors.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\selectors\shipping-load-carrier-scac.selectors.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\selectors\shipping-load-detail.selectors.ts" />
+    <TypeScriptCompile Include="src\app\shipping\store\selectors\shipping-posted.selectors.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-focus-entity-selector-container\index.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-focus-entity-selector-container\user-focus-entity-selector-container.component.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-focus-entity-selector\index.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-focus-entity-selector\user-focus-entity-selector.component.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-lane-detail-container\index.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-lane-detail-container\user-lane-detail-container.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-lane-detail-container\user-lane-detail-container.component.ts" />
+    <TypeScriptCompile Include="src\app\user\store\actions\user-focus-entity-selector.actions.ts" />
+    <TypeScriptCompile Include="src\app\user\store\effects\user-focus-entity-selector.effects.ts" />
+    <TypeScriptCompile Include="src\app\user\store\reducers\user-focus-entity-selector.reducer.ts" />
+    <TypeScriptCompile Include="src\app\user\store\selectors\user-focus-entity-selector.selectors.ts" />
+    <TypeScriptCompile Include="src\environments\environment.qa1.ts" />
+    <TypeScriptCompile Include="src\main.ts" />
+    <TypeScriptCompile Include="src\polyfills.ts" />
+    <TypeScriptCompile Include="src\test.ts" />
+    <TypeScriptCompile Include="src\typings.d.ts" />
+    <Compile Include="src\custom-event.js" />
+    <Content Include="src\app\app.component.html" />
+    <TypeScriptCompile Include="src\app\app.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\app.component.ts" />
+    <TypeScriptCompile Include="src\app\app.module.ts" />
+    <TypeScriptCompile Include="src\app\app.routing.module.ts" />
+    <TypeScriptCompile Include="src\environments\environment.dev1.ts" />
+    <TypeScriptCompile Include="src\environments\environment.dev3.ts" />
+    <TypeScriptCompile Include="src\environments\environment.prod.ts" />
+    <TypeScriptCompile Include="src\environments\environment.ts" />
+    <TypeScriptCompile Include="src\app\core\core.module.ts" />
+    <TypeScriptCompile Include="src\app\load-board\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\load-board.module.ts" />
+    <TypeScriptCompile Include="src\app\load-board\load-board.routing.module.ts" />
+    <TypeScriptCompile Include="src\app\shared\shared.module.ts" />
+    <TypeScriptCompile Include="src\app\user\index.ts" />
+    <TypeScriptCompile Include="src\app\user\user.module.ts" />
+    <TypeScriptCompile Include="src\app\user\user.routing.module.ts" />
+    <TypeScriptCompile Include="src\app\core\services\common.service.ts" />
+    <TypeScriptCompile Include="src\app\core\services\error.service.ts" />
+    <TypeScriptCompile Include="src\app\core\services\google-map.service.ts" />
+    <TypeScriptCompile Include="src\app\core\services\index.ts" />
+    <TypeScriptCompile Include="src\app\core\services\response-intercepter.ts" />
+    <TypeScriptCompile Include="src\app\core\store\index.ts" />
+    <TypeScriptCompile Include="src\app\core\components\no-carrier\index.ts" />
+    <TypeScriptCompile Include="src\app\core\components\no-carrier\no-carrier.component.ts" />
+    <TypeScriptCompile Include="src\app\core\store\actions\equipment.actions.ts" />
+    <TypeScriptCompile Include="src\app\core\store\actions\index.ts" />
+    <TypeScriptCompile Include="src\app\core\store\actions\menu.actions.ts" />
+    <TypeScriptCompile Include="src\app\core\store\actions\state.actions.ts" />
+    <TypeScriptCompile Include="src\app\core\store\effects\equipment.effects.ts" />
+    <TypeScriptCompile Include="src\app\core\store\effects\google-map.effects.ts" />
+    <TypeScriptCompile Include="src\app\core\store\effects\index.ts" />
+    <TypeScriptCompile Include="src\app\core\store\effects\menu.effects.ts" />
+    <TypeScriptCompile Include="src\app\core\store\effects\state.effects.ts" />
+    <TypeScriptCompile Include="src\app\core\store\reducers\equipment.reducer.ts" />
+    <TypeScriptCompile Include="src\app\core\store\reducers\index.ts" />
+    <TypeScriptCompile Include="src\app\core\store\reducers\menu.reducer.ts" />
+    <TypeScriptCompile Include="src\app\core\store\reducers\state.reducer.ts" />
+    <TypeScriptCompile Include="src\app\core\store\selectors\equipment.selectors.ts" />
+    <TypeScriptCompile Include="src\app\core\store\selectors\index.ts" />
+    <TypeScriptCompile Include="src\app\core\store\selectors\menu.selectors.ts" />
+    <TypeScriptCompile Include="src\app\core\store\selectors\state.selectors.ts" />
+    <TypeScriptCompile Include="src\app\load-board\components\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\components\load-board.component.ts" />
+    <TypeScriptCompile Include="src\app\load-board\services\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\services\load-board.service.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\index.ts" />
+    <Content Include="src\app\load-board\components\booked-container\booked-container.component.html" />
+    <Content Include="src\app\load-board\components\booked-container\booked-container.component.css" />
+    <TypeScriptCompile Include="src\app\load-board\components\booked-container\booked-container.component.ts" />
+    <TypeScriptCompile Include="src\app\load-board\components\booked-container\index.ts" />
+    <Content Include="src\app\load-board\components\button-toggle\button-toggle.component.html" />
+    <Content Include="src\app\load-board\components\button-toggle\button-toggle.component.css" />
+    <TypeScriptCompile Include="src\app\load-board\components\button-toggle\button-toggle.component.ts" />
+    <TypeScriptCompile Include="src\app\load-board\components\button-toggle\index.ts" />
+    <Content Include="src\app\load-board\components\load-detail\load-detail.component.html" />
+    <TypeScriptCompile Include="src\app\load-board\components\load-detail\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\components\load-detail\load-detail.component.ts" />
+    <Content Include="src\app\load-board\components\load-detail-container\load-detail-container.component.html" />
+    <Content Include="src\app\load-board\components\load-detail-container\load-detail-container.component.css" />
+    <TypeScriptCompile Include="src\app\load-board\components\load-detail-container\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\components\load-detail-container\load-detail-container.component.ts" />
+    <Content Include="src\app\load-board\components\load-grid\load-grid.component.html" />
+    <TypeScriptCompile Include="src\app\load-board\components\load-grid\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\components\load-grid\load-grid.component.ts" />
+    <Content Include="src\app\load-board\components\load-stop\load-stop.component.html" />
+    <Content Include="src\app\load-board\components\load-stop\load-stop.component.css" />
+    <TypeScriptCompile Include="src\app\load-board\components\load-stop\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\components\load-stop\load-stop.component.ts" />
+    <Content Include="src\app\load-board\components\search-container\search-container.component.html" />
+    <Content Include="src\app\load-board\components\search-container\search-container.component.css" />
+    <TypeScriptCompile Include="src\app\load-board\components\search-container\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\components\search-container\search-container.component.ts" />
+    <Content Include="src\app\load-board\components\top-search-criteria\top-search-criteria.component.html" />
+    <Content Include="src\app\load-board\components\top-search-criteria\top-search-criteria.component.css" />
+    <TypeScriptCompile Include="src\app\load-board\components\top-search-criteria\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\components\top-search-criteria\top-search-criteria.component.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\actions\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\actions\load-board-booked.actions.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\actions\load-board-dashboard.actions.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\actions\load-board-load-book.actions.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\actions\load-board-load-detail.actions.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\actions\load-board-search.actions.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\effects\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\effects\load-board-booked.effects.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\effects\load-board-dashboard.effects.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\effects\load-board-load-book.effects.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\effects\load-board-load-detail.effects.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\effects\load-board-search.effects.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\reducers\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\reducers\load-board-booked.reducer.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\reducers\load-board-dashboard.reducer.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\reducers\load-board-load-detail.reducer.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\reducers\load-board-search.reducer.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\selectors\index.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\selectors\load-board-booked.selectors.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\selectors\load-board-dashboard.selectors.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\selectors\load-board-load-detail.selectors.ts" />
+    <TypeScriptCompile Include="src\app\load-board\store\selectors\load-board-search.selectors.ts" />
+    <TypeScriptCompile Include="src\app\shared\components\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\contact.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\directions.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\equipment.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\geo-location.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load-stop.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load-view.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\load.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\loadshop-environment.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\login.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\menu-item.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\message-type.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\place.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\response-error.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\search.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\service-response.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\state.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\transaction-type.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\transaction.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\user-lane-message-type.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\user-lane.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\user-notification.ts" />
+    <TypeScriptCompile Include="src\app\shared\models\user.ts" />
+    <TypeScriptCompile Include="src\app\shared\operators\map-response.ts" />
+    <TypeScriptCompile Include="src\app\shared\pipes\day.pipe.ts" />
+    <TypeScriptCompile Include="src\app\shared\pipes\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\pipes\toSelectItem.pipe.ts" />
+    <TypeScriptCompile Include="src\app\shared\utilities\convert-object-to-params.ts" />
+    <TypeScriptCompile Include="src\app\shared\utilities\convert-params-to-object.ts" />
+    <TypeScriptCompile Include="src\app\shared\utilities\create-place.ts" />
+    <TypeScriptCompile Include="src\app\shared\utilities\deep-copy-lane.ts" />
+    <TypeScriptCompile Include="src\app\shared\utilities\format-date.ts" />
+    <TypeScriptCompile Include="src\app\shared\utilities\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\utilities\load-stop-comparer.ts" />
+    <TypeScriptCompile Include="src\app\shared\utilities\validate-userlane.ts" />
+    <Content Include="src\app\shared\components\days\days.component.html" />
+    <Content Include="src\app\shared\components\days\days.component.css" />
+    <TypeScriptCompile Include="src\app\shared\components\days\days.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\components\days\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\components\map\index.ts" />
+    <TypeScriptCompile Include="src\app\shared\components\map\map.component.ts" />
+    <TypeScriptCompile Include="src\app\user\components\index.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user.component.ts" />
+    <TypeScriptCompile Include="src\app\user\services\index.ts" />
+    <TypeScriptCompile Include="src\app\user\services\state.service.ts" />
+    <TypeScriptCompile Include="src\app\user\services\user-lanes.service.ts" />
+    <TypeScriptCompile Include="src\app\user\services\user-profile.service.ts" />
+    <TypeScriptCompile Include="src\app\user\store\index.ts" />
+    <Content Include="src\app\user\components\user-lane-detail\user-lane-detail.component.html" />
+    <TypeScriptCompile Include="src\app\user\components\user-lane-detail\index.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-lane-detail\user-lane-detail.component.ts" />
+    <Content Include="src\app\user\components\user-profile\user-profile.component.html" />
+    <Content Include="src\app\user\components\user-profile\user-profile.component.css" />
+    <TypeScriptCompile Include="src\app\user\components\user-profile\index.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-profile\user-profile.component.ts" />
+    <Content Include="src\app\user\components\user-profile-container\user-profile-container.component.html" />
+    <Content Include="src\app\user\components\user-profile-container\user-profile-container.component.css" />
+    <TypeScriptCompile Include="src\app\user\components\user-profile-container\index.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-profile-container\user-profile-container.component.ts" />
+    <Content Include="src\app\user\components\user-saved-lanes\user-saved-lanes.component.html" />
+    <Content Include="src\app\user\components\user-saved-lanes\user-saved-lanes.component.css" />
+    <TypeScriptCompile Include="src\app\user\components\user-saved-lanes\index.ts" />
+    <TypeScriptCompile Include="src\app\user\components\user-saved-lanes\user-saved-lanes.component.ts" />
+    <TypeScriptCompile Include="src\app\user\store\actions\index.ts" />
+    <TypeScriptCompile Include="src\app\user\store\actions\user-lane.actions.ts" />
+    <TypeScriptCompile Include="src\app\user\store\actions\user-profile.actions.ts" />
+    <TypeScriptCompile Include="src\app\user\store\effects\index.ts" />
+    <TypeScriptCompile Include="src\app\user\store\effects\user-lane.effects.ts" />
+    <TypeScriptCompile Include="src\app\user\store\effects\user-profile.effects.ts" />
+    <TypeScriptCompile Include="src\app\user\store\reducers\index.ts" />
+    <TypeScriptCompile Include="src\app\user\store\reducers\user-lane.reducer.ts" />
+    <TypeScriptCompile Include="src\app\user\store\reducers\user-profile.reducer.ts" />
+    <TypeScriptCompile Include="src\app\user\store\selectors\index.ts" />
+    <TypeScriptCompile Include="src\app\user\store\selectors\user-lane.selector.ts" />
+    <TypeScriptCompile Include="src\app\user\store\selectors\user-profile.selector.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="e2e" />
+    <Folder Include="src" />
+    <Folder Include="src\app" />
+    <Folder Include="src\app\admin\" />
+    <Folder Include="src\app\admin\components\" />
+    <Folder Include="src\app\admin\components\admin-container\" />
+    <Folder Include="src\app\admin\components\carrier-profile\" />
+    <Folder Include="src\app\admin\components\carrier-profile\carrier-profile-container\" />
+    <Folder Include="src\app\admin\components\load-carrier-group-container\" />
+    <Folder Include="src\app\admin\components\load-carrier-group-detail\" />
+    <Folder Include="src\app\admin\components\load-carrier-group\" />
+    <Folder Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-container\" />
+    <Folder Include="src\app\admin\components\load-carrier-group\load-carrier-group-carriers-detail\" />
+    <Folder Include="src\app\admin\components\load-carrier-group\load-carrier-group-container\" />
+    <Folder Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail-container\" />
+    <Folder Include="src\app\admin\components\load-carrier-group\load-carrier-group-detail\" />
+    <Folder Include="src\app\admin\components\load-carrier-group\load-carrier-group-grid\" />
+    <Folder Include="src\app\admin\components\shipper-profile\" />
+    <Folder Include="src\app\admin\components\shipper-profile\shipper-profile-container\" />
+    <Folder Include="src\app\admin\components\special-instructions\" />
+    <Folder Include="src\app\admin\components\special-instructions\special-instructions-container\" />
+    <Folder Include="src\app\admin\components\users\" />
+    <Folder Include="src\app\admin\components\users\users-container\" />
+    <Folder Include="src\app\admin\services\" />
+    <Folder Include="src\app\admin\store\" />
+    <Folder Include="src\app\admin\store\actions\" />
+    <Folder Include="src\app\admin\store\effects\" />
+    <Folder Include="src\app\admin\store\reducers\" />
+    <Folder Include="src\app\admin\store\selectors\" />
+    <Folder Include="src\app\core" />
+    <Folder Include="src\app\core\components" />
+    <Folder Include="src\app\core\components\mobile-browser-detection\" />
+    <Folder Include="src\app\core\components\no-carrier" />
+    <Folder Include="src\app\core\services" />
+    <Folder Include="src\app\core\store" />
+    <Folder Include="src\app\core\store\actions" />
+    <Folder Include="src\app\core\store\effects" />
+    <Folder Include="src\app\core\store\reducers" />
+    <Folder Include="src\app\core\store\selectors" />
+    <Folder Include="src\app\load-board" />
+    <Folder Include="src\app\load-board\components" />
+    <Folder Include="src\app\load-board\components\booked-container" />
+    <Folder Include="src\app\load-board\components\button-toggle" />
+    <Folder Include="src\app\load-board\components\load-detail" />
+    <Folder Include="src\app\load-board\components\load-detail-container" />
+    <Folder Include="src\app\load-board\components\load-grid" />
+    <Folder Include="src\app\load-board\components\load-stop" />
+    <Folder Include="src\app\load-board\components\search-container" />
+    <Folder Include="src\app\load-board\components\top-search-criteria" />
+    <Folder Include="src\app\load-board\services" />
+    <Folder Include="src\app\load-board\store" />
+    <Folder Include="src\app\load-board\store\actions" />
+    <Folder Include="src\app\load-board\store\effects" />
+    <Folder Include="src\app\load-board\store\reducers" />
+    <Folder Include="src\app\load-board\store\selectors" />
+    <Folder Include="src\app\shared\guards\" />
+    <Folder Include="src\app\shipping\" />
+    <Folder Include="src\app\shared" />
+    <Folder Include="src\app\shared\components" />
+    <Folder Include="src\app\shared\components\color-bar\" />
+    <Folder Include="src\app\shared\components\days" />
+    <Folder Include="src\app\shared\components\map" />
+    <Folder Include="src\app\shared\components\sidebar-close\" />
+    <Folder Include="src\app\shared\directives" />
+    <Folder Include="src\app\shared\directives\auto-focus\" />
+    <Folder Include="src\app\shared\directives\stop-click-propagation\" />
+    <Folder Include="src\app\shared\models" />
+    <Folder Include="src\app\shared\operators" />
+    <Folder Include="src\app\shared\pipes" />
+    <Folder Include="src\app\shared\utilities" />
+    <Folder Include="src\app\shipping\components\" />
+    <Folder Include="src\app\shipping\components\home\" />
+    <Folder Include="src\app\shipping\components\home\shipping-load-audit-log-grid\" />
+    <Folder Include="src\app\shipping\components\home\shipping-load-cards\" />
+    <Folder Include="src\app\shipping\components\home\shipping-load-detail-container\" />
+    <Folder Include="src\app\shipping\components\home\shipping-load-detail\" />
+    <Folder Include="src\app\shipping\components\home\shipping-load-filter\" />
+    <Folder Include="src\app\shipping\components\home\shipping-load-home-container\" />
+    <Folder Include="src\app\shipping\components\home\shipping-load-home-header\" />
+    <Folder Include="src\app\shipping\components\shipping-booked-container\" />
+    <Folder Include="src\app\shipping\components\shipping-delivered-container\" />
+    <Folder Include="src\app\shipping\components\shipping-grid\" />
+    <Folder Include="src\app\shipping\components\shipping-load-detail-container\" />
+    <Folder Include="src\app\shipping\components\shipping-load-detail\" />
+    <Folder Include="src\app\shipping\components\shipping-posted-container\" />
+    <Folder Include="src\app\shipping\services\" />
+    <Folder Include="src\app\shipping\store\" />
+    <Folder Include="src\app\shipping\store\actions\" />
+    <Folder Include="src\app\shipping\store\effects\" />
+    <Folder Include="src\app\shipping\store\reducers\" />
+    <Folder Include="src\app\shipping\store\selectors\" />
+    <Folder Include="src\app\user" />
+    <Folder Include="src\app\user\components" />
+    <Folder Include="src\app\user\components\user-focus-entity-selector-container\" />
+    <Folder Include="src\app\user\components\user-focus-entity-selector\" />
+    <Folder Include="src\app\user\components\user-lane-detail" />
+    <Folder Include="src\app\user\components\user-lane-detail-container\" />
+    <Folder Include="src\app\user\components\user-profile" />
+    <Folder Include="src\app\user\components\user-profile-container" />
+    <Folder Include="src\app\user\components\user-saved-lanes" />
+    <Folder Include="src\app\user\services" />
+    <Folder Include="src\app\user\store" />
+    <Folder Include="src\app\user\store\actions" />
+    <Folder Include="src\app\user\store\effects" />
+    <Folder Include="src\app\user\store\reducers" />
+    <Folder Include="src\app\user\store\selectors" />
+    <Folder Include="src\assets" />
+    <Folder Include="src\environments" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

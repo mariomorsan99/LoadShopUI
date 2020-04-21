@@ -1,0 +1,20 @@
+<div class="home-header-container d-flex justify-content-end px-1 px-xl-4 py-2 py-xl-3">
+  <button
+    *ngIf="allowManualLoadCreation"
+    kbxlActionCheck
+    action="loadshop.ui.shopit.load.manual.create"
+    pButton
+    (click)="createClicked()"
+    class="button-outline-secondary create-button mr-3"
+    label="Create"
+    icon="pi pi-plus-circle"
+  ></button>
+  <button
+    pButton
+    (click)="postClicked()"
+    class="ui-button-primary post-button"
+    kbxlActionCheck="loadshop.ui.shopit.load.post"
+    [disabled]="!selectedLoads?.length || loadingAnySmartSpotPrices"
+    [label]="'Post ' + (selectedLoads?.length > 0 ? '(' + selectedLoads.length + ')' : '')"
+  ></button>
+</div>

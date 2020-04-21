@@ -1,0 +1,26 @@
+<div class="page-container">
+  <div class="loading-indicator" *ngIf="loading">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+</div>
+
+<p-dialog [visible]="displayModal" [draggable]="false" [closable]="false" [modal]="true">
+  <div class="d-flex flex-column">
+    <h4>Loadshop User Agreement</h4>
+
+    <div class="d-flex align-items-center my-2">
+      <p-checkbox class="mr-2" label="" binary="true" [(ngModel)]="userAgreement"> </p-checkbox>
+      Check here to indicate you have read and agree to the terms of the
+      <a class="ml-1" [routerLink]="['/agreements']" target="__blank">Loadshop User Agreement</a>.
+    </div>
+    <div class="text-center">
+      <button
+        pButton
+        label="Agree and Continue"
+        class="ui-button-primary mt-4"
+        (click)="agree()"
+        [disabled]="!userAgreement || loading"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

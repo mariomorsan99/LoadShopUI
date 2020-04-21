@@ -1,0 +1,31 @@
+@import 'variables';
+
+// override variables before we load bootstrap, see more https://getbootstrap.com/docs/4.4/getting-started/theming/
+$body-bg: $loadshopDarkBlue;
+$body-color: $loadshopDarkBlue;
+$border-radius: 5px;
+$font-weight-bold: $bold-font-weight;
+
+$theme-colors: (
+  'primary': $loadshopLightBlue,
+  'danger': $loadshopErrorDarkRed,
+);
+
+// add bootstrap after we have override the variables we care about
+@import '~bootstrap/scss/bootstrap';
+
+button {
+  border-radius: $border-radius;
+}
+// override any specific styles
+.alert.alert-warning {
+  background-color: $loadshopYellow;
+  color: #212121;
+  border-color: $loadshopYellow;
+}
+
+.alert.alert-info {
+  background-color: $loadshopGray5;
+  color: #212121;
+  border-color: $loadshopLightBlue;
+}

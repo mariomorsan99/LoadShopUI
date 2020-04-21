@@ -1,0 +1,184 @@
+@import 'variables';
+
+.book-container {
+  & > div > div {
+    margin-bottom: 20px;
+  }
+  .trip-destination {
+    margin-top: -5px;
+  }
+
+  .trip-ellipsis-icon {
+    color: $loadshopDarkestBlue;
+    width: 15px;
+    text-align: center;
+    margin-top: -5px;
+  }
+  .trip-marker-icon {
+    color: $loadshopGray5;
+    display: inline-block;
+    margin-right: 10px;
+    width: 15px;
+    text-align: center;
+
+    svg {
+      width: 14px;
+    }
+  }
+
+  .trip-text {
+    color: $loadshopWhite;
+    height: 23px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 23px;
+  }
+
+  .trip-stop-text {
+    font-weight: 500;
+    font-style: italic;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .book-load-container {
+    align-self: baseline;
+  }
+}
+
+.detail-horizontal-rule {
+  background-color: $loadshopDarkestBlue;
+}
+
+.rate-container {
+  font-family: objektiv-mk1, sans-serif;
+  margin-top: 20px;
+
+  .all-in-rate-container {
+    color: $loadshopTeal;
+
+    .all-in-rate-value {
+      height: 34px;
+      font-size: 24px;
+      line-height: 34px;
+      margin-bottom: 6px;
+    }
+
+    .all-in-rate-text {
+      height: 18px;
+      font-size: 12px;
+      font-weight: $bold-font-weight;
+      line-height: 18px;
+    }
+  }
+}
+
+.load-detail-item {
+  font-size: 12px;
+  line-height: 20px;
+  text-align: right;
+
+  .load-booked-value {
+    width: 120px;
+  }
+  .load-detail-value {
+    color: $loadshopWhite;
+  }
+}
+
+.load-detail-label {
+  color: $loadshopGray5;
+  font-weight: bold;
+  vertical-align: top;
+}
+  
+.contact-container {
+  color: $loadshopWhite;
+  font-family: objektiv-mk1, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+
+  .for-assistance-text {
+    height: 30px;
+    font-weight: $bold-font-weight;
+  }
+
+  .contact-name,
+  .contact-phone,
+  .contact-email {
+    height: 18px;
+  }
+}
+
+.comments-container {
+  .comments-item {
+    color: $loadshopWhite;
+    font-family: objektiv-mk1, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+
+    .comments-label {
+      font-weight: $bold-font-weight;
+    }
+  }
+}
+
+.map-container {
+  width: 100%;
+  height: 300px;
+}
+
+.remove-load-container {
+  width: 100%;
+}
+
+.load-status-container {
+  width: 100%;
+
+  & ::ng-deep div.load-status-panel.ui-panel {
+    border: 1px solid $loadshopGray1;
+    margin-bottom: 1;
+
+    & > div.ui-panel-titlebar {
+      background-color: $loadshopGray1;
+      font-size: 18px;
+      line-height: 24px;
+      padding: 0.5em 1em;
+
+      & a {
+        color: $loadshopLightBlue;
+        font-size: 12px;
+        cursor: pointer;
+      }
+    }
+
+    & .ui-fieldset {
+      background-color: transparent;
+      border-color: $loadshopGray1;
+      margin-bottom: 10px;
+
+      & .ui-fieldset-legend {
+        margin: 0;
+        line-height: 16px;
+        font-size: 16px;
+      }
+
+      & .control-label {
+        width: 200px;
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.text-muted {
+  color: $loadshopGray5 !important;
+}
+
+a:not([href]):not([tabindex]):hover,
+a:not([href]):not([tabindex]):focus {
+  text-decoration: underline;
+  color: initial;
+}

@@ -1,0 +1,127 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29424.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loadshop.Web.API", "Loadshop.Web.API\Loadshop.Web.API.csproj", "{99A6F77B-27A3-4925-9986-828EFAD9BF02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loadshop.DomainServices", "Loadshop.DomainServices\Loadshop.DomainServices.csproj", "{F29AA9CA-84A3-4599-B171-F0870797D789}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loadshop.Customer.API", "Loadshop.Customer.API\Loadshop.Customer.API.csproj", "{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loadshop.Web", "Loadshop.Web\Loadshop.Web.csproj", "{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{08141A64-05D8-4CCB-BA37-80F0331C7F32}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines-ci.yml = azure-pipelines-ci.yml
+		azure-pipelines.yml = azure-pipelines.yml
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Loadshop.Web.UI", "Loadshop.Web.UI\Loadshop.Web.UI.njsproj", "{2754CC78-5E6E-4759-BC50-F2D20F47C8DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loadshop.Tests", "Loadshop.Tests\Loadshop.Tests.csproj", "{A9FE4F16-F953-451E-853D-67AF1A2F761D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UtilityApps", "UtilityApps", "{DEB2DFE0-FC68-4D58-ABE9-2455A22942DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loadshop.KeyGen", "Loadshop.KeyGen\Loadshop.KeyGen.csproj", "{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loadshop.Encrypt", "Loadshop.Encrypt\Loadshop.Encrypt.csproj", "{67830513-BA55-45DA-ABCB-E1BB4290529E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Customer.API Release|Any CPU = Customer.API Release|Any CPU
+		Customer.API|Any CPU = Customer.API|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Web.API|Any CPU = Web.API|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99A6F77B-27A3-4925-9986-828EFAD9BF02}.Customer.API Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A6F77B-27A3-4925-9986-828EFAD9BF02}.Customer.API Release|Any CPU.Build.0 = Release|Any CPU
+		{99A6F77B-27A3-4925-9986-828EFAD9BF02}.Customer.API|Any CPU.ActiveCfg = Release|Any CPU
+		{99A6F77B-27A3-4925-9986-828EFAD9BF02}.Customer.API|Any CPU.Build.0 = Release|Any CPU
+		{99A6F77B-27A3-4925-9986-828EFAD9BF02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A6F77B-27A3-4925-9986-828EFAD9BF02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A6F77B-27A3-4925-9986-828EFAD9BF02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A6F77B-27A3-4925-9986-828EFAD9BF02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A6F77B-27A3-4925-9986-828EFAD9BF02}.Web.API|Any CPU.ActiveCfg = Web.API|Any CPU
+		{99A6F77B-27A3-4925-9986-828EFAD9BF02}.Web.API|Any CPU.Build.0 = Web.API|Any CPU
+		{F29AA9CA-84A3-4599-B171-F0870797D789}.Customer.API Release|Any CPU.ActiveCfg = Customer.API Release|Any CPU
+		{F29AA9CA-84A3-4599-B171-F0870797D789}.Customer.API Release|Any CPU.Build.0 = Customer.API Release|Any CPU
+		{F29AA9CA-84A3-4599-B171-F0870797D789}.Customer.API|Any CPU.ActiveCfg = Web.API|Any CPU
+		{F29AA9CA-84A3-4599-B171-F0870797D789}.Customer.API|Any CPU.Build.0 = Web.API|Any CPU
+		{F29AA9CA-84A3-4599-B171-F0870797D789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F29AA9CA-84A3-4599-B171-F0870797D789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F29AA9CA-84A3-4599-B171-F0870797D789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F29AA9CA-84A3-4599-B171-F0870797D789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F29AA9CA-84A3-4599-B171-F0870797D789}.Web.API|Any CPU.ActiveCfg = Web.API|Any CPU
+		{F29AA9CA-84A3-4599-B171-F0870797D789}.Web.API|Any CPU.Build.0 = Web.API|Any CPU
+		{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}.Customer.API Release|Any CPU.ActiveCfg = Customer.API Release|Any CPU
+		{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}.Customer.API Release|Any CPU.Build.0 = Customer.API Release|Any CPU
+		{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}.Customer.API|Any CPU.ActiveCfg = Web.API|Any CPU
+		{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}.Customer.API|Any CPU.Build.0 = Web.API|Any CPU
+		{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}.Web.API|Any CPU.ActiveCfg = Web.API|Any CPU
+		{CFE43463-B312-4CFB-BBB2-2D9FBCA31D27}.Web.API|Any CPU.Build.0 = Web.API|Any CPU
+		{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}.Customer.API Release|Any CPU.ActiveCfg = Customer.API Release|Any CPU
+		{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}.Customer.API Release|Any CPU.Build.0 = Customer.API Release|Any CPU
+		{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}.Customer.API|Any CPU.ActiveCfg = Web.API|Any CPU
+		{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}.Customer.API|Any CPU.Build.0 = Web.API|Any CPU
+		{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}.Web.API|Any CPU.ActiveCfg = Web.API|Any CPU
+		{F7F92105-4FC2-4855-A2B0-10935CB8EBE0}.Web.API|Any CPU.Build.0 = Web.API|Any CPU
+		{2754CC78-5E6E-4759-BC50-F2D20F47C8DD}.Customer.API Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2754CC78-5E6E-4759-BC50-F2D20F47C8DD}.Customer.API|Any CPU.ActiveCfg = Release|Any CPU
+		{2754CC78-5E6E-4759-BC50-F2D20F47C8DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2754CC78-5E6E-4759-BC50-F2D20F47C8DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2754CC78-5E6E-4759-BC50-F2D20F47C8DD}.Web.API|Any CPU.ActiveCfg = Release|Any CPU
+		{2754CC78-5E6E-4759-BC50-F2D20F47C8DD}.Web.API|Any CPU.Build.0 = Release|Any CPU
+		{A9FE4F16-F953-451E-853D-67AF1A2F761D}.Customer.API Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FE4F16-F953-451E-853D-67AF1A2F761D}.Customer.API Release|Any CPU.Build.0 = Release|Any CPU
+		{A9FE4F16-F953-451E-853D-67AF1A2F761D}.Customer.API|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FE4F16-F953-451E-853D-67AF1A2F761D}.Customer.API|Any CPU.Build.0 = Release|Any CPU
+		{A9FE4F16-F953-451E-853D-67AF1A2F761D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9FE4F16-F953-451E-853D-67AF1A2F761D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9FE4F16-F953-451E-853D-67AF1A2F761D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FE4F16-F953-451E-853D-67AF1A2F761D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9FE4F16-F953-451E-853D-67AF1A2F761D}.Web.API|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FE4F16-F953-451E-853D-67AF1A2F761D}.Web.API|Any CPU.Build.0 = Release|Any CPU
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}.Customer.API Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}.Customer.API Release|Any CPU.Build.0 = Release|Any CPU
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}.Customer.API|Any CPU.ActiveCfg = Release|Any CPU
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}.Customer.API|Any CPU.Build.0 = Release|Any CPU
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}.Web.API|Any CPU.ActiveCfg = Release|Any CPU
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32}.Web.API|Any CPU.Build.0 = Release|Any CPU
+		{67830513-BA55-45DA-ABCB-E1BB4290529E}.Customer.API Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67830513-BA55-45DA-ABCB-E1BB4290529E}.Customer.API Release|Any CPU.Build.0 = Release|Any CPU
+		{67830513-BA55-45DA-ABCB-E1BB4290529E}.Customer.API|Any CPU.ActiveCfg = Release|Any CPU
+		{67830513-BA55-45DA-ABCB-E1BB4290529E}.Customer.API|Any CPU.Build.0 = Release|Any CPU
+		{67830513-BA55-45DA-ABCB-E1BB4290529E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67830513-BA55-45DA-ABCB-E1BB4290529E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67830513-BA55-45DA-ABCB-E1BB4290529E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67830513-BA55-45DA-ABCB-E1BB4290529E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67830513-BA55-45DA-ABCB-E1BB4290529E}.Web.API|Any CPU.ActiveCfg = Release|Any CPU
+		{67830513-BA55-45DA-ABCB-E1BB4290529E}.Web.API|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{26BBD48E-0C24-43B8-AD2A-C1210E9F6D32} = {DEB2DFE0-FC68-4D58-ABE9-2455A22942DF}
+		{67830513-BA55-45DA-ABCB-E1BB4290529E} = {DEB2DFE0-FC68-4D58-ABE9-2455A22942DF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A7241E6C-0038-4D92-9FF3-E7F175CA5DDF}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,35 @@
+<div class="page-container">
+  <div class="d-flex flex-column">
+    <div class="pt-lg-2 pl-lg-4 pr-lg-4 pb-lg-1 position-relative">
+      <kbxl-top-search-criteria
+        [criteria]="criteria$ | async"
+        [equipment]="equipment$ | async | toTreeNodes"
+        [lanes]="lanes$ | async"
+        [states]="states$ | async"
+        [isMobile]="isMobile$ | async"
+        [isMarketplace]="true"
+        [serviceTypes]="serviceTypes$ | async"
+        (search)="search($event)"
+        (add)="add($event)"
+        (update)="update($event)"
+        (clear)="clear()"
+      >
+      </kbxl-top-search-criteria>
+    </div>
+    <kbxl-color-bar></kbxl-color-bar>
+    <div class="grid-container pl-lg-4 pr-lg-4">
+      <kbxl-load-grid
+        [loading]="loading$ | async"
+        [loads]="filteredLoads$ | async"
+        [serviceTypes]="serviceTypes$ | async"
+        (selected)="selected($event)"
+        kbxlActionCheck
+        action="loadshop.ui.marketplace.loads.viewdetail"
+        enforcementType="disable"
+        [isMarketplace]="true"
+        (isDisabledChange)="setDisabled($event)"
+      ></kbxl-load-grid>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

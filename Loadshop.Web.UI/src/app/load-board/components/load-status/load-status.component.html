@@ -1,0 +1,190 @@
+<div class="load-status-container" *ngIf="loadDetail">
+  <div class="row">
+    <div class="col-lg-7 col-xl-6 order-last order-lg-first">
+      <div *ngIf="displayStatusForms">
+        <div class="loading-indicator" *ngIf="savingStatus">
+          <p-progressSpinner></p-progressSpinner>
+        </div>
+        <p-panel styleClass="load-status-panel" [toggleable]="true" [(collapsed)]="stopPanelCollapsed">
+          <p-header>
+            Send Stop Statuses
+          </p-header>
+          <div>
+            <h4 *ngIf="loadDetail.billingLoadDisplay">
+              {{ loadDetail.billingLoadDisplay }}
+            </h4>
+
+            <form [formGroup]="stopForm">
+              <div *ngIf="stopStatusesErrorSummary && stopStatusesErrorCount <= 5">
+                <div class="error-header">Error Summary</div>
+                <div class="error-container">{{ stopStatusesErrorSummary }}</div>
+              </div>
+
+              <ng-container formArrayName="stops">
+                <ng-container *ngFor="let stop of stopForm.controls['stops'].controls; let $stopIndex = index">
+                  <p-fieldset [formGroupName]="$stopIndex" [legend]="stop.value.stopTitle">
+                    <table formArrayName="statusTimes" class="w-100">
+                      <ng-container *ngFor="let statusTime of stop.controls['statusTimes'].controls; let $timeIndex = index">
+                        <tr [formGroupName]="$timeIndex">
+                          <td style="width: 200px;">
+                            <label
+                              for="statusTime"
+                              class="control-label"
+                              [ngClass]="{ error: stop.controls['statusTimes'].controls[$timeIndex].controls['statusTime'].invalid }"
+                            >
+                              {{ loadStatusTypes[statusTime.value.status] }}
+                            </label>
+                          </td>
+                          <td>
+                            <p-calendar
+                              formControlName="statusTime"
+                              name="statusTime"
+                              [showIcon]="true"
+                              showButtonBar="true"
+                              [showTime]="false"
+                              [appendTo]="'body'"
+                              [baseZIndex]="50"
+                              (onFocus)="sendStopOnCalendarFocus($event, $stopIndex, $timeIndex)"
+                            ></p-calendar>
+                          </td>
+                          <td>
+                            <p-inputMask
+                              mask="99:99"
+                              formControlName="timeInput"
+                              name="timeInput"
+                              placeholder="23:59"
+                            ></p-inputMask>
+                          </td>
+                        </tr>
+                      </ng-container>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">* use location's time</td>
+                      </tr>
+                    </table>
+                  </p-fieldset>
+                </ng-container>
+              </ng-container>
+              <div class="text-right">
+                <button pButton (click)="submitStopStatuses()" label="Send Statuses" type="button" class="ui-button-primary mt-2"></button>
+              </div>
+            </form>
+          </div>
+        </p-panel>
+        <p-panel
+          *ngIf="availableInTransitStops?.length > 0"
+          styleClass="load-status-panel"
+          [toggleable]="true"
+          [(collapsed)]="inTransitPanelCollapsed"
+        >
+          <p-header>
+            Send "In Transit" Status
+          </p-header>
+          <form [formGroup]="inTransitForm">
+            <div *ngIf="inTransitErrorSummary && inTransitErrorCount <= 5">
+              <div class="error-header">Error Summary</div>
+              <div class="error-container">{{ inTransitErrorSummary }}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+                <label style="margin-top: calc(21px + 0.5em)" for="stopNumber" class="control-label"
+                  >Stop {{ inTransitForm.controls['stopNumber'].value }}</label
+                >
+                <!-- <kbxl-dropdown [options]="availableInTransitStops" formControlName="stopNumber" name="stopNumber" idMember="stopNbr"
+                  labelMember="stopNbr" styleClass="ui-dropdown-primary" appendTo="body">
+                </kbxl-dropdown> -->
+              </div>
+              <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+                <div>
+                  <label class="control-label">Status</label>
+                </div>
+                <div>
+                  <label class="control-label">IN TRANSIT</label>
+                </div>
+              </div>
+              <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+                <label for="statusTime" class="control-label" [ngClass]="{ error: inTransitForm.controls['statusTime'].invalid }"
+                  >Status Date/Time</label
+                >
+                <p-calendar
+                  formControlName="statusTime"
+                  name="statusTime"
+                  [showIcon]="true"
+                  showButtonBar="true"
+                  [showTime]="false"
+                  [appendTo]="'body'"
+                  [baseZIndex]="50"
+                  (onFocus)="inTransitOnCalendarFocus()"
+                ></p-calendar>
+              </div>
+              <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+                <label for="timeInput" class="control-label">&nbsp;</label>
+                <p-inputMask
+                  mask="99:99"
+                  formControlName="timeInput"
+                  name="timeInput"
+                  placeholder="23:59"
+                ></p-inputMask>
+                <div class="text-right">* use location's time</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-lg-8 kbxl-inputgroup-container">
+                <label for="location" class="control-label" [ngClass]="{ error: inTransitForm.controls['location'].invalid }">
+                  Location</label>
+                <kbxl-address-autocomplete
+                  [(place)]="inTransitForm.value.location"
+                  [includeAddress]="false"
+                  [placeholder]="'Search by City/State/Province'">
+                </kbxl-address-autocomplete>
+              </div>
+              <div class="col-12 col-lg-4 text-right" style="padding-top: calc(21px + 0.5em)">
+                <button pButton (click)="submitInTransit()" label="Send Status" type="button" class="ui-button-primary"></button>
+              </div>
+            </div>
+          </form>
+        </p-panel>
+      </div>
+    </div>
+    <div class="col-lg-5 col-xl-4 order-first order-lg-last">
+      <p-panel styleClass="load-status-panel">
+        <p-header>
+          Current Load Status
+        </p-header>
+        <ng-container *ngIf="!accepted">
+          <div>
+            <span class="font-weight-bold">Pending Acceptance</span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="accepted">
+          <div>
+            <span class="font-weight-bold">{{ loadStatus?.description }}</span>
+            <div class="small-spinner-container ml-2" *ngIf="loadStatus?.processingUpdates || loadingStatus">
+              <p-progressSpinner></p-progressSpinner>
+            </div>
+          </div>
+          <div *ngIf="loadStatus?.locationLabel" style="margin-top: 5px">
+            <span>{{ loadStatus.locationLabel }}</span>
+          </div>
+          <div *ngIf="loadStatus?.dateLabel" style="margin-top: 15px;">
+            <span>{{ loadStatus?.dateLabel }}</span>
+          </div>
+        </ng-container>
+
+        <hr/>
+
+        <div class="pt-2">
+          <div class="d-flex align-items-center">
+            <fa-icon class="mr-2" [icon]="['fas', 'exclamation-triangle']" size="lg"></fa-icon>
+            <div>
+              Tired of manually entering statuses and receiving tracking emails? Reach out to <a href="VisibilityOperations@kbxlogistics.com">VisibilityOperations@kbxlogistics.com</a>
+              to discuss automated solutions for sending real time tracking data.
+            </div>
+          </div>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+</div>

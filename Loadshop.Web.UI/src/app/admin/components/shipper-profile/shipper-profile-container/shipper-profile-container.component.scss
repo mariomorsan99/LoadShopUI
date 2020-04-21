@@ -1,0 +1,40 @@
+@import 'variables';
+
+.left-tab {
+  min-height: 250px;
+  padding-right: 20px;
+  margin-right: 20px;
+  border-right: 2px solid $loadshopGray1;
+}
+
+input:invalid {
+  background-color: $loadshopErrorLightRed;
+}
+
+.add-button {
+  margin-top: 25px;
+}
+
+.contact-button {
+  width: 40px !important;
+}
+
+.decorated-input-group-header {
+  margin-left: 20px;
+}
+
+// Consists of a label, input, label for providing before and after value decorators
+.decorated-input-group {
+  & label {
+    width: 20px;
+  }
+
+  & input, kbxl-percentage {
+    display: inline-block;
+    width: calc(100% - 40px);
+  }
+}
+
+.inline-text {
+  margin-top: 8px;
+}

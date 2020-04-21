@@ -1,0 +1,453 @@
+<div class="page-container">
+  <div class="loading-indicator" *ngIf="loading || loadingDocuments">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+  <div *ngIf="load">
+    <div class="row" *ngIf="!isShippingDetail && load.viewOnly && !load.isAccepted && load.loadTransaction.transactionType != 'Removed'">
+      <div class="col-12">
+        <div class="alert alert-warning mb-0" role="alert">
+          <fa-icon class="mr-2" [icon]="['fas', 'exclamation-triangle']" size="lg"></fa-icon>
+          <strong class="mr-1">You currently have view only access to loadshop&trade;.</strong>
+          <span>
+            If you are a new carrier to loadshop&trade; this means you are not yet fully activated. If you are an existing carrier, your
+            standing may have changed since being activated. Please contact <a href="carrier@loadshop.com">carrier@loadshop.com</a> with any
+            questions.
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-column book-container">
+      <div class="d-flex flex-wrap">
+        <div class="flex-grow-1">
+          <div class="trip-origin">
+            <div class="d-flex align-items-start">
+              <div class="trip-marker-icon">
+                <fa-icon [icon]="['far', 'circle']" size="md"></fa-icon>
+              </div>
+              <span class="trip-text mr-2"> {{ origin.city | titlecase }}, {{ origin.state }} </span>
+              <div class="trip-stop-text" *ngIf="loadStops.length > 0 && loadStops.length <= 2">
+                <div class="trip-stop-text text-right" *ngIf="loadStops[0].earlyDtTm && loadStops[0].earlyDtTm !== loadStops[0].lateDtTm">
+                  <span> ({{ loadStops[0].apptType }}</span>
+                  {{ loadStops[0].earlyDtTm | date: 'short' }}
+                  <br />{{ loadStops[0].lateDtTm | date: 'short' }})
+                </div>
+                <div class="trip-stop-text text-right" *ngIf="!loadStops[0].earlyDtTm && loadStops[0].earlyDtTm !== loadStops[0].lateDtTm">
+                  <span> ({{ loadStops[0].apptType }}</span>
+                  {{ loadStops[0].lateDtTm | date: 'short' }})
+                </div>
+                <span class="trip-stop-text" *ngIf="!loadStops[0] || loadStops[0].earlyDtTm === loadStops[0].lateDtTm">
+                  ({{ loadStops[0].apptType }} {{ loadStops[0].lateDtTm | date: 'short' }})
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="trip-ellipsis-icon">
+            <fa-icon [icon]="['fas', 'ellipsis-v']" size="md"></fa-icon>
+          </div>
+          <div class="trip-ellipsis-icon">
+            <fa-icon [icon]="['fas', 'ellipsis-v']" size="md"></fa-icon>
+          </div>
+          <div class="trip-destination">
+            <div class="d-flex align-items-start">
+              <div class="trip-marker-icon">
+                <fa-icon [icon]="['fas', 'map-marker-alt']" size="md"></fa-icon>
+              </div>
+              <span class="trip-text mr-2"> {{ dest.city | titlecase }}, {{ dest.state }}</span>
+              <div class="trip-stop-text" *ngIf="loadStops.length > 0 && loadStops.length <= 2">
+                <div class="trip-stop-text text-right" *ngIf="loadStops[1].earlyDtTm && loadStops[1].earlyDtTm !== loadStops[1].lateDtTm">
+                  <span> ({{ loadStops[1].apptType }}</span>
+                  {{ loadStops[1].earlyDtTm | date: 'short' }}
+                  <br />{{ loadStops[1].lateDtTm | date: 'short' }})
+                </div>
+                <div class="trip-stop-text text-right" *ngIf="!loadStops[1].earlyDtTm && loadStops[1].earlyDtTm !== loadStops[1].lateDtTm">
+                  <span> ({{ loadStops[1].apptType }}</span>
+                  {{ loadStops[1].lateDtTm | date: 'short' }})
+                </div>
+                <span class="trip-stop-text" *ngIf="!loadStops[1] || loadStops[1].earlyDtTm === loadStops[1].lateDtTm">
+                  ({{ loadStops[1].apptType }} {{ loadStops[1].lateDtTm | date: 'short' }})
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="book-load-container">
+          <button
+            pButton
+            *ngIf="!load.isAccepted && load.loadTransaction.transactionType != 'Removed'"
+            type="button"
+            class="ui-primary-button"
+            label="Book Load"
+            [disabled]="load.viewOnly"
+            (click)="click()"
+            kbxlActionCheck
+            [action]="'loadshop.ui.marketplace.loads.book'"
+            enforcementType="hide"
+          ></button>
+          <div *ngIf="load.isAccepted || load.loadTransaction.transactionType == 'Removed'">
+            <div class="d-flex load-detail-item">
+              <div class="d-flex flex-column">
+                <span class="load-detail-label mr-1">Load Booked:</span>
+                <span class="load-detail-label mr-1" *ngIf="load.bookedUser">By:</span>
+                <span class="load-detail-label mr-1" *ngFor="let phone of load.bookedUser?.cellPhoneNumbers">Cell:</span>
+              </div>
+              <div class="d-flex flex-column">
+                <span class="load-detail-value load-booked-value">
+                  {{ load.loadTransaction.lastUpdateTime | date: 'short' }}
+                </span>
+                <div class="contact-container d-flex flex-column">
+                  <span>{{ load.bookedUser?.firstName | titlecase }}</span>
+                  <div class="contact-phone" *ngFor="let phone of load.bookedUser?.cellPhoneNumbers">
+                    <a href="tel:{{ phone }}">{{ phone }}</a>
+                  </div>
+                  <div class="contact-phone" *ngFor="let phone of load.bookedUser?.phoneNumbers">
+                    <a href="tel:{{ phone }}">{{ phone }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="isShippingDetail && load.isPlatformPlus" class="load-status-container">
+          <p-panel styleClass="load-status-panel">
+            <p-header>
+              <div class="d-flex justify-content-between">
+                <span>{{ viewingCurrentStatus ? 'Current Load Status' : 'Load Statuses' }}</span>
+                <a *ngIf="accepted" (click)="toggleLoadStatusView($event)">{{ viewingCurrentStatus ? 'View All' : 'View Current' }}</a>
+              </div>
+            </p-header>
+            <ng-container *ngIf="!accepted">
+              <div>
+                <span class="font-weight-bold">Pending Acceptance</span>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="accepted">
+              <ng-container
+                *ngIf="viewingCurrentStatus"
+                [ngTemplateOutlet]="statusDisplay"
+                [ngTemplateOutletContext]="{ status: loadStatus, loading: loadingStatus }"
+              ></ng-container>
+              <ng-container *ngIf="!viewingCurrentStatus">
+                <div *ngFor="let status of allStatuses; let i = index">
+                  <hr *ngIf="i > 0" class="detail-horizontal-rule" />
+                  <ng-container
+                    [ngTemplateOutlet]="statusDisplay"
+                    [ngTemplateOutletContext]="{ status: status, loading: loadingAllStatuses }"
+                  ></ng-container>
+                </div>
+              </ng-container>
+            </ng-container>
+          </p-panel>
+        </div>
+        <div class="remove-load-container class d-flex flex-row justify-content-between">
+          <div>
+            <button
+              pButton
+              type="button"
+              class="ui-button-danger mr-4"
+              label="Delete Load"
+              (click)="deleteLoadClick()"
+              [kbxlActionCheck]="'loadshop.ui.shopit.load.edit'"
+              enforcementType="hide"
+              *ngIf="load.loadTransaction.transactionType !== 'Delivered'"
+            ></button>
+          </div>
+          <div>
+            <button
+              pButton
+              type="button"
+              class="ui-button-warning"
+              label="Remove Carrier"
+              (click)="removeCarrierClick()"
+              [kbxlActionCheck]="'loadshop.ui.shopit.load.edit'"
+              enforcementType="hide"
+              *ngIf="
+                load.loadTransaction.transactionType === 'Accepted' ||
+                load.loadTransaction.transactionType === 'Pending' ||
+                load.loadTransaction.transactionType === 'PreTender' ||
+                load.loadTransaction.transactionType === 'SentToShipperTender'
+              "
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="detail-horizontal-rule" />
+
+    <div class="rate-container row pb-0">
+      <div class="col-4 all-in-rate-container">
+        <div class="all-in-rate-value">
+          {{ load.lineHaulRate + load.fuelRate | currency }}
+        </div>
+        <div class="all-in-rate-text">
+          Total Rate
+        </div>
+      </div>
+      <div class="col-8 linehaul-rate-container">
+        <div class="d-flex justify-content-end load-detail-item">
+          <div class="d-flex flex-column text-right mr-2">
+            <div>
+              <span class="load-detail-label">Line Haul:</span>
+            </div>
+            <div>
+              <span class="load-detail-label" *ngIf="!load.isEstimatedFSC; &quot;text-right&quot;">FSC:</span>
+              <span class="load-detail-label" *ngIf="load.isEstimatedFSC"><i>* Est FSC:</i></span>
+            </div>
+            <div>
+              <span class="load-detail-label">Shipper’s Order Number:</span>
+            </div>
+          </div>
+          <div class="d-flex flex-column text-right">
+            <div>
+              <span class="load-detail-value">{{ load.lineHaulRate | currency }}</span>
+            </div>
+            <div>
+              <span class="load-detail-value">{{ load.fuelRate | currency }}</span>
+            </div>
+            <div>
+              <span class="load-detail-value">
+                <span *ngIf="isShippingDetail && origin && origin.city">{{ load.referenceLoadDisplay }}</span>
+                <a *ngIf="!isShippingDetail && origin && origin.city" [routerLink]="['/loads/detail', load.loadId]">{{
+                  load.referenceLoadDisplay
+                }}</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="detail-horizontal-rule" />
+
+    <div class="contact-container row" *ngIf="load.contacts && load.contacts.length > 0">
+      <div class="col-12">
+        <div class="for-assistance-text">
+          For assistance, contact:
+        </div>
+        <div class="contact-name">
+          {{ load.contacts[0].display | titlecase }}
+        </div>
+        <div class="contact-phone" [ngClass]="{ 'd-none': load.contacts[0]?.phone?.length === 0 }">
+          <a href="tel:{{ load.contacts[0].phone }}">{{ load.contacts[0].phone }}</a>
+        </div>
+        <div *ngIf="contacts.length > 1">
+          <div class="contact-email">
+            <a href="mailto:{{ contacts[1] }}">{{ contacts[1] }}</a>
+          </div>
+        </div>
+        <div *ngIf="contacts.length > 0">
+          <div class="contact-email">
+            <a href="mailto:{{ load.contacts[0].email }}">{{ contacts[0] }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="loadStops.length > 2" class="stops-container pt-4">
+      <p-carousel [value]="loadStops" [numVisible]="loadStops.length > 2 ? 3 : 2" [headerText]="'Stops'">
+        <ng-template let-stop pTemplate="item">
+          <div>
+            <kbxl-load-stop [stop]="stop" [total]="loadStops.length"></kbxl-load-stop>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+
+    <hr class="detail-horizontal-rule" />
+
+    <div class="comments-container row">
+      <div class="comments-item col-5">
+        <div class="pb-2">
+          <strong class="font-weight-bold">Equipment:</strong> {{ load.equipmentCategoryId || 'Other' }} - {{ load.equipmentTypeDisplay }}
+        </div>
+        <div class="pb-2"><strong class="font-weight-bold">Weight:</strong> {{ load.weight | number }}lbs ({{ load.commodity }})</div>
+        <div class="pb-2"><strong class="font-weight-bold">Transit Distance:</strong> {{ load.miles }} miles</div>
+      </div>
+      <div class="comments-item col-7">
+        <div class="pb-2" *ngIf="load?.serviceTypes?.length > 0">
+          <div class="comments-label d-inline-block">Service Types:</div>
+          <span class="ml-1">{{ getServiceTypes() }}</span>
+        </div>
+        <div *ngIf="hasComments">
+          <div class="comments-label pb-2">Comments:</div>
+          <p-scrollPanel [style]="{ width: '100%', maxHeight: '200px' }">
+            <div [innerHTML]="load.comments"></div>
+          </p-scrollPanel>
+        </div>
+      </div>
+      <div *ngIf="carb" class="comments-item col-12 mb-2">
+        The tractor used on this load must be CARB compliant with California’s Truck and Bus regulation (Title 13, California Code of
+        Regulations, Section 2025).
+      </div>
+      <div *ngIf="carbAdj" class="comments-item col-12">
+        The route for this load could involve driving through the state of California. You must confirm that either this load will not be
+        driven through California or, if so, that the tractor used is CARB compliant with California’s Truck and Bus regulation (Title 13,
+        California Code of Regulations, Section 2025).
+      </div>
+    </div>
+
+    <div *ngIf="isShippingDetail && load.deliveredDate !== null">
+      <hr class="detail-horizontal-rule" />
+      <kbxl-feedback
+        header="Carrier Feedback"
+        [feedbackQuestionCode]="feedbackQuestionEnum.LB_ShipperReuseCarrierQuestionId"
+        [loadId]="load?.loadId"
+        [deliveredDate]="load?.deliveredDate"
+      ></kbxl-feedback>
+    </div>
+
+    <div class="row" kbxlActionCheck="loadshop.ui.carrier.myloads.documents.view" *ngIf="shouldDisplayDocuments()">
+      <div class="col-12">
+        <hr class="detail-horizontal-rule" />
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="for-assistance-text">
+            Documents
+          </div>
+          <button
+            pButton
+            icon="pi pi-plus"
+            type="button"
+            class="ui-button-primary ui-button-teal"
+            label="Add Document"
+            (click)="addDocument()"
+            [kbxlActionCheck]="'loadshop.ui.carrier.myloads.documents.attach'"
+            enforcementType="hide"
+          ></button>
+        </div>
+      </div>
+      <div class="col-12 text-center text-muted mt-3" *ngIf="!load.loadDocuments || load.loadDocuments.length === 0">
+        <span>No documents</span>
+      </div>
+      <div class="col-12 mt-3" *ngIf="load.loadDocuments && load.loadDocuments.length > 0">
+        <div class="d-flex flex-column">
+          <div class="d-flex mb-2" *ngFor="let doc of load.loadDocuments">
+            <div class="mr-auto">
+              <a class="a text-primary" (click)="downloadDocument(doc)" kbxlActionCheck="loadshop.ui.carrier.myloads.documents.view">
+                <div>
+                  {{ getDocumentDescription(doc) }}
+                </div>
+                <div class="text-muted">
+                  {{ doc.fileName }}
+                </div>
+              </a>
+            </div>
+            <div>
+              <button
+                kbxlActionCheck="loadshop.ui.carrier.myloads.documents.remove"
+                class="ui-button-danger"
+                pButton
+                icon="pi pi-trash"
+                (click)="removeDocument(doc)"
+                title="Delete Document"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="!isShippingDetail">
+      <div class="col">
+        <hr class="detail-horizontal-rule" />
+        <span class="font-weight-bold teal-text"
+          >ASSET ONLY - No Brokering or use of Partner Carriers will be allowed on this freight. Unauthorized actions can lead to removal
+          from platform</span
+        >
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isShippingDetail">
+      <hr class="detail-horizontal-rule" />
+
+      <div class="map-container">
+        <kbxl-map [stops]="loadStops" (directions)="setDirections($event)"></kbxl-map>
+      </div>
+      <div class="pt-2">
+        <div class="d-flex align-items-center">
+          <fa-icon class="mr-2" [icon]="['fas', 'exclamation-triangle']" size="lg"></fa-icon>
+          <div>
+            <strong class="mr-1">The displayed route is for illustration purposes only.</strong>
+            <span>This route should not be construed as the exact route to be taken.</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<p-dialog header="Confirmation" [(visible)]="showRemoveLoadPopup" [style]="{ width: '600px' }" [appendTo]="'body'" [baseZIndex]="51">
+  <div class="d-flex align-items-center justify-content-center my-3 font-weight-bold">
+    <i class="pi pi-exclamation-triangle mr-2"></i> {{ removeText }}
+  </div>
+  <div *ngIf="removeMode === 1">
+    This will remove the carrier from the load and send the load to the unassigned queue on the Posted Tab. It Must be manually posted
+    again.
+  </div>
+  <div *ngIf="removeMode === 2">
+    This will remove the carrier from the load. The load will be deleted from Loadshop.
+  </div>
+  <div class="my-2">
+    <div class="kbxl-field-label">
+      <label class="control-label">Please select a reason for removal</label>
+    </div>
+    <p-dropdown
+      [options]="ratingQuestions | toSelectItem"
+      [(ngModel)]="removeRatingQuestionAnswer"
+      placeholder="Select Reason"
+      [styleClass]="'ui-dropdown-primary'"
+      dropdownIcon="pi pi-caret-down"
+    >
+    </p-dropdown>
+  </div>
+  <div>
+    <textarea
+      placeholder="Additional Comments"
+      [rows]="5"
+      [cols]="50"
+      pInputTextarea
+      [(ngModel)]="removeComment"
+      name="comments"
+      maxlength="4000"
+    ></textarea>
+  </div>
+  <p-footer>
+    <div class="d-flex">
+      <button
+        type="button"
+        [ngClass]="{ 'ui-button-warning': removeMode === 1, 'ui-button-danger': removeMode === 2 }"
+        pButton
+        (click)="removeConfirmed()"
+        [label]="removeMode === 1 ? 'Remove Carrier' : 'Remove Load'"
+        [disabled]="removeRatingQuestionAnswer?.length === 0"
+      ></button>
+      <button type="button" class="button-outline-secondary" pButton (click)="cancelRemovePopup()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<ng-template #statusDisplay let-status="status" let-loading="loading">
+  <div>
+    <span class="font-weight-bold">{{ status?.description }}</span>
+    <div class="small-spinner-container ml-2" *ngIf="status?.processingUpdates || loadingStatus">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </div>
+  <div *ngIf="status?.locationLabel" style="margin-top: 5px;">
+    <span>{{ status.locationLabel }}</span>
+  </div>
+  <div *ngIf="status?.dateLabel" style="margin-top: 15px;">
+    <span>{{ status?.dateLabel }}</span>
+  </div>
+</ng-template>
+
+<p-dialog
+  [style]="{ width: '600px' }"
+  [appendTo]="'body'"
+  [baseZIndex]="51"
+  header="Upload Document"
+  [(visible)]="showUploadDocumentModal"
+  [modal]="true"
+  [closeOnEscape]="true"
+>
+  <kbxl-upload-document-modal [documentTypes]="loadDocumentTypes" [loadId]="load?.loadId" (close)="showUploadDocumentModal = false">
+  </kbxl-upload-document-modal>
+</p-dialog>

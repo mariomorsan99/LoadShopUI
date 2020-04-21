@@ -1,0 +1,19 @@
+{{ referenceLoadDisplay }}
+<span *ngIf="customerLoadTypeId && showIcon">
+  <span *ngIf="customerLoadTypeId === CustomerLoadTypes.HighPriority">
+    <fa-icon
+      class="ml-2 customer-type-high-priority"
+      [icon]="['fas', 'exclamation-circle']"
+      size="lg"
+      pTooltip="High Priority"
+    ></fa-icon>
+  </span>
+  <span *ngIf="customerLoadTypeId === CustomerLoadTypes.NewShipper">
+    <fa-icon
+      class="ml-2 customer-type-new-shipper"
+      [icon]="['fas', 'exclamation-triangle']"
+      size="lg"
+      pTooltip="New Shipper"
+    ></fa-icon>
+  </span>
+</span>

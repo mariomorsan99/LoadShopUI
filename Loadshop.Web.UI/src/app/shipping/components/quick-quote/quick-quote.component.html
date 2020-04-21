@@ -1,0 +1,118 @@
+<div class="loading-indicator" *ngIf="loading">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+<form [formGroup]="formGroup">
+  <div *ngIf="errorSummary && errorCount <= 5">
+    <div class="error-header">Error Summary</div>
+    <div class="error-container">{{ errorSummary }}</div>
+  </div>
+
+  <div class="instruction">
+    <span>Fill out the form to receive a forecasted <span [innerHtml]="smartSpotLabel"></span>.</span>
+  </div>
+
+  <div class="d-flex justify-content-between flex-wrap pt-2">
+    <div class="flex-grow-1">
+      <div class="kbxl-field-label">
+        <label for="origin" class="control-label" [ngClass]="{ error: formGroup.controls['origin'].invalid }">
+          Origin Postal Code
+        </label>
+      </div>
+      <p-autoComplete
+        id="origin"
+        formControlName="origin"
+        name="origin"
+        [suggestions]="suggestions"
+        (completeMethod)="postalCodeSearch($event)"
+        [forceSelection]="true"
+        field="description"
+        [placeholder]="'Enter Postal Code'"
+        maxlength="50"
+      ></p-autoComplete>
+    </div>
+    <div class="flex-grow-1">
+      <div class="kbxl-field-label">
+        <label for="destination" class="control-label" [ngClass]="{ error: formGroup.controls['destination'].invalid }">
+          Destination Postal Code
+        </label>
+      </div>
+      <p-autoComplete
+        id="destination"
+        formControlName="destination"
+        name="destination"
+        [suggestions]="suggestions"
+        (completeMethod)="postalCodeSearch($event)"
+        [forceSelection]="true"
+        field="description"
+        [placeholder]="'Enter Postal Code'"
+        maxlength="50"
+      ></p-autoComplete>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between flex-wrap pt-2">
+    <div class="flex-grow-1">
+      <div class="kbxl-field-label">
+        <label for="equipment" class="control-label" [ngClass]="{ error: formGroup.controls['equipmentId'].invalid }">
+          Equipment
+        </label>
+      </div>
+      <kbxl-tree-drop-down
+        [treeNodes]="groupedEquipment"
+        [(selectedNode)]="selectedEquipment"
+        [singleSelection]="true"
+        placeHolder="Select Equipment"
+        (selectedNodeChange)="equipmentSelectionMade($event)"
+      >
+      </kbxl-tree-drop-down>
+    </div>
+    <div class="flex-grow-1">
+      <div class="kbxl-field-label">
+        <label for="weight" class="control-label" [ngClass]="{ error: formGroup.controls['weight'].invalid }">
+          Weight
+        </label>
+      </div>
+      <input type="number" class="ui-inputtext" formControlName="weight" />
+    </div>
+    <div class="flex-grow-1">
+      <div class="kbxl-field-label">
+        <label for="pickupDate" class="control-label" [ngClass]="{ error: formGroup.controls['pickupDate'].invalid }">
+          Date
+        </label>
+      </div>
+      <p-calendar formControlName="pickupDate" name="pickupDate" [showIcon]="true" showButtonBar="true" [showTime]="false"> </p-calendar>
+    </div>
+  </div>
+
+  <ng-container *ngIf="smartSpotQuote != null">
+    <hr />
+    <div class="quote-disclaimer">
+      Please Note: if limiting the number of carriers available to book the load when posting to the Marketplace, the
+      <span [innerHtml]="smartSpotLabel"></span> shown at the time of posting may be different than this forecast.
+    </div>
+
+    <div class="d-flex justify-content-between align-content-center align-items-center flex-wrap pt-2">
+      <label class="estimated-rate-label"><span [innerHtml]="smartSpotLabel"></span></label>
+      <label class="estimated-rate-value">{{ smartSpotQuote | currency }}</label>
+    </div>
+  </ng-container>
+
+  <div class="d-flex justify-content-between align-content-center align-items-center flex-wrap pt-2">
+    <div class="flex-grow-1">
+      <button
+        *ngIf="smartSpotQuote != null && allowManualLoadCreation"
+        pButton
+        (click)="createOrderClick()"
+        label="Create Order"
+        type="button"
+        class="ui-button-primary ui-button-teal"
+      ></button>
+    </div>
+    <div>
+      <button pButton (click)="clearClick()" label="Clear" type="button" class="button-outline-secondary"></button>
+    </div>
+    <div>
+      <button pButton (click)="getQuoteClicked()" label="Go" type="button" class="ui-button-primary"></button>
+    </div>
+  </div>
+</form>

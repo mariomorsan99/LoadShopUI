@@ -1,0 +1,43 @@
+<div class="page-container">
+  <div class="d-flex flex-column">
+    <div class="pt-lg-2 pl-lg-4 pr-lg-4 pb-lg-1 position-relative">
+      <kbxl-top-search-criteria
+        [criteria]="pagingUiHelper.filter$ | async"
+        [equipment]="equipment$ | async | toTreeNodes"
+        [states]="states$ | async"
+        [isMobile]="isMobile$ | async"
+        [serviceTypes]="serviceTypes$ | async"
+        (search)="search($event)"
+        (clear)="clear()"
+      >
+      </kbxl-top-search-criteria>
+    </div>
+    <kbxl-color-bar></kbxl-color-bar>
+    <div class="grid-container pl-lg-4 pr-lg-4">
+      <kbxl-load-grid
+        [loading]="dashboardLoading$ | async"
+        [loads]="loads$ | async"
+        (selected)="selected($event)"
+        [isBookedLoads]="false"
+        [showExport]="true"
+        [user]="user$ | async"
+        (updateVisibility)="updateVisibility($event)"
+        [savingLoadId]="savingLoadId$ | async"
+        [errorLoadId]="errorLoadId$ | async"
+        [phoneError]="phoneError$ | async"
+        [truckError]="truckError$ | async"
+        [visibilityBadge]="visibilityBadge$ | async"
+        [serviceTypes]="serviceTypes$ | async"
+        kbxlActionCheck="loadshop.ui.carrier.myloads.viewdelivereddetail"
+        enforcementType="disable"
+        (isDisabledChange)="setDisabled($event)"
+        (updateStatus)="displayUpdateStatus($event)"
+        (lazyLoad)="onLazyLoadEvent($event)"
+        [lazy]="true"
+        [totalRecords]="totalRecords$ | async"
+      >
+      </kbxl-load-grid>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

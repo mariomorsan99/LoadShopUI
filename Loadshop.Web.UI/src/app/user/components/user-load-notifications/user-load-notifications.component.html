@@ -1,0 +1,45 @@
+<form [formGroup]="loadNotificationForm" (ngSubmit)="onSubmit()" class="p-2">
+  <div class="d-flex flex-column">
+    <div *ngIf="error">
+      <div class="col-12 error-container">
+        <p>{{ decodeProblemDetails() }}</p>
+      </div>
+    </div>
+    <div>
+      <p-fieldset legend="Text Message">
+        <div class="d-flex align-items-center justify-content-between">
+          <label class="mr-auto">Register to receive notifications sent to your phone</label>
+          <p-inputMask mask="(999) 999-9999" placeholder="(999) 999-9999" formControlName="textMessageNumber"></p-inputMask>
+          <p-inputSwitch class="ml-3" formControlName="textMessageEnabled"></p-inputSwitch>
+        </div>
+      </p-fieldset>
+    </div>
+    <div>
+      <p-fieldset legend="Email">
+        <div class="d-flex align-items-center justify-content-between">
+          <label class="mr-auto">Register to receive notifications sent to your email</label>
+          <input type="email" class="ui-inputtext" formControlName="email" pInputText maxlength="256" />
+          <p-inputSwitch class="ml-3" formControlName="emailEnabled"></p-inputSwitch>
+        </div>
+      </p-fieldset>
+    </div>
+    <div class="d-flex justify-content-end my-4">
+      <div class="d-flex flex-column align-items-center">
+        <div class="mb-2">Departed</div>
+        <p-inputSwitch formControlName="departedEnabled"></p-inputSwitch>
+      </div>
+      <div class="d-flex flex-column align-items-center ml-3">
+        <div class="mb-2">Arrived</div>
+        <p-inputSwitch formControlName="arrivedEnabled"></p-inputSwitch>
+      </div>
+      <div class="d-flex flex-column align-items-center ml-3">
+        <div class="mb-2">Delivered</div>
+        <p-inputSwitch formControlName="deliveredEnabled"></p-inputSwitch>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between">
+      <span>*Platform + loads only, messages are not guaranteed, text message fees may apply</span>
+      <button type="submit" pButton label="Save" class="ui-button-primary"></button>
+    </div>
+  </div>
+</form>

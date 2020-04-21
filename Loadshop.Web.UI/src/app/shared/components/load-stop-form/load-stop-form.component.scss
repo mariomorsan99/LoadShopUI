@@ -1,0 +1,32 @@
+@import 'variables';
+
+.ui-panel-title {
+  .radio-button-group {
+    display: inline-block;
+    margin-left: 20px;
+    text-transform: none;
+    font-weight: normal;
+  }
+}
+
+.add-stop-button {
+  width: 150px;
+  margin-right: 14px;
+  margin-top: 10px;
+  margin-bottom: -5px;
+
+  & .ui-button-icon-left {
+    left: 30px;
+    font-size: 18px;
+  }
+}
+
+.small-spinner-container {
+  display: inline-block;
+
+  & ::ng-deep .ui-progress-spinner {
+    width: 18px;
+    height: 18px;
+    vertical-align: bottom;
+  }
+}

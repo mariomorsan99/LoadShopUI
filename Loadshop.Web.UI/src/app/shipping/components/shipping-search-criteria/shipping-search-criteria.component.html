@@ -1,0 +1,196 @@
+<div id="filter-header" class="d-lg-none" (click)="collapsed = !collapsed">
+  <div class="d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <button
+        *ngIf="!collapsed"
+        pButton
+        type="button"
+        (click)="clearClick($event)"
+        class="button-outline-secondary w-100"
+        label="CLEAR"
+      ></button>
+      <div class="flex-grow-1 pl-2 pr-2 text-center">
+        <fa-icon *ngIf="!collapsed" [icon]="['fas', 'caret-up']" size="2x"></fa-icon>
+        <fa-icon *ngIf="collapsed" [icon]="['fas', 'caret-down']" size="2x"></fa-icon>
+        <span class="kbxl-field-label">Filter Loads</span>
+      </div>
+      <button *ngIf="!collapsed" pButton type="button" (click)="applyClick($event)" class="ui-button-primary w-100" label="APPLY"></button>
+    </div>
+  </div>
+</div>
+<div class="mobile-overlay">
+  <div class="page-container pt-3 p-lg-0 d-lg-block background pb-0" [class.d-none]="collapsed">
+    <div class="row">
+      <div class="col-12 col-lg-4">
+        <div class="row pb-0">
+          <div class="col-12 kbxl-inputgroup-container mb-0">
+            <div class="kbxl-field-label">
+              <label class="control-label">Quick Search</label>
+            </div>
+            <div class="ui-inputgroup">
+              <input
+                type="text"
+                pInputText
+                class="filter-box ui-inputtext"
+                placeholder="Search Criteria"
+                [(ngModel)]="quickSearch"
+                (keyup.enter)="runSearch()"
+              />
+              <button
+                pButton
+                type="button"
+                icon="pi pi-times-circle"
+                (click)="clearFilter('quickSearch')"
+                class="ui-button-icon-only"
+              ></button>
+              <button pButton type="button" icon="pi pi-filter" class="ui-button-secondary" (click)="runSearch()"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p-panel [toggleable]="true" [collapsed]="true" styleClass="dark-ui-panel">
+      <p-header class="ui-panel-title p-0">
+        <span>Advanced Search</span>
+      </p-header>
+      <div class="row pt-lg-2">
+        <div class="col-12 col-lg-4">
+          <div class="row pb-0">
+            <div class="col-12 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Origin</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-autoComplete
+                  id="origCity"
+                  [placeholder]="'Search by City/State/Province'"
+                  [(ngModel)]="origin"
+                  [suggestions]="suggestions"
+                  (completeMethod)="citySearch($event)"
+                  [forceSelection]="true"
+                  field="description"
+                ></p-autoComplete>
+                <button pButton type="button" icon="pi pi-times-circle" (click)="clearFilter('origin')"></button>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label id="origin-deadhead-miles-label" class="control-label">Max Origin Radius Miles</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-slider [(ngModel)]="crit.origDH" [min]="0" [max]="200" [step]="10"></p-slider>
+                <input type="text" [(ngModel)]="crit.origDH" class="ui-inputtext ui-inputgroup-addon" min="0" max="200" />
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Pickup Date</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-calendar
+                  [showIcon]="true"
+                  selectionMode="range"
+                  showButtonBar="true"
+                  [placeholder]="'Select a Date'"
+                  [readonlyInput]="true"
+                  [(ngModel)]="origDate"
+                ></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="row pb-0">
+            <div class="col-12 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Destination</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-autoComplete
+                  id="origCity"
+                  [placeholder]="'Search by City/State/Province'"
+                  [(ngModel)]="dest"
+                  [suggestions]="suggestions"
+                  (completeMethod)="citySearch($event)"
+                  [forceSelection]="true"
+                  field="description"
+                ></p-autoComplete>
+                <button pButton type="button" icon="pi pi-times-circle" (click)="clearFilter('dest')"></button>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label id="destination-deadhead-miles-label" class="control-label">Max Destination Radius Miles</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-slider [(ngModel)]="crit.destDH" [min]="0" [max]="200" [step]="10"></p-slider>
+                <input type="text" [(ngModel)]="crit.destDH" class="ui-inputtext ui-inputgroup-addon" min="0" max="200" />
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Deliver Date</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-calendar
+                  [showIcon]="true"
+                  selectionMode="range"
+                  showButtonBar="true"
+                  [placeholder]="'Select a Date'"
+                  [readonlyInput]="true"
+                  [(ngModel)]="destDate"
+                ></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="row pb-0">
+            <div class="col-12 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Equipment Type</label>
+              </div>
+              <div class="ui-inputgroup">
+                <kbxl-tree-drop-down
+                  [treeNodes]="equipment"
+                  [(selectedNodes)]="selectedEquipment"
+                  placeHolder="Select Equipment Type(s)"
+                ></kbxl-tree-drop-down>
+              </div>
+            </div>
+            <div class="col-12 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Service Type</label>
+              </div>
+              <p-multiSelect
+                [options]="serviceTypes"
+                placeholder="Select All Services"
+                [(ngModel)]="selectedServiceTypes"
+                name="services"
+                dataKey="serviceTypeId"
+                optionLabel="name"
+                [styleClass]="'ui-dropdown-primary'"
+                dropdownIcon="pi pi-caret-down"
+                appendTo="body"
+                maxSelectedLabels="10"
+                kbxlCloseOnScroll
+                hideTransitionOptions="0ms"
+              >
+              </p-multiSelect>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column pb-2">
+        <div class="text-right">
+          <button pButton type="button" (click)="clearClick($event)" class="button-outline-secondary" label="Clear Filters"></button>
+          <button pButton type="button" (click)="runSearch()" class="ui-button-primary ml-3" [label]="'Search'"></button>
+        </div>
+        <div *ngIf="!collapsed" class="col-12 kbxl-inputgroup-container d-lg-none">
+          <button pButton type="button" (click)="applyClick($event)" class="ui-button-primary w-100" label="Apply Filters"></button>
+        </div>
+      </div>
+    </p-panel>
+  </div>
+  <kbxl-color-bar class="d-lg-none"></kbxl-color-bar>
+</div>

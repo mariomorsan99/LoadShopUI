@@ -1,0 +1,232 @@
+<div class=" d-flex flex-column position-relative">
+  <div class="progress-indicator" *ngIf="loading$ | async">
+    <div class="progressspinner-container">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </div>
+
+  <form [formGroup]="form" class="create-form-container">
+    <div class="row">
+      <div class="col-12">
+        <p-panel header="Error Summary" *ngIf="errorSummary && errorCount <= 5" [toggler]="'header'" [toggleable]="true">
+          <div class="error-container">{{ errorSummary }}</div>
+        </p-panel>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p-panel header="Order Entry" [toggler]="'header'" [toggleable]="true" styleClass="dark-ui-panel">
+          <div class="row">
+            <div class="col-12 col-lg-4 kbxl-inputgroup-container">
+              <div class="kbxl-field-label" [ngClass]="{ error: form.controls['referenceLoadDisplay'].invalid }">
+                <label for="referenceLoadDisplay" class="control-label">Order Number</label>
+              </div>
+              <input
+                id="referenceLoadDisplay"
+                formControlName="referenceLoadDisplay"
+                type="text"
+                class="ui-inputtext"
+                pInputText
+                maxlength="70"
+              />
+            </div>
+            <div class="col-12 col-lg-4 kbxl-inputgroup-container">
+              <div class="kbxl-field-label" [ngClass]="{ error: form.controls['commodity'].invalid }">
+                <label for="commodity" class="control-label">Commodity</label>
+                <div class="small-spinner-container ml-2">
+                  <p-progressSpinner *ngIf="loadingCommodities$ | async"></p-progressSpinner>
+                </div>
+              </div>
+              <p-dropdown
+                [options]="commodities$ | async"
+                placeholder="Select Commodity"
+                formControlName="commodity"
+                name="commodity"
+                dataKey="commodityName"
+                optionLabel="commodityName"
+                [styleClass]="'ui-dropdown-primary'"
+                dropdownIcon="pi pi-caret-down"
+                appendTo="body"
+                kbxlCloseOnScroll
+                hideTransitionOptions="0ms"
+              >
+                <ng-template let-item pTemplate="selectedItem">
+                  <span class="selected-item-label">{{ form.get('commodity').value.commodityName }}</span>
+                </ng-template>
+              </p-dropdown>
+            </div>
+            <div class="col-12 col-lg-4 kbxl-inputgroup-container">
+              <div class="kbxl-field-label" [ngClass]="{ error: form.controls['equipment'].invalid }">
+                <label for="equipment" class="control-label">Equipment</label>
+                <div class="small-spinner-container ml-2">
+                  <p-progressSpinner *ngIf="loadingEquipment$ | async"></p-progressSpinner>
+                </div>
+              </div>
+              <kbxl-tree-drop-down
+                [treeNodes]="equipment$ | async | toTreeNodes: true"
+                [(selectedNode)]="selectedEquipment"
+                [singleSelection]="true"
+                placeHolder="Select Equipment"
+                (selectedNodeChange)="equipmentSelectionMade($event)"
+              ></kbxl-tree-drop-down>
+            </div>
+          </div>
+          <p-panel [toggleable]="true">
+            <p-header class="ui-panel-title p-0">
+              <span [ngClass]="{ error: orderContacts.invalid }">Contacts</span>
+              <button
+                class="ui-button-primary ui-button-teal float-right"
+                pButton
+                icon="pi pi-plus"
+                (click)="addOrderContact()"
+                label="Add Contact"
+              ></button>
+            </p-header>
+
+            <div class="row" *ngFor="let contact of orderContacts.controls; let i = index">
+              <div class="col p-0">
+                <kbxl-contact-form [contact]="contact" [index]="i"></kbxl-contact-form>
+              </div>
+              <div class="col-1">
+                <div class="kbxl-field-label">
+                  <label for="" class="control-label">&nbsp;</label>
+                </div>
+                <button
+                  *ngIf="i > 0"
+                  class="ui-button-danger"
+                  pButton
+                  icon="pi pi-trash"
+                  (click)="deleteOrderContact(i)"
+                  title="Delete Contact"
+                ></button>
+              </div>
+            </div>
+          </p-panel>
+        </p-panel>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <p-panel header="Additional Info" [toggler]="'header'" [toggleable]="true" [collapsed]="true" styleClass="dark-ui-panel">
+          <div class="row">
+            <div class="col-12 col-lg-4 kbxl-inputgroup-container">
+              <div class="kbxl-field-label" [ngClass]="{ error: form.controls['shipperPickupNumber'].invalid }">
+                <label for="shipperPickupNumber" class="control-label">Shipper Pickup Number</label>
+              </div>
+              <input
+                id="shipperPickupNumber"
+                formControlName="shipperPickupNumber"
+                type="text"
+                class="ui-inputtext"
+                pInputText
+                maxlength="20"
+              />
+            </div>
+            <div class="col-12 col-lg-4 kbxl-inputgroup-container">
+              <div class="kbxl-field-label" [ngClass]="{ error: form.controls['transportationMode'].invalid }">
+                <label for="transportationMode" class="control-label">Transportation Mode</label>
+                <div class="small-spinner-container ml-2">
+                  <p-progressSpinner *ngIf="loadingTransportationModes$ | async"></p-progressSpinner>
+                </div>
+              </div>
+              <p-dropdown
+                [options]="transportationModes$ | async"
+                placeholder="Select Transportation Mode"
+                formControlName="transportationMode"
+                name="transportationMode"
+                dataKey="name"
+                optionLabel="name"
+                [styleClass]="'ui-dropdown-primary'"
+                dropdownIcon="pi pi-caret-down"
+                appendTo="body"
+                kbxlCloseOnScroll
+                hideTransitionOptions="0ms"
+              >
+                <ng-template let-item pTemplate="selectedItem">
+                  <span class="selected-item-label">{{ form.get('transportationMode').value.name }}</span>
+                </ng-template>
+              </p-dropdown>
+            </div>
+            <div class="col-12 col-lg-4 kbxl-inputgroup-container">
+              <div class="kbxl-field-label" [ngClass]="{ error: form.controls['services'].invalid }">
+                <label for="services" class="control-label">Services</label>
+                <div class="small-spinner-container ml-2">
+                  <p-progressSpinner *ngIf="loadingServiceTypes$ | async"></p-progressSpinner>
+                </div>
+              </div>
+              <p-multiSelect
+                [options]="serviceTypes$ | async"
+                placeholder="Select All Services"
+                formControlName="services"
+                name="services"
+                dataKey="serviceTypeId"
+                optionLabel="name"
+                [styleClass]="'ui-dropdown-primary'"
+                dropdownIcon="pi pi-caret-down"
+                appendTo="body"
+                maxSelectedLabels="10"
+                kbxlCloseOnScroll
+                hideTransitionOptions="0ms"
+              >
+              </p-multiSelect>
+            </div>
+          </div>
+        </p-panel>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div *ngFor="let stop of loadStops.controls; let i = index">
+          <kbxl-load-stop-form
+            [form]="stop"
+            [index]="i"
+            [includeDelete]="loadStops.controls.length > 2 && i !== 0"
+            [schedulerConfirmationTypes]="schedulerConfirmationTypes$ | async"
+            [loadingSchedulerConfirmationTypes]="loadingSchedulerConfirmationTypes$ | async"
+            [states]="states$ | async"
+            [loadingStates]="loadingStates$ | async"
+            [unitsOfMeasure]="unitsOfMeasure$ | async"
+            [loadingUnitsOfMeasure]="loadingUnitsOfMeasure$ | async"
+            [pickupStopNumbers]="pickupStopNumbers"
+            (addLoadStop)="addStop(i)"
+            (changeLoadStopType)="changeStopType(i)"
+            (deleteLoadStop)="deleteStop(i)"
+          >
+          </kbxl-load-stop-form>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <p-panel header="Special Instructions" [toggler]="'header'" [toggleable]="true" styleClass="dark-ui-panel">
+          <div class="py-2">
+            <p-editor name="specialInstructions" formControlName="specialInstructions" [style]="{ height: '100px' }">
+              <p-header>
+                <span class="ql-formats">
+                  <button class="ql-bold" aria-label="Bold"></button>
+                  <button class="ql-italic" aria-label="Italic"></button>
+                  <button class="ql-underline" aria-label="Underline"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-list" value="ordered" aria-label="Ordered List"></button>
+                  <button class="ql-list" value="bullet" aria-label="Bulleted List"></button>
+                </span>
+              </p-header>
+            </p-editor>
+          </div>
+        </p-panel>
+      </div>
+    </div>
+  </form>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="create-footer-container d-flex justify-content-end py-3">
+        <button pButton (click)="cancel()" class="button-outline-secondary cancel-button " label="Cancel"></button>
+        <button pButton (click)="save()" class="ui-button-primary ml-3 mr-2" label="Save"></button>
+      </div>
+    </div>
+  </div>
+</div>

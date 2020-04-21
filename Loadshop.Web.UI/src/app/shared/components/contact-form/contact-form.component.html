@@ -1,0 +1,26 @@
+<form [formGroup]="contact" class="contact-form row">
+  <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+    <div class="kbxl-field-label" [ngClass]="{ error: !contact.controls['firstName'].valid }">
+      <label for="firstName" class="control-label">First Name</label>
+    </div>
+    <input formControlName="firstName" name="firstName" type="text" class="ui-inputtext" pInputText maxlength="100" />
+  </div>
+  <div class="col-12 col-lg-3 kbxl-inputgroup-container">
+    <div class="kbxl-field-label" [ngClass]="{ error: !contact.controls['lastName'].valid }">
+      <label for="lastName" class="control-label">Last Name</label>
+    </div>
+    <input formControlName="lastName" name="lastName" type="text" class="ui-inputtext" pInputText maxlength="100" />
+  </div>
+  <div class="col-12 col-lg-2 kbxl-inputgroup-container">
+    <div class="kbxl-field-label" [ngClass]="{ error: !contact.controls['phoneNumber'].valid }">
+      <label for="phoneNumber" class="control-label">Phone</label>
+    </div>
+    <p-inputMask mask="(999) 999-9999" formControlName="phoneNumber" name="phoneNumber" placeholder="(999) 999-9999"> </p-inputMask>
+  </div>
+  <div class="col-12 col-lg-4 kbxl-inputgroup-container">
+    <div class="kbxl-field-label" [ngClass]="{ error: !contact.controls['email'].valid }">
+      <label for="email" class="control-label">Email</label>
+    </div>
+    <input formControlName="email" name="email" type="text" class="ui-inputtext" pInputText maxlength="250" />
+  </div>
+</form>

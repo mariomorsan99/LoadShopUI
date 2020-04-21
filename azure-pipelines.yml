@@ -1,0 +1,134 @@
+name: $(BuildID)
+
+variables:
+    Major: '1'
+    Minor: '0'
+
+trigger:
+  branches:
+    include:
+      - master
+      - release/*
+
+resources:
+  repositories:
+    - repository: infrastructure
+      type: git 
+      name: Infrastructure/Infrastructure
+      ref: 'refs/heads/master'
+
+stages:
+- stage: Build
+  jobs:
+    - template: build\api-build.yml@infrastructure
+      parameters:
+        prerelease: false
+        projectsToBuild: Loadshop.Web.API/*.csproj
+
+    - job: Build_UI_Dev
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '11.x' #parameter: node version
+
+      - task: Npm@1
+        displayName: 'npm ci'
+        inputs:
+          command: custom
+          workingDir: './Loadshop.Web.UI'
+          verbose: false
+          customCommand: ci
+
+      - task: Npm@1
+        displayName: 'npm build Dev1'
+        inputs:
+          command: custom
+          workingDir: './Loadshop.Web.UI'
+          verbose: false
+          customCommand: 'run build-dev1'
+
+      - task: ArchiveFiles@2
+        displayName: "Archive UI"
+        inputs:
+          rootFolderOrFile: 'Loadshop.Web.UI/wwwroot' #parameter: output dir
+          includeRootFolder: false
+          archiveFile: "$(Build.ArtifactStagingDirectory)/Loadshop.Web.UI.$(Build.buildNumber).zip" #parameter: base project name
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Web UI'
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/Loadshop.Web.UI.$(Build.buildNumber).zip'
+          ArtifactName: Loadshop.Web.UI.zip
+
+    - job: Build_UI_QA1
+      condition: and(succeeded(), eq(startsWith(variables['build.sourceBranch'], 'refs/heads/release/'), true))
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '11.x' #parameter: node version
+
+      - task: Npm@1
+        displayName: 'npm ci'
+        inputs:
+          command: custom
+          workingDir: './Loadshop.Web.UI'
+          verbose: false
+          customCommand: ci
+
+      - task: Npm@1
+        displayName: 'npm build QA1'
+        inputs:
+          command: custom
+          workingDir: './Loadshop.Web.UI'
+          verbose: false
+          customCommand: 'run build-qa1'
+
+      - task: ArchiveFiles@2
+        displayName: "Archive UI"
+        inputs:
+          rootFolderOrFile: 'Loadshop.Web.UI/wwwroot' #parameter: output dir
+          includeRootFolder: false
+          archiveFile: "$(Build.ArtifactStagingDirectory)/Loadshop.Web.UI.$(Build.buildNumber)-QA1.zip" #parameter: base project name
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Web UI'
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/Loadshop.Web.UI.$(Build.buildNumber)-QA1.zip'
+          ArtifactName: Loadshop.Web.UI-QA1.zip
+
+    - job: Build_UI_PROD
+      condition: and(succeeded(), eq(startsWith(variables['build.sourceBranch'], 'refs/heads/release/'), true))
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '11.x' #parameter: node version
+
+      - task: Npm@1
+        displayName: 'npm ci'
+        inputs:
+          command: custom
+          workingDir: './Loadshop.Web.UI'
+          verbose: false
+          customCommand: ci
+
+      - task: Npm@1
+        displayName: 'npm build Prod'
+        inputs:
+          command: custom
+          workingDir: './Loadshop.Web.UI'
+          verbose: false
+          customCommand: 'run build-prod'
+
+      - task: ArchiveFiles@2
+        displayName: "Archive UI"
+        inputs:
+          rootFolderOrFile: 'Loadshop.Web.UI/wwwroot' #parameter: output dir
+          includeRootFolder: false
+          archiveFile: "$(Build.ArtifactStagingDirectory)/Loadshop.Web.UI.$(Build.buildNumber)-PROD.zip" #parameter: base project name
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Web UI'
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/Loadshop.Web.UI.$(Build.buildNumber)-PROD.zip'
+          ArtifactName: Loadshop.Web.UI-PROD.zip

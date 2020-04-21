@@ -1,0 +1,15 @@
+@import 'variables';
+
+#feedback-button-container {
+  position: fixed !important;
+  bottom: 0px !important;
+  right: 2em !important;
+  bottom: -4px !important;
+  background-color: $loadshopDarkBlue;
+  z-index: 2147483647;
+
+  #feedback-button {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+}

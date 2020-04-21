@@ -1,0 +1,271 @@
+<div id="filter-header" class="d-lg-none" (click)="collapsed = !collapsed">
+  <div class="d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <button
+        *ngIf="!collapsed"
+        pButton
+        type="button"
+        (click)="clearClick($event)"
+        class="button-outline-secondary w-100"
+        label="CLEAR"
+      ></button>
+      <div class="flex-grow-1 pl-2 pr-2 text-center">
+        <fa-icon *ngIf="!collapsed" [icon]="['fas', 'caret-up']" size="2x"></fa-icon>
+        <fa-icon *ngIf="collapsed" [icon]="['fas', 'caret-down']" size="2x"></fa-icon>
+        <span class="kbxl-field-label">Filter Loads</span>
+      </div>
+      <button *ngIf="!collapsed" pButton type="button" (click)="applyClick($event)" class="ui-button-primary w-100" label="APPLY"></button>
+    </div>
+  </div>
+</div>
+<div class="mobile-overlay">
+  <div class="page-container pt-3 p-lg-0 d-lg-block background" [class.d-none]="collapsed">
+    <div class="row p-0 d-lg-none">
+      <div class="col-12 kbxl-inputgroup-container">
+        <div class="kbxl-field-label">
+          <label class="control-label">Favorites</label>
+        </div>
+        <p-dropdown
+          [options]="selectLanes"
+          [placeholder]="'Select a saved favorite'"
+          [(ngModel)]="selectedLaneId"
+          (onChange)="loadFavorite($event.value)"
+          [styleClass]="'ui-dropdown-primary'"
+          dropdownIcon="pi pi-caret-down"
+          [style]="{ width: '100%' }"
+          kbxlActionCheck="loadshop.ui.profile.favorites.view"
+        >
+          <ng-template let-lane pTemplate="selectedItem">
+            <div>Select a saved favorite</div>
+          </ng-template>
+          <ng-template let-lane pTemplate="item">
+            <div class="ui-helper-clearfix" style="position: relative; width: 350px;">
+              <div [innerHTML]="lane.label"></div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="separator mb-4 d-lg-none"></div>
+
+    <div *ngIf="selectLanes && selectLanes.length > 0" id="favorites" class="d-none d-lg-block">
+      <p-dropdown
+        [options]="selectLanes"
+        [placeholder]="'Favorites'"
+        [(ngModel)]="selectedLaneId"
+        (onChange)="loadFavorite($event.value)"
+        [styleClass]="'ui-dropdown-secondary'"
+        [dropdownIcon]="'pi pi-caret-down'"
+      >
+        <ng-template let-lane pTemplate="selectedItem">
+          <div>Favorites</div>
+        </ng-template>
+        <ng-template let-lane pTemplate="item">
+          <div class="ui-helper-clearfix" style="position: relative; width: 350px;">
+            <div [innerHTML]="lane.label"></div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+    <div class="row" *ngIf="!isMarketplace">
+      <div class="col-12 col-lg-4">
+        <div class="row pb-0">
+          <div class="col-12 kbxl-inputgroup-container mb-0">
+            <div class="kbxl-field-label">
+              <label class="control-label">Quick Search</label>
+            </div>
+            <div class="ui-inputgroup">
+              <input
+                type="text"
+                pInputText
+                class="filter-box ui-inputtext"
+                placeholder="Search Criteria"
+                [(ngModel)]="quickSearch"
+                (keyup.enter)="searchClick()"
+              />
+              <button
+                pButton
+                type="button"
+                icon="pi pi-times-circle"
+                (click)="clearFilter('quickSearch')"
+                class="ui-button-icon-only"
+              ></button>
+              <button pButton type="button" icon="pi pi-filter" class="ui-button-secondary" (click)="searchClick()"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p-panel [toggleable]="true" [collapsed]="!isMarketplace" styleClass="dark-ui-panel">
+      <p-header class="ui-panel-title p-0">
+        <span>Advanced Search</span>
+      </p-header>
+      <div class="row pt-lg-2">
+        <div class="col-12 col-lg-4">
+          <div class="row pb-0">
+            <div class="col-12 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Origin</label>
+              </div>
+              <kbxl-address-autocomplete
+                [(place)]="origin"
+                [includeAddress]="false"
+                (placeChange)="runSearch()"
+                [placeholder]="'Search by City/State/Province'"
+              >
+              </kbxl-address-autocomplete>
+            </div>
+            <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label id="origin-deadhead-miles-label" class="control-label">Max Origin Radius Miles</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-slider [(ngModel)]="crit.origDH" [min]="0" [max]="200" [step]="10" (onSlideEnd)="runSearch()"></p-slider>
+                <input
+                  type="text"
+                  [(ngModel)]="crit.origDH"
+                  class="ui-inputtext ui-inputgroup-addon"
+                  min="0"
+                  max="200"
+                  (change)="runSearch()"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Pickup Date</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-calendar
+                  [showIcon]="true"
+                  selectionMode="range"
+                  showButtonBar="true"
+                  (onSelect)="runSearch()"
+                  (onClearClick)="runSearch()"
+                  [placeholder]="'Select a Date'"
+                  [readonlyInput]="true"
+                  [(ngModel)]="origDate"
+                ></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="row pb-0">
+            <div class="col-12 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Destination</label>
+              </div>
+              <kbxl-address-autocomplete
+                [(place)]="dest"
+                [includeAddress]="false"
+                (placeChange)="runSearch()"
+                [placeholder]="'Search by City/State/Province'"
+              >
+              </kbxl-address-autocomplete>
+            </div>
+            <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label id="destination-deadhead-miles-label" class="control-label">Max Destination Radius Miles</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-slider [(ngModel)]="crit.destDH" [min]="0" [max]="200" [step]="10" (onSlideEnd)="runSearch()"></p-slider>
+                <input
+                  type="text"
+                  [(ngModel)]="crit.destDH"
+                  class="ui-inputtext ui-inputgroup-addon"
+                  min="0"
+                  max="200"
+                  (change)="runSearch()"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Deliver Date</label>
+              </div>
+              <div class="ui-inputgroup">
+                <p-calendar
+                  [showIcon]="true"
+                  selectionMode="range"
+                  showButtonBar="true"
+                  (onSelect)="runSearch()"
+                  (onClearClick)="runSearch()"
+                  [placeholder]="'Select a Date'"
+                  [readonlyInput]="true"
+                  [(ngModel)]="destDate"
+                ></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="row pb-0">
+            <div class="col-12 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Equipment Type</label>
+              </div>
+              <div class="ui-inputgroup">
+                <!-- <p-multiSelect [defaultLabel]="'Choose'" [options]="equipment | toSelectItem" (onChange)="runSearch()" [(ngModel)]="equipmentType" [virtualScroll]="true" itemSize="30"></p-multiSelect> -->
+                <kbxl-tree-drop-down
+                  [treeNodes]="equipment"
+                  [(selectedNodes)]="selectedEquipment"
+                  placeHolder="Select Equipment Type(s)"
+                  (selectedNodesChange)="runSearch()"
+                ></kbxl-tree-drop-down>
+              </div>
+            </div>
+            <div class="col-12 kbxl-inputgroup-container">
+              <div class="kbxl-field-label">
+                <label class="control-label">Service Type</label>
+              </div>
+              <p-multiSelect
+                [options]="serviceTypes"
+                placeholder="Select All Services"
+                [(ngModel)]="selectedServiceTypes"
+                (onChange)="runSearch()"
+                name="services"
+                dataKey="serviceTypeId"
+                optionLabel="name"
+                [styleClass]="'ui-dropdown-primary'"
+                dropdownIcon="pi pi-caret-down"
+                appendTo="body"
+                maxSelectedLabels="10"
+                kbxlCloseOnScroll
+                hideTransitionOptions="0ms"
+              >
+              </p-multiSelect>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column pb-2">
+        <div class="text-right">
+          <button pButton type="button" (click)="clearClick($event)" class="button-outline-secondary" label="Clear Filters"></button>
+          <button
+            pButton
+            type="button"
+            (click)="saveClick()"
+            class="ui-button-primary ml-3"
+            *ngIf="isMarketplace"
+            [label]="!userLaneId ? 'Add To Favorites' : 'Update Favorites'"
+            kbxlActionCheck="loadshop.ui.profile.favorites.addedit"
+          ></button>
+          <button
+            pButton
+            type="button"
+            (click)="searchClick()"
+            class="ui-button-primary ml-3"
+            *ngIf="!isMarketplace"
+            [label]="'Search'"
+            kbxlActionCheck="loadshop.ui.profile.favorites.addedit"
+          ></button>
+        </div>
+        <div *ngIf="!collapsed" class="col-12 kbxl-inputgroup-container d-lg-none">
+          <button pButton type="button" (click)="applyClick($event)" class="ui-button-primary w-100" label="Apply Filters"></button>
+        </div>
+      </div>
+    </p-panel>
+  </div>
+  <kbxl-color-bar class="d-lg-none"></kbxl-color-bar>
+</div>

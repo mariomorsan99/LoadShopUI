@@ -1,0 +1,13 @@
+@import 'variables';
+
+:host ::ng-deep .ui-table .ui-table-thead > tr > th {
+  top: 0;
+}
+
+// .filter-box {
+//   width: 200px !important;
+// }
+
+.autoFilter-box {
+  width: 300px !important;
+}

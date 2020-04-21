@@ -1,0 +1,7 @@
+<div>
+    <kbxl-carrier-profile-form [carriers]="carriers$ | async" [adminUsers]="adminUsers$ | async"
+        [selectedCarrierProfile]="selectedCarrierProfile$ | async" [processing]="processing$ | async"
+        (selectedCarrierChange)="carrierSelected($event)" (selectedCarrierProfileUpdate)="update($event)"
+        (cancelUpdateClick)="cancelUpdateClick()">
+    </kbxl-carrier-profile-form>
+</div>

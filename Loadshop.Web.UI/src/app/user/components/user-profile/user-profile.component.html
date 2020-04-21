@@ -1,0 +1,198 @@
+<div class="progress-indicator" *ngIf="loading">
+  <div class="progressspinner-container">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+</div>
+<div class="page-container mobile-padding p-lg-0" *ngIf="user">
+  <p-panel styleClass="ui-panel-no-pad ui-panel-borderless ">
+    <p-header>
+      <span>My Profile</span>
+    </p-header>
+    <form [formGroup]="userProfileForm" (ngSubmit)="onSubmit()">
+      <div class="row" *ngIf="userProfileForm.errors && submitted">
+        <div class="col-12 error-container">
+          <p *ngIf="userProfileForm.controls.email.invalid">Email Address Must Be Provided</p>
+          <p *ngIf="userProfileForm.hasError('noPhoneContacts')">Contact Phone Number Must Be Provided</p>
+        </div>
+      </div>
+      <div class="row" *ngIf="error">
+        <div class="col-12 error-container">
+          <p>{{ decodeProblemDetails() }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+          <div class="kbxl-field-label">
+            <label for="name" class="control-label ">Name</label>
+          </div>
+          <input id="name" type="text" class="ui-inputtext" [value]="user.name | titlecase" disabled />
+        </div>
+        <div class="col-12 col-lg-6 kbxl-inputgroup-container" *ngIf="!user.isShipper">
+          <div for="carrier" class="kbxl-field-label">
+            <label for="carrier" class="control-label ">Carrier</label>
+          </div>
+          <input id="carrier" type="text" class="ui-inputtext" [value]="user.carrierName | titlecase" pInputText disabled />
+        </div>
+        <div class="col-12 col-lg-6 kbxl-inputgroup-container" *ngIf="!user.isShipper">
+          <div class="kbxl-field-label">
+            <label for="scac" class="control-label ">SCAC</label>
+          </div>
+          <input *ngIf="!allowSelectingScac" id="scac" type="text" class="ui-inputtext" [value]="user.carrierScac" pInputText disabled />
+          <p-dropdown
+            *ngIf="allowSelectingScac"
+            [options]="user.availableCarrierScacsSelectItems"
+            formControlName="carrierScac"
+            placeholder="Select a SCAC"
+            [style]="{ width: '100%' }"
+          >
+          </p-dropdown>
+        </div>
+
+        <div class="col-12 col-lg-6 kbxl-inputgroup-container">
+          <div class="kbxl-field-label" [ngClass]="{ error: userProfileForm.controls.email.invalid }">
+            <label class="control-label ">Email</label>
+          </div>
+          <input type="email" class="ui-inputtext" formControlName="email" pInputText maxlength="256" />
+        </div>
+        <div class="col-12 col-lg-6 kbxl-inputgroup-container" *ngIf="user.isShipper">
+          <div class="kbxl-field-label">
+            <label for="commodity" class="control-label">Default Commodity</label>
+            <div class="small-spinner-container ml-2">
+              <p-progressSpinner *ngIf="loadingCommodities"></p-progressSpinner>
+            </div>
+          </div>
+          <div class="ui-inputgroup">
+            <p-dropdown
+              [options]="commodities"
+              placeholder="Select Commodity"
+              formControlName="selectedCommodity"
+              name="commodity"
+              dataKey="commodityName"
+              optionLabel="commodityName"
+              [styleClass]="'ui-dropdown-primary'"
+              dropdownIcon="pi pi-caret-down"
+              appendTo="body"
+              kbxlCloseOnScroll
+              hideTransitionOptions="0ms"
+            >
+              <!-- <ng-template let-item pTemplate="selectedItem">
+              <span class="selected-item-label">{{ user.selectedCommodity.commodityName }}</span>
+            </ng-template> -->
+            </p-dropdown>
+
+            <button type="button" pButton icon="pi pi-times-circle" (click)="resetCommodity()"></button>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="kbxl-field-label">
+            <label class="control-label">All Notifications Enabled for Email and Text Notifications</label>
+          </div>
+          <div class="kbxl-field-label">
+            <p-checkbox class="mr-2" name="enabled" value="enabled" formControlName="notificationEnabled" binary="true"></p-checkbox>
+            <label class="control-label">Notifications Enabled</label>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6" kbxlActionCheck="loadshop.ui.profile.loadstatusnotifications">
+          <div class="kbxl-field-label">
+            <label class="control-label">Load Status Notifications</label>
+          </div>
+          <div class="kbxl-field-label">
+            <button
+              type="button"
+              pButton
+              label="Manage Notifications"
+              class="ui-button-primary"
+              (click)="showManageLoadNotifications = !showManageLoadNotifications"
+            ></button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p-header>
+            <div class="kbxl-field-label">
+              <label
+                class="mr-auto control-label"
+                [ngClass]="{ error: userProfileForm.errors && submitted && userProfileForm.errors['noPhoneContacts'] }"
+              >
+                Contact Numbers
+              </label>
+              <label class="notification-label control-label">Notifications Enabled</label>
+            </div>
+          </p-header>
+        </div>
+      </div>
+      <div
+        class="row kbxl-inputgroup-container contact-numbers mb-2"
+        formArrayName="contactNumbers"
+        *ngFor="let itemFormGroup of contactNumbers; let i = index"
+      >
+        <div [formGroupName]="i" class="col-6">
+          <div class=" d-flex align-items-center">
+            <p-dropdown class="mr-2 w-auto" [options]="messageTypes" placeholder="Contact Number" formControlName="messageTypeId">
+            </p-dropdown>
+            <p-inputMask mask="(999) 999-9999" formControlName="notificationValue" placeholder="(999) 999-9999"></p-inputMask>
+            <div class="mr-2 hidden" [ngClass]="{ visible: itemFormGroup?.value?.messageTypeId === 'Phone' }">
+              <span class="mx-2">Ext.</span>
+              <input class="ui-inputtext phone-extension" type="tel" formControlName="additionalValue" placeholder="999999" maxlength="6" />
+            </div>
+            <button
+              class="ui-button-danger"
+              [ngClass]="{ hidden: i === 0 }"
+              pButton
+              icon="pi pi-trash"
+              (click)="removeContact(i)"
+              title="Delete Contact"
+            ></button>
+            <p-checkbox
+              class="hidden notification-checkbox"
+              [ngClass]="{ visible: itemFormGroup?.value?.messageTypeId !== 'Phone' }"
+              name="enabled"
+              value="enabled"
+              formControlName="notificationEnabled"
+              binary="true"
+            ></p-checkbox>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 kbxl-inputgroup-container">
+          <button
+            pButton
+            type="button"
+            class="ui-button-primary ui-button-teal"
+            icon="pi pi-plus"
+            label="Add New"
+            (click)="addContact()"
+          ></button>
+        </div>
+      </div>
+      <div *ngIf="user.carrierVisibilityTypes && user.carrierVisibilityTypes.length" class="col-12 col-lg-6 mb-1">
+        <div class="kbxl-field-label">
+          <label for="carrierVisibilityType" class="control-label ">Visibility Type(s)</label>
+        </div>
+        <input
+          id="carrierVisibilityType"
+          type="text"
+          disabled
+          class="ui-inputtext"
+          value="{{ user.carrierVisibilityTypes.join(', ') | titlecase }}"
+        />
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button type="button" pButton label="Log Out" (click)="logout()" class="button-outline-secondary m-2"></button>
+        <button type="submit" pButton label="Save Profile" class="ui-button-primary m-2"></button>
+      </div>
+    </form>
+  </p-panel>
+</div>
+
+<p-dialog header="Load Status Notifications" [(visible)]="showManageLoadNotifications" [style]="{ width: '800px' }" [modal]="true">
+  <kbxl-user-load-notifications
+    [user]="user"
+    [loadStatusNotifications]="loadStatusNotifications"
+    [error]="loadStatusNotificationsErrors"
+    (saveLoadStatusNotifications)="onSaveLoadStatusNotifications($event)"
+  ></kbxl-user-load-notifications>
+</p-dialog>

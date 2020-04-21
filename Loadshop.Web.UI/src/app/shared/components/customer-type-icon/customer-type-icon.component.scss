@@ -1,0 +1,9 @@
+@import 'variables';
+
+.customer-type-high-priority {
+  color: $loadshopErrorDarkRed;
+}
+
+.customer-type-new-shipper {
+  color: $loadshopYellow;
+}

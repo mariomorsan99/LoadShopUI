@@ -1,0 +1,56 @@
+<p-table
+  [rowHover]="true"
+  [value]="loadAuditLogs"
+  #table
+  styleClass="ui-table-no-border"
+  autoLayout="true"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 25, 50, 100]"
+  [first]="first"
+  (onPage)="onPage($event)"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th [pSortableColumn]="'auditTypeId'">
+        Viewed From
+        <p-sortIcon [field]="'auditTypeId'"></p-sortIcon>
+      </th>
+      <th [pSortableColumn]="'scac'">
+        SCAC
+        <p-sortIcon [field]="'scac'"></p-sortIcon>
+      </th>
+      <th [pSortableColumn]="'carrierName'">
+        Carrier
+        <p-sortIcon [field]="'carrierName'"></p-sortIcon>
+      </th>
+      <th [pSortableColumn]="'firstName'">
+        First Name
+        <p-sortIcon [field]="'firstName'"></p-sortIcon>
+      </th>
+      <th [pSortableColumn]="'email'">
+        E-Mail
+        <p-sortIcon [field]="'email'"></p-sortIcon>
+      </th>
+      <th [pSortableColumn]="'phone'">
+        Phone
+        <p-sortIcon [field]="'phone'"></p-sortIcon>
+      </th>
+      <th [pSortableColumn]="'createDtTm'">
+        Viewed
+        <p-sortIcon [field]="'createDtTm'"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item>
+    <tr>
+      <td>{{ item.auditTypeId }}</td>
+      <td>{{ item.scac }}</td>
+      <td>{{ item.carrierName | titlecase }}</td>
+      <td>{{ item.firstName | titlecase }}</td>
+      <td>{{ item.email }}</td>
+      <td>{{ item.phone }}</td>
+      <td>{{ item.createDtTm | date: 'short' }}</td>
+    </tr>
+  </ng-template>
+</p-table>

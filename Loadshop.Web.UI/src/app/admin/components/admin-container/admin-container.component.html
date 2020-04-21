@@ -1,0 +1,17 @@
+<div class="admin-header"></div>
+<kbxl-color-bar></kbxl-color-bar>
+<div class="d-flex flex-column position-relative">
+  <div class="d-flex flex-column flex-lg-row admin-container">
+    <div class="admin-nav-panel">
+      <p-tabMenu orientation="left" [model]="menu$ | async" styleClass="admin-side-menu">
+        <ng-template pTemplate="item" let-item let-i="index">
+          <span class="ui-menuitem-text ng-star-inserted">{{ item.label }}</span>
+          <span *ngIf="item.badge" class="ui-menuitem-text {{ item.badgeStyleClass }}">{{ item.badge }}</span>
+        </ng-template>
+      </p-tabMenu>
+    </div>
+    <div class="admin-content-panel flex-md-grow-1">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

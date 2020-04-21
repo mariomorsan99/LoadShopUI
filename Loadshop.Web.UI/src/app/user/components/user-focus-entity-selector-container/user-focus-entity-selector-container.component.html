@@ -1,0 +1,9 @@
+<kbxl-user-focus-entity-selector 
+    [availableEntities]="availableEntities$ | async" 
+    [availableEntitiesFlat]="availableEntitiesFlat$ | async" 
+    [searchResults]="searchResults" 
+    [selectedEntity]="selectedEntity$ | async"
+    (updated)="update($event)"
+    (searchChanged)="search($event)">
+
+</kbxl-user-focus-entity-selector>

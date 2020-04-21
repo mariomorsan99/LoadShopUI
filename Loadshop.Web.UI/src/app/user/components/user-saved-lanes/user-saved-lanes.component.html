@@ -1,0 +1,174 @@
+<div class="progress-indicator" *ngIf="loading">
+  <div class="progressspinner-container">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+</div>
+<div class="page-container" *ngIf="lanes">
+  <div class="d-none d-lg-block">
+    <p-panel styleClass="ui-panel-no-pad ui-panel-borderless">
+      <p-header>
+        <div class="d-flex justify-content-between pr-2">
+          <span>Favorite Lanes</span>
+          <button
+            pButton
+            (click)="addClick()"
+            icon="pi pi-plus"
+            label="Add New"
+            type="button"
+            class="ui-button-primary ui-button-teal"
+          ></button>
+        </div>
+      </p-header>
+      <p-table
+        [rowHover]="true"
+        [value]="lanes"
+        selectionMode="single"
+        #table
+        styleClass="ui-table-no-border"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [first]="first"
+        (onPage)="onPage($event)"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th [pSortableColumn]="'origCity'">
+              Origin
+              <p-sortIcon [field]="'origCity'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'origDH'">
+              Origin Radius Miles
+              <p-sortIcon [field]="'origDH'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'destCity'">
+              Destination
+              <p-sortIcon [field]="'destCity'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'destDH'">
+              Destination Radius Miles
+              <p-sortIcon [field]="'destDH'"></p-sortIcon>
+            </th>
+            <th>
+              Equipment
+            </th>
+            <th style="width: 180px">
+              Ship Days
+            </th>
+            <th>
+              Email
+            </th>
+            <th>
+              Text Messages
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-lane>
+          <tr (click)="onRowSelect(lane)" [pSelectableRow]="lane">
+            <td>
+              <span *ngIf="lane.origCity">{{ lane.origCity }}, {{ lane.origState }}</span>
+              <span *ngIf="!lane.origCity">{{ getState(lane.origState) | titlecase }}</span>
+              <span *ngIf="!lane.origCity && !lane.origState">Anywhere</span>
+            </td>
+            <td>
+              {{ lane.origDH }}
+            </td>
+            <td>
+              <span *ngIf="lane.destCity">{{ lane.destCity | titlecase }}, {{ lane.destState }}</span>
+              <span *ngIf="!lane.destCity">{{ getState(lane.destState) | titlecase }}</span>
+              <span *ngIf="!lane.destCity && !lane.destState">Anywhere</span>
+            </td>
+            <td>
+              {{ lane.destDH }}
+            </td>
+            <td>
+              {{ getEquipmentCategoryDisplay(lane) }}
+              <!-- <span *ngIf="lane.equipmentCount > 1">{{lane.equipmentCount}}</span>
+              <span *ngIf="lane.equipmentCount === 1">{{lane.equipmentDisplay}}</span> -->
+            </td>
+            <td>
+              {{ lane | dayAbbreviation }}
+            </td>
+            <td>
+              <p-checkbox disabled [(ngModel)]="lane.laneNotifications.Email" binary="true" readonly></p-checkbox>
+            </td>
+            <td>
+              <p-checkbox disabled [(ngModel)]="lane.laneNotifications.Cell_Phone" binary="true" readonly></p-checkbox>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+  </div>
+  <div class="d-lg-none pt-2">
+    <div class="lane-item" *ngFor="let lane of lanes">
+      <p-card styleClass="lane-grid-card" (click)="onRowSelect(lane)">
+        <p-header>
+          <div class="d-flex flex-column">
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="flex-grow-1">
+                <div class="trip-origin">
+                  <div class="trip-marker-icon">
+                    <fa-icon [icon]="['far', 'circle']" size="md"></fa-icon>
+                  </div>
+                  <span class="trip-text" *ngIf="lane.origCity">{{ lane.origCity | titlecase }}, {{ lane.origState }}</span>
+                  <span class="trip-text" *ngIf="!lane.origCity">{{ getState(lane.origState) | titlecase }}</span>
+                  <span class="trip-text" *ngIf="!lane.origCity && !lane.origState">Anywhere</span>
+                  <span class="trip-text" *ngIf="lane.origDH">&nbsp;(Allowed Radius: {{ lane.origDH }})</span>
+                </div>
+                <div class="trip-ellipsis-icon">
+                  <fa-icon [icon]="['fas', 'ellipsis-v']" size="md"></fa-icon>
+                </div>
+                <div class="trip-destination">
+                  <div class="trip-marker-icon">
+                    <fa-icon [icon]="['fas', 'map-marker-alt']" size="md"></fa-icon>
+                  </div>
+                  <span class="trip-text" *ngIf="lane.destCity">{{ lane.destCity | titlecase }}, {{ lane.destState }}</span>
+                  <span class="trip-text" *ngIf="!lane.destCity">{{ getState(lane.destState) | titlecase }}</span>
+                  <span class="trip-text" *ngIf="!lane.destCity && !lane.destState">Anywhere</span>
+                  <span class="trip-text" *ngIf="lane.destDH">&nbsp;(Allowed Radius: {{ lane.destDH }})</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </p-header>
+        <div class="d-flex flex-column lane-item-detail">
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>Days</span>
+            </div>
+            <div>
+              <span>{{ lane | dayAbbreviation }}</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>Email</span>
+            </div>
+            <div>
+              <p-checkbox disabled [(ngModel)]="lane.laneNotifications.Email" binary="true" readonly></p-checkbox>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap align-items-center">
+            <div class="flex-grow-1">
+              <span>Text Message</span>
+            </div>
+            <div>
+              <p-checkbox disabled [(ngModel)]="lane.laneNotifications.Cell_Phone" binary="true" readonly></p-checkbox>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+    <div>
+      <button
+        pButton
+        (click)="addClick()"
+        icon="pi pi-plus"
+        label="Add New"
+        type="button"
+        class="ui-button-primary mobile-add-button"
+      ></button>
+    </div>
+  </div>
+</div>

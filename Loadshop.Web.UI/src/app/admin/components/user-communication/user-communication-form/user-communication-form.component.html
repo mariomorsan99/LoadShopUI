@@ -1,0 +1,217 @@
+<div class="d-flex flex-column" style="position: relative;">
+  <div class="progress-indicator" *ngIf="processing">
+    <div class="progressspinner-container">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </div>
+  <p-panel>
+    <p-header> User Communication - {{ userCommunication?.title }} </p-header>
+    <form [formGroup]="userCommunicationForm" (ngSubmit)="onSubmit()">
+      <ul class="list-unstyled error-container" *ngIf="userCommunicationForm.errors">
+        <li *ngIf="userCommunicationForm.errors?.noTargetusers">
+          User Communication must target at least one user.
+        </li>
+      </ul>
+      <div class="row">
+        <div class="col-xl-6">
+          <p-panel>
+            <p-header class="ui-panel-title">
+              <span>Setup</span>
+            </p-header>
+
+            <div class="row">
+              <div class="col-12">
+                <div class="kbxl-field-label">
+                  <label class="control-label">
+                    <span [ngClass]="{ 'text-danger': hasErrors('title') }">Title *</span>
+                  </label>
+                </div>
+                <div>
+                  <input type="text" id="title" formControlName="title" pInputText class="ui-inputtext" />
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <div class="kbxl-field-label">
+                  <label class="control-label">
+                    <span>Send Communication to All Users</span>
+                  </label>
+                </div>
+                <div>
+                  <p-checkbox formControlName="allUsers" binary="true" (onChange)="setTargetUsersVisibility()"></p-checkbox>
+                </div>
+              </div>
+              <!-- <div class="col-md-6">
+                                <div class="kbxl-field-label">
+                                    <label class="control-label">
+                                        <span>Acknowledgement Required</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <p-checkbox formControlName="acknowledgementRequired" binary="true"></p-checkbox>
+                                </div>
+                            </div> -->
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <div class="kbxl-field-label">
+                  <label class="control-label">
+                    <span [ngClass]="{ 'text-danger': hasErrors('effectiveDate') }">Effective Date *</span>
+                  </label>
+                </div>
+                <div>
+                  <p-calendar id="effectiveDate" formControlName="effectiveDate"></p-calendar>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="kbxl-field-label">
+                  <label class="control-label">
+                    <span>Expiration Date</span>
+                  </label>
+                </div>
+                <div>
+                  <div class="ui-inputgroup">
+                    <p-calendar formControlName="expirationDate"> </p-calendar>
+                    <button
+                      pButton
+                      type="button"
+                      icon="pi pi-times-circle"
+                      class="ui-button-secondary"
+                      (click)="clearExpirationDateClick()"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-panel>
+        </div>
+        <div class="col-xl-6">
+          <p-panel *ngIf="showTargetUsersSection">
+            <p-header class="ui-panel-title">
+              Target Users
+            </p-header>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="kbxl-field-label">
+                  <label class="control-label">
+                    <span>Carriers</span>
+                  </label>
+                </div>
+                <div>
+                  <p-multiSelect
+                    [options]="allCarriers | toSelectItem"
+                    formControlName="userCommunicationCarriers"
+                    defaultLabel="Select Carrier(s) for Communication"
+                    [filter]="true"
+                    [virtualScroll]="true"
+                    itemSize="30"
+                    [styleClass]="'ui-dropdown-primary'"
+                    dropdownIcon="pi pi-caret-down"
+                  >
+                  </p-multiSelect>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="kbxl-field-label">
+                  <label class="control-label">
+                    <span>Shippers</span>
+                  </label>
+                </div>
+                <div>
+                  <p-multiSelect
+                    [options]="allShippers | toSelectItemByKey: 'name':'customerId'"
+                    formControlName="userCommunicationShippers"
+                    defaultLabel="Select Shippers(s) for Communication"
+                    [filter]="true"
+                    [virtualScroll]="true"
+                    itemSize="30"
+                    [styleClass]="'ui-dropdown-primary'"
+                    dropdownIcon="pi pi-caret-down"
+                  >
+                  </p-multiSelect>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-lg-6">
+                <div class="kbxl-field-label">
+                  <label class="control-label">
+                    <span>Users</span>
+                  </label>
+                </div>
+                <div>
+                  <p-multiSelect
+                    [options]="allUsers | toSelectItemByKey: 'firstName,lastName,username':'userId'"
+                    formControlName="userCommunicationUsers"
+                    defaultLabel="Select Users(s) for Communication"
+                    [filter]="true"
+                    [virtualScroll]="true"
+                    itemSize="30"
+                    [styleClass]="'ui-dropdown-primary'"
+                    dropdownIcon="pi pi-caret-down"
+                  >
+                    <ng-template let-item pTemplate="item">
+                      <span>{{ item?.label | titlecase }}</span>
+                    </ng-template>
+                  </p-multiSelect>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="kbxl-field-label">
+                  <label class="control-label">
+                    <span>Security Roles</span>
+                  </label>
+                </div>
+                <div>
+                  <p-multiSelect
+                    [options]="allSecurityRoles | toSelectItemByKey: 'accessRoleName':'accessRoleId'"
+                    formControlName="userCommunicationSecurityAccessRoles"
+                    defaultLabel="Select Security Role(s) for Communication"
+                    [filter]="true"
+                    [virtualScroll]="true"
+                    itemSize="30"
+                    [styleClass]="'ui-dropdown-primary'"
+                    dropdownIcon="pi pi-caret-down"
+                  >
+                  </p-multiSelect>
+                </div>
+              </div>
+            </div>
+          </p-panel>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p-panel>
+            <div class="kbxl-field-label">
+              <label class="control-label">
+                <span [ngClass]="{ 'text-danger': hasErrors('message') }">Message *</span>
+              </label>
+            </div>
+            <div>
+              <p-editor formControlName="message" [style]="{ height: '320px' }"></p-editor>
+            </div>
+          </p-panel>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <button
+          pButton
+          type="button"
+          (click)="cancel()"
+          class="button-outline-secondary m-2"
+          label="CANCEL"
+          onTextChange="messageChange()"
+        ></button>
+        <button
+          pButton
+          type="submit"
+          class="ui-button-primary m-2"
+          label="SAVE COMMUNICATION"
+          [disabled]="!userCommunicationForm.valid"
+        ></button>
+      </div>
+    </form>
+  </p-panel>
+</div>

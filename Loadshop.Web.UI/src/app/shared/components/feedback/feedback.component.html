@@ -1,0 +1,23 @@
+<ng-container *ngIf="feedbackQuestionCode && loadId">
+  <div>
+    <label class="feedback-header">{{header}}</label>
+    <div class="small-spinner-container ml-2">
+      <p-progressSpinner *ngIf="processing$ | async"></p-progressSpinner>
+    </div>
+  </div>
+  <ng-container *ngIf="question$ | async; let question">
+    {{question.questionText}}
+
+    <ng-container *ngIf="!(loadingResponse$ | async)">
+      <div class="radio-button-group" *ngIf="response$ | async; let response">
+        <p-radioButton [(ngModel)]="response.answer" [value]="true" label="Yes"
+          [disabled]="(processing$ | async) || !responseAllowed" (onClick)="saveResponse(response)"
+          class="mr-3">
+        </p-radioButton>
+        <p-radioButton [(ngModel)]="response.answer" [value]="false" label="No"
+          [disabled]="(processing$ | async) || !responseAllowed" (onClick)="saveResponse(response)">
+        </p-radioButton>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>

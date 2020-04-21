@@ -1,0 +1,36 @@
+<kbxl-shipping-load-detail
+  [details]="detail"
+  [detailErrors]="detailErrors"
+  [loadCarrierGroups]="loadCarrierGroups$ | async"
+  [carriers]="carriers$ | async"
+  [loadingCarriers]="loadingCarriers$ | async"
+  [loadCarrierScacs]="loadCarrierScacs$ | async"
+  [loadingScacs]="loadingScacs$ | async"
+  [loadCarrierScacRestrictions]="loadCarrierScacRestrictions$ | async"
+  [loadingScacRestrictions]="loadingScacRestrictions$ | async"
+  [commodities]="commodities$ | async"
+  [loadingCommodities]="loadingCommodities$ | async"
+  [loadAuditLogs]="loadAuditLogs$ | async"
+  [loadingAuditLogs]="loadingAuditLogs$ | async"
+  [serviceTypes]="serviceTypes$ | async"
+  [loadingServiceTypes]="loadingServiceTypes$ | async"
+  (viewCarrierClicks)="viewCarrierClicks()"
+  (close)="close($event)"
+  (updateSmartSpotPrice)="updateSmartSpotPrice($event)"
+  (updateSummaryCard)="updateSummaryCard($event)"
+  [loadingSmartSpot]="loadingSmartSpot$ | async"
+>
+</kbxl-shipping-load-detail>
+
+<p-dialog
+  header="Carrier Views"
+  [(visible)]="displayCarrierClicksDialog"
+  [style]="{ left: '100px', 'max-width': 'calc(100vw - 200px)' }"
+  [modal]="true"
+  [closeOnEscape]="true"
+>
+  <kbxl-shipping-load-audit-log-grid
+    [loadAuditLogs]="loadAuditLogs$ | async"
+    [loadingAuditLogs]="loadingAuditLogs$ | async"
+  ></kbxl-shipping-load-audit-log-grid>
+</p-dialog>
