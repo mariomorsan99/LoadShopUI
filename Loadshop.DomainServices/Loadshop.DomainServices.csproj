@@ -27,7 +27,7 @@
     <PackageReference Include="FeedbackService.SDK" Version="1.0.9298" />
     <PackageReference Include="FluentValidation" Version="8.5.0" />
     <PackageReference Include="GeoTimeZone" Version="4.0.0" />
-    <PackageReference Include="HtmlSanitizer" Version="4.0.217" />
+    <PackageReference Include="HtmlSanitizer" Version="5.0.372" />
     <PackageReference Include="LazyCache" Version="2.0.4" />
     <PackageReference Include="Loadshop.API.Models" Version="1.0.10251" />
     <PackageReference Include="Loadshop.Data" Version="1.0.10620" />
